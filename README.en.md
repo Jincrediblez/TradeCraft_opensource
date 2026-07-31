@@ -432,6 +432,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and [THIRD_P
 
 Security issues should be reported privately as described in [SECURITY.md](SECURITY.md).
 
+## The Story Behind TradeCraft
+
+I had no programming background. TradeCraft began with a problem I repeatedly faced in my own trading: how could I systematically review my decisions instead of merely tracking profit and loss?
+
+With the help of AI-assisted development, I built the first version around my actual trading workflow and continued refining it through daily use.
+
+Today, TradeCraft has become part of my daily trading review process.
+
 ## License
 
 Copyright TradeCraft contributors.

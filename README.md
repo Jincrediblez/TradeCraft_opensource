@@ -431,6 +431,14 @@ python -m playwright install chromium
 
 安全问题请按照 [SECURITY.md](SECURITY.md) 私下报告。
 
+## TradeCraft 背后的故事
+
+我没有编程背景。TradeCraft 源于我在交易中反复遇到的一个问题：如何系统地复盘自己的决策，而不只是记录盈亏。
+
+借助 AI 辅助开发，我从自己的真实交易流程出发构建了第一个版本，并在日常使用中持续迭代完善。
+
+如今，TradeCraft 已成为我日常交易复盘流程的一部分。
+
 ## 许可证
 
 Copyright TradeCraft contributors.
