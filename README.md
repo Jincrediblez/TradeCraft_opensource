@@ -70,6 +70,76 @@ flowchart LR
 
 确定性数据管线始终是事实来源。可选 AI 只负责总结当前测评快照，不负责计算收益、匹配交易或生成底层评分。
 
+## 功能预览
+
+这些界面不是为了展示更多数字，而是帮助主动交易者更快回答三个问题：发生了什么、为什么会发生、下一次准备改变什么。
+
+### 复盘：把成交放回当时的行情
+
+在同一张图上查看 K 线、成交量、均线、BUY / SELL 标记和成交明细，减少依赖记忆还原交易的偏差。
+
+![TradeCraft 单票交易复盘](docs/images/feature-guide/02-replay.jpg)
+
+### 自选新增：把临时想法变成结构化研究对象
+
+记录关注标的、分组、颜色和触发条件，让盘中发现能够进入后续研究与复盘队列。
+
+![TradeCraft 自选标的新增面板](docs/images/feature-guide/05-watchlist-add.jpg)
+
+### 交易记录：从结论回到底层成交
+
+按标的核对日期、方向、数量、价格和佣金，为归因、测评和人工判断提供可追溯的事实基础。
+
+![TradeCraft 交易记录](docs/images/feature-guide/03-trades.jpg)
+
+### 业绩：关注净值路径，而不只是最终盈亏
+
+把月度净值和收益变化放在时间轴上，辨别结果来自持续积累、单次大赚，还是回撤后的偶然修复。
+
+![TradeCraft 业绩路径](docs/images/feature-guide/06-performance.jpg)
+
+### 数据排行：先找到资金与注意力的集中地
+
+通过成交额和成交笔数排行，快速识别最占用资本、时间与决策精力的标的。
+
+![TradeCraft 交易数据排行](docs/images/feature-guide/09-data-rank.jpg)
+
+### 盈亏热力图：一眼识别结果贡献集中度
+
+用面积表达相对贡献、颜色表达盈亏方向，快速看清哪些标的主导了组合结果。
+
+![TradeCraft 盈亏热力图](docs/images/feature-guide/10-data-pnl.jpg)
+
+### 交易金额热力图：检查资本配置是否匹配判断
+
+将交易金额可视化，暴露高换手、过度集中以及“观点很弱、仓位很大”等资本分配问题。
+
+![TradeCraft 交易金额热力图](docs/images/feature-guide/11-data-amount.jpg)
+
+### 交易行为图：识别频率与情绪化爆发
+
+把成交次数和交易金额放回时间轴，帮助发现过度交易、冲动加速和异常活跃时段。
+
+![TradeCraft 交易行为图](docs/images/feature-guide/12-data-activity.jpg)
+
+### 市场背景：把个股表现放回市场广度
+
+通过 Nasdaq 热力图观察科技成长股的整体环境，避免把市场 beta 错认为个人选股能力。
+
+![TradeCraft Nasdaq 市场热力图](docs/images/feature-guide/13-market-nasdaq.jpg)
+
+### 测评总览：把结果、过程、行为和可信度分开
+
+同一工作台中查看收益归因、过程风险、行为模式和证据质量，避免用单一分数替代真正的复盘。
+
+![TradeCraft 交易测评总览](docs/images/feature-guide/18-audit-overview.jpg)
+
+### AI 总结：压缩信息，但不替代事实计算
+
+AI 只总结当前确定性测评快照；底层收益、FIFO 回合和风险维度仍由可审计的数据管线生成。
+
+![TradeCraft AI 测评总结](docs/images/feature-guide/24-audit-ai.jpg)
+
 ## 页面地图
 
 TradeCraft 是一个无前端构建步骤的单页应用，共有九个主要页面。
