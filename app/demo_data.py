@@ -49,6 +49,13 @@ def render_demo_audit_report(snapshot: dict, locale: str = "en") -> str:
     """Render an explicitly synthetic, offline audit narrative for demo mode."""
 
     chinese = str(locale).lower().startswith("zh")
+    if not chinese:
+        # The persisted audit snapshot intentionally remains locale-neutral and
+        # may contain legacy Chinese finding text. Localize a copy before the
+        # English template interpolates those fields into the report.
+        from app.i18n import localize_payload
+
+        snapshot = localize_payload(snapshot, "en")
     outcome = snapshot.get("outcome") or {}
     scorecards = snapshot.get("scorecards") or {}
     data_quality = snapshot.get("dataQuality") or {}
