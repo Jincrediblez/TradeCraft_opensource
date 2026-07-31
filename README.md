@@ -5,7 +5,7 @@
 <h1 align="center">TradeCraft</h1>
 
 <p align="center">
-  <strong>Turn your trades into evidence. Turn evidence into better decisions.</strong><br>
+  <strong>The Trade Review System for Serious Traders. Know Yourself. Trade Better.</strong><br>
   A local-first trading review system for active traders who want to understand not only what happened, but why.
 </p>
 
