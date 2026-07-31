@@ -225,7 +225,7 @@ python -m pip install -r requirements.txt
 python app/main.py
 ```
 
-Open [http://127.0.0.1:8787](http://127.0.0.1:8787).
+Open [http://127.0.0.1:8888](http://127.0.0.1:8888).
 
 Equivalent convenience commands:
 
@@ -292,6 +292,8 @@ server.log
 ```
 
 Never commit broker exports, generated state, workbooks, databases, logs, or secrets.
+Each TradeCraft checkout should own its `.env`, `data/`, `cache/`, and `logs/`.
+Do not copy runtime directories or credentials from another TradeCraft repository.
 
 ## Languages
 
@@ -321,6 +323,9 @@ cp .env.example .env
 chmod 600 .env
 ```
 
+Use a dedicated API key for this checkout instead of reusing credentials from
+another TradeCraft repository.
+
 Then add:
 
 ```dotenv
@@ -332,7 +337,7 @@ Kimi is called only when the user explicitly selects **Generate AI summary**. Th
 ## Architecture and data flow
 
 ```text
-Browser on 127.0.0.1:8787
+Browser on 127.0.0.1:8888
         │
         ├── static/index.html + static/i18n.js
         │

@@ -63,7 +63,7 @@ jobs:
 
       - name: Run browser smoke
         env:
-          TRADECRAFT_BASE_URL: http://127.0.0.1:8787
+          TRADECRAFT_BASE_URL: http://127.0.0.1:8888
         run: |
           python app/main.py > /tmp/tradecraft-server.log 2>&1 &
           server_pid=$!

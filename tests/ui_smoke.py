@@ -9,7 +9,7 @@ import urllib.request
 from playwright.sync_api import sync_playwright
 
 
-BASE_URL = os.environ.get("TRADECRAFT_BASE_URL", "http://127.0.0.1:8787").rstrip("/")
+BASE_URL = os.environ.get("TRADECRAFT_BASE_URL", "http://127.0.0.1:8888").rstrip("/")
 
 
 def wait_for_server(timeout: float = 30.0) -> None:

@@ -16,11 +16,12 @@ STATE_DIR = DATA_ROOT / "state"
 LOG_DIR = ROOT / "logs"
 APP_LOG_FILE = LOG_DIR / "app.log"
 STATE_METADATA_FILE = STATE_DIR / "_metadata.json"
+LOGGER_NAME = "tradecraft.opensource"
 
 
 def configure_logging(log_file: Path = APP_LOG_FILE) -> None:
     log_file.parent.mkdir(parents=True, exist_ok=True)
-    logger = logging.getLogger("ibkr_trades")
+    logger = logging.getLogger(LOGGER_NAME)
     if logger.handlers:
         return
     handler = logging.FileHandler(log_file, encoding="utf-8")
@@ -35,7 +36,7 @@ def app_log(message: str, level: str = "info", **fields) -> None:
         configure_logging()
         payload = {"message": message, **fields}
         text = json.dumps(payload, ensure_ascii=False, sort_keys=True)
-        logger = logging.getLogger("ibkr_trades")
+        logger = logging.getLogger(LOGGER_NAME)
         getattr(logger, level if level in {"info", "warning", "error"} else "info")(text)
     except Exception:
         return

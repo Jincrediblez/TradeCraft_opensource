@@ -359,7 +359,7 @@ def test_twenty_thousand_execution_capacity_keeps_ids_unique_and_pages_bounded()
 def test_frontend_exposes_layered_workbench_and_separates_ai_generation():
     html = (Path(__file__).resolve().parent.parent / "static" / "index.html").read_text(encoding="utf-8")
     assert 'window.location.protocol === "file:"' in html
-    assert 'window.location.replace("http://127.0.0.1:8787/")' in html
+    assert 'window.location.replace("http://127.0.0.1:8888/")' in html
     for pane in ("Overview", "Outcome", "Process", "Behavior", "Evidence", "Improvement", "Ai"):
         assert f'id="auditPane{pane}"' in html
     assert 'id="auditRefreshData"' in html

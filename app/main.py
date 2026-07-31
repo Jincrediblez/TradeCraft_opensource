@@ -212,7 +212,7 @@ def runtime_info() -> dict:
         "cwd": str(Path.cwd()),
         "root": str(ROOT),
         "python": sys.executable,
-        "port": int(os.environ.get("PORT", "8787")),
+        "port": int(os.environ.get("PORT", "8888")),
     }
 
 
@@ -1259,7 +1259,7 @@ def build_health_payload() -> dict:
         expected_kline_end_date=expected_kline_end_date,
         adjust_mode=KLINE_ADJUST_MODE,
         app_log=app_log,
-        port=int(os.environ.get("PORT", "8787")),
+        port=int(os.environ.get("PORT", "8888")),
         git_info=git_runtime_info(),
         runtime_info=runtime_info(),
         cache_issues=kline_cache_health_issues(),
@@ -3744,7 +3744,7 @@ def main():
 
     ensure_data_dirs()
     initialize_demo_workspace()
-    port = int(os.environ.get("PORT", "8787"))
+    port = int(os.environ.get("PORT", "8888"))
     server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     print(f"Demo server running on http://127.0.0.1:{port}")
     server.serve_forever()

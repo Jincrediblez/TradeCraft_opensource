@@ -31,7 +31,7 @@ def build_health_payload(
     expected_kline_end_date: Callable[[str, str], str],
     adjust_mode: str,
     app_log: Callable[..., None],
-    port: int = 8787,
+    port: int = 8888,
     git_info: Optional[dict] = None,
     runtime_info: Optional[dict] = None,
     cache_issues: Optional[List[dict]] = None,

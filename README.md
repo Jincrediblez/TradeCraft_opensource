@@ -229,7 +229,7 @@ python -m pip install -r requirements.txt
 python app/main.py
 ```
 
-打开 [http://127.0.0.1:8787](http://127.0.0.1:8787)。
+打开 [http://127.0.0.1:8888](http://127.0.0.1:8888)。
 
 也可以使用：
 
@@ -296,6 +296,8 @@ server.log
 ```
 
 不要提交券商导出、生成状态、工作簿、数据库、日志或密钥。
+每个 TradeCraft checkout 都应拥有独立的 `.env`、`data/`、`cache/` 和
+`logs/`；不要从另一个 TradeCraft 仓库复制这些运行时目录或凭据。
 
 ## 多语言
 
@@ -325,6 +327,8 @@ cp .env.example .env
 chmod 600 .env
 ```
 
+请为当前 checkout 使用独立的 API key，不要复用其他 TradeCraft 仓库的凭据。
+
 然后设置：
 
 ```dotenv
@@ -336,7 +340,7 @@ KIMI_API_KEY=your_key_here
 ## 架构与数据流
 
 ```text
-浏览器 http://127.0.0.1:8787
+浏览器 http://127.0.0.1:8888
         │
         ├── static/index.html + static/i18n.js
         │
