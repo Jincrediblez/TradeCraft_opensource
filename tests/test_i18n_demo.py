@@ -96,7 +96,12 @@ def test_demo_audit_report_is_bilingual_explicitly_synthetic_and_offline():
             "initialRiskCoveragePct": 45,
             "tradePlanCoveragePct": 60,
         },
-        "findings": [{"title": "Synthetic finding", "detail": "Demo evidence"}],
+        "findings": [
+            {
+                "title": "探索仓位超限",
+                "detail": "探索仓（optionality）占持仓 100.0%，超过20%上限。主线资产 0.0%。",
+            }
+        ],
         "advantages": [],
     }
     english = render_demo_audit_report(snapshot, "en")
@@ -104,6 +109,10 @@ def test_demo_audit_report_is_bilingual_explicitly_synthetic_and_offline():
     assert english.startswith("# Demo AI Trading Audit")
     assert "No external AI was called" in english
     assert "randomized Demo" in english
+    assert "Exploratory allocation exceeds limit" in english
+    assert "Exploratory positions represent 100.0% of holdings" in english
+    assert "Core positions: 0.0%." in english
+    assert not re.search(r"[\u3400-\u9fff]", english)
     assert chinese.startswith("# Demo AI 交易测评")
     assert "没有调用外部 AI" in chinese
     assert "随机 Demo" in chinese

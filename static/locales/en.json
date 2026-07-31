@@ -61,6 +61,8 @@
     " 个标的": " symbols",
     " 个代码": " symbols",
     " 个交易回合": " round trips",
+    " 个完整交易回合；点击展开成交关联与近期补录。": " complete round trips; select a row to inspect linked fills and recent notes.",
+    " 个交易日": " trading days",
     " 笔成交": " executions",
     " 笔交易": " trades",
     " 笔": " fills",
@@ -115,6 +117,7 @@
     ,"笔/交易日": " fills/trading day"
     ,"探索仓（optionality）占持仓 ": "Exploratory positions represent "
     ,"，超过20%上限。主线资产 ": " of holdings, above the 20% limit. Core positions: "
+    ,"%。": "%."
     ,"置信度 ": "Confidence "
     ,"证据 ": "Evidence "
     ," / 4 个已平仓回合缺少初始风险，R 倍数无法判断": " / 4 closed round trips lack initial risk, so R multiples cannot be evaluated"
@@ -508,6 +511,12 @@
     ,"当前没有达到最低样本要求的候选优势": "No candidate advantage meets the minimum sample requirement"
     ,"当前铁律": "Active rules"
     ,"尚未选择本周期铁律": "No rule is active for this cycle"
+    ,"铁律周期": "Rule cycles"
+    ,"从一个高优先级发现中选择“设为铁律”，系统将跟踪未来20个交易日。": "Select Track as a rule on a high-priority finding to monitor the next 20 trading days."
+    ,"你的判断记录": "Your decisions"
+    ,"尚未确认或驳回任何系统发现": "No findings have been confirmed or dismissed yet."
+    ,"停止跟踪": "Stop tracking"
+    ,"AI 总结与当前数据一致": "AI summary matches the current snapshot"
     ,"全部": "All"
     ,"跟随当前年份": "Use the current year"
     ,"暂无触发器，点击“新增”开始记录": "No triggers yet. Select Add to create one."
