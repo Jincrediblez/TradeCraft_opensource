@@ -18,9 +18,13 @@
 
 ![TradeCraft home dashboard with randomized demo data](docs/images/feature-guide/01-home.jpg)
 
-## A P&L number is not a review
+> **TradeCraft does not recommend stocks, predict markets, or place trades.** It helps you understand your own trading, then refine your system one decision at a time.
 
-You can finish a month profitable and still reinforce a bad process. You can take a loss on a well-planned trade and learn the wrong lesson from it. The difficult part of active trading is rarely finding more data. It is connecting the data you already have:
+## The market is not your biggest blind spot. You are.
+
+A profitable month does not always mean your process is repeatable. A losing trade does not necessarily mean your decision was wrong. The hardest part of active trading is rarely finding more data. It is understanding where your edge really comes from, and why the same mistakes keep repeating.
+
+TradeCraft helps you keep asking: Were your trades planned? How good were your entries and exits? Where did your profits and losses really come from? Are you overtrading? Answering those questions starts with connecting the information you already have:
 
 - executions live in a broker statement;
 - the market context lives on a chart;
@@ -29,6 +33,8 @@ You can finish a month profitable and still reinforce a bad process. You can tak
 - the next improvement ends as “be more disciplined.”
 
 TradeCraft brings those fragments into one review loop. It reconstructs each trade, shows what drove the account result, separates process from outcome, and turns a finding into a rule you can test over the next 20 trading days.
+
+Your trading workspace stays local by default. TradeCraft is free and open source, with no TradeCraft cloud account required.
 
 | When review feels like this | TradeCraft helps you move toward this |
 |---|---|
