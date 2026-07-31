@@ -16,7 +16,7 @@
   <a href="SECURITY.md">安全政策</a>
 </p>
 
-![使用随机合成数据的 TradeCraft 首页](docs/images/feature-guide/01-home.jpg)
+![使用随机合成数据的 TradeCraft 交易复盘界面](docs/images/feature-guide/02-replay.jpg)
 
 ## 盈亏数字，不等于完成了复盘
 
