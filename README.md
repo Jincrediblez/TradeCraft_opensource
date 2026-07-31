@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>为严肃交易者打造的交易复盘系统。</strong><br>
-  一个为主动交易者设计的本地交易复盘系统：知己，才能善战。
+  知己，才能善战。
 </p>
 
 <p align="center">

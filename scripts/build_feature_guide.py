@@ -543,7 +543,7 @@ def build_story() -> list:
         p("系统功能手册", "cover_title"),
         Spacer(1, 3 * mm),
         p("为严肃交易者打造的交易复盘系统。", "cover_tagline"),
-        p("一个为主动交易者设计的本地交易复盘系统：知己，才能善战。", "cover_subtitle"),
+        p("知己，才能善战。", "cover_subtitle"),
         Spacer(1, 2 * mm),
         p("用户版 · 从第一次启动到形成可验证的复盘规则", "cover_meta"),
         Spacer(1, 12 * mm),
