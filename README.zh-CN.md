@@ -5,8 +5,8 @@
 <h1 align="center">TradeCraft</h1>
 
 <p align="center">
-  <strong>把交易变成证据，把证据变成下一次更好的决策。</strong><br>
-  一个为主动交易者设计的本地交易复盘系统：不只告诉你发生了什么，更帮你理解为什么。
+  <strong>为严肃交易者打造的交易复盘系统。</strong><br>
+  一个为主动交易者设计的本地交易复盘系统：知己，才能善战。
 </p>
 
 <p align="center">
