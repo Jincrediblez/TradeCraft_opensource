@@ -13,7 +13,8 @@
   <a href="README.en.md">English</a> ·
   <a href="DISCLAIMER.md">金融风险提示</a> ·
   <a href="CONTRIBUTING.md">贡献指南</a> ·
-  <a href="SECURITY.md">安全政策</a>
+  <a href="SECURITY.md">安全政策</a><br>
+  <sub>TradeCraft is available in English and Simplified Chinese.</sub>
 </p>
 
 ![使用随机合成数据的 TradeCraft 交易复盘界面](docs/images/feature-guide/02-replay.jpg)
