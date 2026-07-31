@@ -18,6 +18,10 @@
 
 ![使用随机合成数据的 TradeCraft 交易复盘界面](docs/images/feature-guide/02-replay.jpg)
 
+<p align="center">
+  <a href="https://github.com/Jincrediblez/TradeCraft_opensource/blob/main/TradeCraft_%E7%B3%BB%E7%BB%9F%E5%8A%9F%E8%83%BD%E6%89%8B%E5%86%8C_zh-CN.pdf"><strong>TradeCraft 系统功能手册（中文 PDF）</strong></a>
+</p>
+
 ## 盈亏数字，不等于完成了复盘
 
 一个月赚钱，不代表过程值得复制；一次亏损，也不一定说明决策是错的。主动交易者真正缺少的通常不是更多数据，而是把已有信息连接起来：
