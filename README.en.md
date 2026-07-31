@@ -156,7 +156,7 @@ TradeCraft is a build-free single-page application with nine primary surfaces.
 | **Audit** | Separate results, process, behavior, and confidence. | Scorecards, benchmark-relative outcome, seven risk dimensions, evidence drill-down, finding feedback, rule cycles, and optional AI summaries. |
 | **Settings** | Control the local workspace. | Language, default period/symbol, refresh interval, Kimi model, benchmarks, data upload/refresh, and Watchlist triggers. |
 
-See every page and sub-tab in the [illustrated Chinese feature guide](output/pdf/TradeCraft_系统功能手册_zh-CN.pdf).
+See every page and sub-tab in the [illustrated Chinese feature guide](TradeCraft_系统功能手册_zh-CN.pdf).
 
 ## Core capabilities
 
