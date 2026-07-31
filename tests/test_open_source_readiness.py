@@ -39,7 +39,7 @@ def test_required_open_source_documents_exist():
     for name in (
         "LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.md", "SECURITY.md",
         "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "DISCLAIMER.md",
-        "README.md", "README.zh-CN.md",
+        "README.md", "README.en.md",
     ):
         assert (ROOT / name).is_file(), name
 
