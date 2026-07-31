@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>The Trade Review System for Serious Traders. Know Yourself. Trade Better.</strong><br>
-  A local-first trading review system for active traders who want to understand not only what happened, but why.
+  A local-first trade review system that helps active traders understand not just what happened, but why—and turn every trade into a better decision.
 </p>
 
 <p align="center">
