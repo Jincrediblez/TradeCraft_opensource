@@ -1,0 +1,82 @@
+themes:
+  ai_semiconductors:
+    symbols:
+      - NVDA
+      - AMD
+      - MRVL
+      - AVGO
+      - SMH
+      - ARM
+      - TSM
+      - MU
+      - INTC
+      - SOXL
+    benchmark: SMH.US
+    tier: beta
+    description: "AI / semiconductor infrastructure"
+
+  cloud_software:
+    symbols:
+      - MSFT
+      - GOOGL
+      - GOOG
+      - AMZN
+      - NOW
+      - CRM
+      - ORCL
+      - IGV
+    benchmark: IGV.US
+    tier: beta
+    description: "Cloud software and mega-cap tech"
+
+  crypto_infrastructure:
+    symbols:
+      - CRCL
+      - COIN
+      - MSTR
+      - IBIT
+      - BITB
+    benchmark: COIN.US
+    tier: optionality
+    description: "Crypto-related equities and ETFs"
+
+  nuclear_power:
+    symbols:
+      - LEU
+      - CCJ
+      - CEG
+      - VST
+      - OKLO
+      - SMR
+    benchmark: null
+    tier: optionality
+    description: "Nuclear energy and uranium"
+
+  mega_cap_quality:
+    symbols:
+      - AAPL
+      - META
+    benchmark: QQQ.US
+    tier: beta
+    description: "High-quality mega-cap non-cloud tech"
+
+  china_tech:
+    symbols:
+      - PDD
+      - 1810.HK
+    benchmark: null
+    tier: optionality
+    description: "Chinese tech equities"
+
+  space_defense:
+    symbols:
+      - RKLB
+    benchmark: null
+    tier: optionality
+    description: "Space and defense tech"
+
+# Default for unclassified symbols
+unclassified:
+  benchmark: QQQ.US
+  tier: optionality
+  description: "Not in any defined theme"

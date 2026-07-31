@@ -1,0 +1,28 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# OS
+.DS_Store
+
+# Local app state and credentials
+.longbridge/
+Library/
+cache/
+data/
+server.log
+.claude/
+.codex/
+pet-upgrades/
+
+# Generated outputs
+*.log
+playwright-report/
+test-results/

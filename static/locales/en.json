@@ -1,0 +1,515 @@
+{
+  "meta": {
+    "name": "English",
+    "locale": "en"
+  },
+  "nav": {
+    "home": "Home",
+    "replay": "Replay",
+    "data": "Data",
+    "trades": "Trades",
+    "market": "Market",
+    "watchlist": "Watchlist",
+    "performance": "Performance",
+    "audit": "Audit",
+    "settings": "Settings"
+  },
+  "settings": {
+    "language": "Language",
+    "languageAuto": "Use browser language",
+    "languageEnglish": "English",
+    "languageChinese": "简体中文"
+  },
+  "watchlist": {
+    "batchPlaceholder": "One symbol per line or comma-separated:\nNVDA / 700.HK / NASDAQ:TSLA\n(TradingView format supported)"
+  },
+  "demo": {
+    "badge": "DEMO DATA",
+    "description": "This workspace contains newly randomized, entirely fictional synthetic data.",
+    "useReal": "Use real data",
+    "reset": "Generate new demo"
+  },
+  "api": {
+    "notFound": "The requested resource was not found.",
+    "invalidJson": "Requests must use application/json.",
+    "invalidRequest": "The request is invalid.",
+    "internalError": "TradeCraft could not complete the request.",
+    "demoActive": "Demo mode is active.",
+    "demoReset": "Demo data has been reset.",
+    "demoExited": "Demo mode has been exited.",
+    "demoExitRequired": "Exit demo mode before uploading real data.",
+    "demoOffline": "Demo mode is using cached synthetic market data."
+  },
+  "fragments": {
+    "当前锁定日期:": "Selected date:",
+    "当前区间": "Current period",
+    "已保存 ": "Saved ",
+    "已加入 ": "Added ",
+    "已删除 ": "Deleted ",
+    "已标注 ": "Updated ",
+    "已移动 ": "Moved ",
+    "已选择 ": "Selected ",
+    "已选 ": "Selected ",
+    "共 ": "Total ",
+    "合计 ": "Total ",
+    "加载 ": "Loading ",
+    "导入 ": "Imported ",
+    "刷新完成，失败 ": "Refresh complete; failures: ",
+    " 个文件上传成功": " files uploaded",
+    " 个文件失败": " files failed",
+    " 个行情补齐失败": " market-data refreshes failed",
+    " 个标的": " symbols",
+    " 个代码": " symbols",
+    " 个交易回合": " round trips",
+    " 笔成交": " executions",
+    " 笔交易": " trades",
+    " 笔": " fills",
+    " 天": " days",
+    " 条差异": " differences",
+    "加载失败:": "Load failed:",
+    "保存失败:": "Save failed:",
+    "刷新失败:": "Refresh failed:",
+    "图表加载失败:": "Chart load failed:",
+    "占比 ": "Exposure ",
+    "期初 ": "Starting value ",
+    "已结算 ": "Settled cash ",
+    "当前回撤 ": "Current drawdown ",
+    "变化 ": "Change ",
+    " 交易复盘 - TradeCraft": " Trade Replay - TradeCraft",
+    "删除分组「": "Delete group “",
+    "」？组内标的将移入默认分组。": "”? Its symbols will move to the default group.",
+    "移除 ": "Remove ",
+    " 个自选标的？": " watchlist symbols?",
+    "期初仓位缺口 ": "Opening-position coverage gaps ",
+    " 项 · 主基准行情": " · Primary benchmark data ",
+    " 回合 · 胜率 ": " round trips · Win rate ",
+    "主基准 ": "Primary benchmark ",
+    "参考 ": "Reference ",
+    " 回合": " round trips",
+    "20日后继续涨 ": "Continued higher after 20 days ",
+    " · 样本不足，趋势判断需谨慎": " · Small sample; interpret the trend cautiously",
+    ": 基线 ": ": baseline ",
+    " → 目标 ": " → target ",
+    "数据不足，未绘制: ": "Insufficient data; not plotted: ",
+    "数据刷新完成": "Data refresh complete"
+    ,"IBKR刷新 ": "IBKR refresh "
+    ,"最近交易日 ": "Last trading day "
+    ,"高频交易": "High frequency"
+    ,"大额交易": "Large notional"
+    ,"股票敞口: ": "Stock exposure: "
+    ,"占比: ": "Exposure: "
+    ,"现金: ": "Cash: "
+    ,"已结算: ": "Settled: "
+    ,"杠杆: ": "Leverage: "
+    ,"对账: ": "Reconciliation: "
+    ,"当前代码 ": "Current symbol "
+    ,"持仓 ": "Position "
+    ," / 市值 ": " / Market value "
+    ," / 未实现 ": " / Unrealized "
+    ,"持仓数: ": "Positions: "
+    ,"总敞口: ": "Total exposure: "
+    ,"总敞口/NAV: ": "Exposure/NAV: "
+    ,"行情未补齐，当前使用本地缓存到 ": "Market data is incomplete; using local cache through "
+    ,"数据截止 ": "Data through "
+    ," · 快照 ": " · Snapshot "
+    ,"笔/交易日": " fills/trading day"
+    ,"探索仓（optionality）占持仓 ": "Exploratory positions represent "
+    ,"，超过20%上限。主线资产 ": " of holdings, above the 20% limit. Core positions: "
+    ,"置信度 ": "Confidence "
+    ,"证据 ": "Evidence "
+    ," / 4 个已平仓回合缺少初始风险，R 倍数无法判断": " / 4 closed round trips lack initial risk, so R multiples cannot be evaluated"
+    ," 个已平仓回合缺少初始风险，R 倍数无法判断": " closed round trips lack initial risk, so R multiples cannot be evaluated"
+    ," 个跟踪标的缺少事前计划": " tracked symbols lack a pre-trade plan"
+    ," 个不支持的代码（期货/指数/外汇等）": " unsupported symbols (futures/indexes/FX)"
+    ,"，跳过 ": "; skipped "
+    ,"，失败 ": "; failed "
+    ,"移出自选": "Remove from watchlist"
+    ,"截止 ": "As of "
+    ,"数量 ": "Quantity "
+    ,"市值 ": "Market value "
+    ,"不完整": "Incomplete"
+    ,"完整": "Complete"
+    ,"周日": "Sun"
+    ,"周一": "Mon"
+    ,"周二": "Tue"
+    ,"周三": "Wed"
+    ,"周四": "Thu"
+    ,"周五": "Fri"
+    ,"周六": "Sat"
+  },
+  "legacy": {
+    "首页": "Home",
+    "复盘": "Replay",
+    "数据": "Data",
+    "交易记录": "Trades",
+    "市场": "Market",
+    "自选": "Watchlist",
+    "业绩": "Performance",
+    "测评": "Audit",
+    "设置": "Settings",
+    "切换主题": "Toggle theme",
+    "准备刷新...": "Preparing refresh...",
+    "首页仪表盘": "Dashboard",
+    "账户概览 / 待复盘股票 / 盈亏贡献": "Account overview / Review queue / P&L contribution",
+    "待复盘股票": "Review queue",
+    "加载中...": "Loading...",
+    "数据状态": "Data status",
+    "今天优先复盘": "Priority reviews",
+    "最近交易 / 高频 / 大额": "Recent / Frequent / Large trades",
+    "最大盈利 / 亏损贡献": "Largest gains / losses",
+    "点击代码进入复盘": "Select a symbol to open replay",
+    "盈利贡献": "Profit contribution",
+    "亏损贡献": "Loss contribution",
+    "市场热力图": "Market heatmap",
+    "新增自选": "Add symbols",
+    "导入自选": "Import watchlist",
+    "刷新行情": "Refresh market data",
+    "搜索代码 / 名称 / 标签": "Search symbol / name / tag",
+    "全部颜色": "All colors",
+    "无颜色": "No color",
+    "红色": "Red",
+    "绿色": "Green",
+    "蓝色": "Blue",
+    "黄色": "Yellow",
+    "紫色": "Purple",
+    "灰色": "Gray",
+    "全部持仓": "All positions",
+    "有持仓": "With position",
+    "无持仓": "Without position",
+    "批量加入自选": "Add symbols in bulk",
+    "加入分组": "Add to group",
+    "标注颜色": "Color",
+    "加入自选": "Add to watchlist",
+    "新建分组": "New group",
+    "分组名称，回车创建": "Group name, press Enter to create",
+    "创建": "Create",
+    "添加代码，回车确认（可逗号分隔）": "Add symbols, press Enter (comma-separated supported)",
+    "移动到...": "Move to...",
+    "删除选中": "Delete selected",
+    "取消选择": "Clear selection",
+    "测量涨跌幅": "Measure price change",
+    "显示/隐藏买卖打点": "Show/hide trade markers",
+    "显示/隐藏均线菜单": "Show/hide moving averages",
+    "未选择": "Nothing selected",
+    "选择一行查看详情": "Select a row to view details",
+    "本地编辑": "Local notes",
+    "名称": "Name",
+    "触发价": "Trigger price",
+    "止损": "Stop loss",
+    "目标": "Target",
+    "备注": "Notes",
+    "保存当前": "Save",
+    "最近交易": "Recent trades",
+    "点击代码快速复盘": "Select a symbol for a quick replay",
+    "复盘摘要": "Replay summary",
+    "当日个人买卖明细（点击K线日期）": "Trades for selected date (select a candle)",
+    "当前未选中交易日": "No trading day selected",
+    "时间": "Time",
+    "方向": "Side",
+    "数量": "Quantity",
+    "价格": "Price",
+    "成交额": "Notional",
+    "佣金": "Commission",
+    "标签": "Tag",
+    "交易计划": "Trade plan",
+    "记录买入假设、加减仓与止损纪律": "Record thesis, sizing and exit discipline",
+    "买卖逻辑": "Setup",
+    "买入理由": "Thesis",
+    "为什么买，预期赚什么钱": "Why buy, and what drives the expected return?",
+    "无效价": "Invalidation price",
+    "目标天数": "Target days",
+    "加仓条件": "Add condition",
+    "什么情况下才允许加仓": "Conditions required before adding",
+    "减仓条件": "Reduce condition",
+    "什么情况下减仓": "Conditions for reducing",
+    "止损条件": "Exit condition",
+    "什么情况下必须退出": "Conditions requiring an exit",
+    "保存计划": "Save plan",
+    "交易数据": "Trading data",
+    "排行": "Rankings",
+    "盈亏热力图": "P&L heatmap",
+    "交易金额热力图": "Trading notional heatmap",
+    "交易行为图": "Trading activity",
+    "交易金额前10": "Top 10 by notional",
+    "按所选年度累计成交金额": "Cumulative notional for the selected period",
+    "成交笔数前10": "Top 10 by fills",
+    "按 IBKR fill 笔数统计": "Ranked by IBKR fills",
+    "盈利 / 亏损前10": "Top gains / losses",
+    "按 IBKR MTM 总盈亏": "Ranked by IBKR MTM P&L",
+    "盈利前10": "Top 10 gains",
+    "亏损前10": "Top 10 losses",
+    "其他品种盈亏": "Other instruments",
+    "股票 / ETF 之外的品种，按绝对盈亏排序": "Non-stock and non-ETF instruments, sorted by absolute P&L",
+    "交易频率": "Trading frequency",
+    "每日成交笔数": "Daily fills",
+    "交易密度": "Trading density",
+    "每日成交金额": "Daily notional",
+    "交易测评工作台": "Trading audit workbench",
+    "确定性数据优先，AI 仅负责总结": "Deterministic data first; AI only summarizes",
+    "刷新测评数据": "Refresh audit data",
+    "生成 AI 总结": "Generate AI summary",
+    "总览": "Overview",
+    "收益归因": "Return attribution",
+    "过程质量": "Process quality",
+    "行为模式": "Behavior",
+    "交易证据": "Evidence",
+    "改进记录": "Improvement log",
+    "AI 总结": "AI summary",
+    "加载测评工作台...": "Loading audit workbench...",
+    "尚未加载 AI 总结": "AI summary has not been loaded",
+    "业绩追踪": "Performance tracking",
+    "刷新月度数据": "Refresh monthly data",
+    "月份": "Month",
+    "资产金额（万）": "Portfolio value (10k)",
+    "月收益率": "Monthly return",
+    "累计收益率": "Cumulative return",
+    "默认入口 / 行情刷新 / AI 模型": "Defaults / Market refresh / AI model",
+    "工作台默认值": "Workspace defaults",
+    "当前区间": "Current period",
+    "选择年度区间": "Select period",
+    "默认区间": "Default period",
+    "默认股票代码": "Default symbol",
+    "Yahoo Finance 盘中刷新间隔（秒）": "Yahoo Finance refresh interval (seconds)",
+    "Kimi 模型": "Kimi model",
+    "主题 benchmark": "Theme benchmark",
+    "测评主 benchmark": "Primary audit benchmark",
+    "测评参考 benchmark": "Secondary audit benchmark",
+    "保存设置": "Save settings",
+    "数据更新": "Data update",
+    "上传 IBKR 文件后刷新交易与最近行情缓存": "Upload IBKR files, then refresh trades and market cache",
+    "上传数据": "Upload data",
+    "更新数据": "Refresh data",
+    "Watchlist 触发器": "Watchlist triggers",
+    "关注价 / 突破价 / 回踩区 / 财报日期": "Watch / breakout / pullback / earnings",
+    "新增": "Add",
+    "保存触发器": "Save triggers",
+    "代码": "Symbol",
+    "关注价": "Watch price",
+    "突破价": "Breakout price",
+    "回踩区": "Pullback zone",
+    "财报日期": "Earnings date",
+    "隐藏左栏": "Hide left panel",
+    "隐藏右栏": "Hide right panel",
+    "请求失败": "Request failed",
+    "标签已保存": "Tag saved",
+    "保存失败:": "Save failed:",
+    "买入笔数": "Buy fills",
+    "卖出笔数": "Sell fills",
+    "净买入数量": "Net quantity",
+    "净买入金额": "Net notional",
+    "当日成交金额": "Daily notional",
+    "佣金合计": "Total commission",
+    "买入均价": "Average buy",
+    "卖出均价": "Average sell",
+    "周日": "Sunday",
+    "周一": "Monday",
+    "周二": "Tuesday",
+    "周三": "Wednesday",
+    "周四": "Thursday",
+    "周五": "Friday",
+    "周六": "Saturday",
+    "赢率": "Win rate",
+    "交易金额": "Notional",
+    "年初至今MTM": "YTD MTM",
+    "未保存计划": "Unsaved plan",
+    "保存中": "Saving",
+    "已保存": "Saved",
+    "股票敞口": "Stock exposure",
+    "净值": "Net asset value",
+    "现金": "Cash",
+    "最大回撤": "Maximum drawdown",
+    "杠杆": "Leverage",
+    "股票 / NAV": "Stocks / NAV",
+    "本期收益 / TWR": "Period return / TWR",
+    "一致": "Matched",
+    "加载健康状态失败": "Failed to load health status",
+    "当前区间暂无盈亏数据": "No P&L data for this period",
+    "当前区间暂无交易金额数据": "No trading notional for this period",
+    "加载设置失败": "Failed to load settings",
+    "保存设置失败": "Failed to save settings",
+    "无": "None",
+    "图表库加载失败": "Chart library failed to load",
+    "新增分组...": "Adding group...",
+    "分组已新增": "Group added",
+    "分组名称": "Group name",
+    "分组已重命名": "Group renamed",
+    "分组已删除": "Group deleted",
+    "刷新行情...": "Refreshing market data...",
+    "刷新完成，失败": "Refresh complete; failed",
+    "已确认": "Confirmed",
+    "疑似": "Suspected",
+    "数据不足": "Insufficient data",
+    "待判断": "Pending",
+    "跟踪中": "Tracking",
+    "已达标": "Met",
+    "未达标": "Not met",
+    "样本不足": "Insufficient sample",
+    "已停止": "Stopped",
+    "确认": "Confirm",
+    "驳回": "Dismiss",
+    "重新生成 AI 总结": "Regenerate AI summary",
+    "加载交易证据失败": "Failed to load evidence",
+    "目标持有天数": "Target holding days",
+    "退出原因": "Exit reason",
+    "补充说明": "Additional notes",
+    "AI 生成中...": "Generating AI summary...",
+    "刷新中...": "Refreshing...",
+    "上传中": "Uploading",
+    "上传完成": "Upload complete",
+    "启动刷新...": "Starting refresh...",
+    "数据刷新完成": "Data refresh complete",
+    "主线选择": "Theme selection",
+    "风格偏移": "Style drift",
+    "选股水平": "Stock selection",
+    "叙事上头": "Narrative risk",
+    "入场质量": "Entry quality",
+    "出场质量": "Exit quality",
+    "仓位控制": "Position sizing",
+    "未知错误": "Unknown error",
+    "导入失败:": "Import failed:",
+    "趋势突破（计划内）": "Planned breakout",
+    "趋势突破（冲动追入）": "Impulsive breakout chase",
+    "回调买入": "Pullback entry",
+    "超跌反弹": "Oversold rebound",
+    "基本面驱动": "Fundamental catalyst",
+    "主题轮动": "Theme rotation",
+    "FOMO追高": "FOMO chase",
+    "未分类": "Unclassified",
+    "止盈": "Take profit",
+    "风控减仓": "Risk reduction",
+    "趋势走弱减仓": "Trend deterioration",
+    "调仓换股": "Portfolio rotation",
+    "被迫平仓": "Forced exit",
+    "隐藏买卖打点": "Hide trade markers",
+    "显示买卖打点": "Show trade markers",
+    "切换浅色主题": "Switch to light theme",
+    "切换深色主题": "Switch to dark theme",
+    "显示左栏": "Show left panel",
+    "显示右栏": "Show right panel",
+    "保存交易计划失败": "Failed to save trade plan",
+    "首页仪表盘 - TradeCraft": "Dashboard - TradeCraft",
+    "市场 - TradeCraft": "Market - TradeCraft",
+    "交易复盘 - TradeCraft": "Trade Replay - TradeCraft",
+    "交易数据 - TradeCraft": "Trading Data - TradeCraft",
+    "自选股 - TradeCraft": "Watchlist - TradeCraft",
+    "交易测评 - TradeCraft": "Trading Audit - TradeCraft",
+    "业绩追踪 - TradeCraft": "Performance - TradeCraft",
+    "设置 - TradeCraft": "Settings - TradeCraft",
+    "加载失败:": "Load failed:",
+    "保存中...": "Saving...",
+    "加载 Watchlist 触发器失败": "Failed to load watchlist triggers",
+    "保存 Watchlist 触发器失败": "Failed to save watchlist triggers",
+    "Watchlist 请求失败": "Watchlist request failed",
+    "红": "Red",
+    "绿": "Green",
+    "蓝": "Blue",
+    "黄": "Yellow",
+    "紫": "Purple",
+    "灰": "Gray",
+    "保存分组顺序...": "Saving group order...",
+    "分组顺序已保存": "Group order saved",
+    "图表加载失败:": "Chart load failed:",
+    "批量加入...": "Adding symbols...",
+    "加入自选...": "Adding to watchlist...",
+    "删除中...": "Deleting...",
+    "导入时跳过的不支持代码:": "Unsupported symbols skipped during import:",
+    "刷新失败:": "Refresh failed:",
+    "累计收益率 %": "Cumulative return %",
+    "万": "10k",
+    "尚未生成 AI 总结。确定性测评数据不受影响。": "No AI summary has been generated. Deterministic audit data is unaffected.",
+    "加载 AI 总结失败:": "Failed to load AI summary:",
+    "加载测评工作台失败": "Failed to load audit workbench",
+    "加载测评工作台失败:": "Failed to load audit workbench:",
+    "简要说明为什么驳回（可留空）": "Brief reason for dismissal (optional)",
+    "保存判断失败": "Failed to save decision",
+    "判断已保存": "Decision saved",
+    "确认未来20个交易日要跟踪的铁律": "Confirm the rule to track for the next 20 trading days",
+    "创建铁律失败": "Failed to create rule",
+    "铁律已开始跟踪": "Rule tracking started",
+    "创建失败:": "Create failed:",
+    "停止铁律失败": "Failed to stop rule",
+    "停止失败:": "Stop failed:",
+    "保存补录失败": "Failed to save note",
+    "交易回合补录已保存": "Round-trip note saved",
+    "正在基于当前快照生成 AI 总结...": "Generating an AI summary from the current snapshot...",
+    "AI 总结生成失败": "AI summary generation failed",
+    "AI 总结已生成": "AI summary generated",
+    "AI 总结生成失败:": "AI summary generation failed:",
+    "正在匹配交易、计算归因和更新测评快照...": "Matching trades, calculating attribution, and updating the audit snapshot...",
+    "刷新测评数据失败": "Failed to refresh audit data",
+    "测评数据已刷新，AI 总结未自动调用": "Audit data refreshed; AI summary was not called",
+    "退出演示模式并清空所有合成数据？": "Exit demo mode and remove all synthetic data?",
+    "刷新中": "Refreshing",
+    "测评生成失败": "Audit generation failed",
+    "每行或逗号分隔一个代码： NVDA / 700.HK / NASDAQ:TSLA （支持 TradingView 格式）": "One symbol per line or comma-separated: NVDA / 700.HK / NASDAQ:TSLA (TradingView format supported)",
+    "如 118.5": "e.g. 118.5",
+    "如 20": "e.g. 20",
+    "无代码": "No symbol",
+    "更多操作": "More actions",
+    "移出自选": "Remove from watchlist",
+    "拖动调整分组顺序": "Drag to reorder groups",
+    "添加代码到该分组": "Add symbols to this group",
+    "重命名分组": "Rename group",
+    "删除分组": "Delete group",
+    "暂无备注": "No notes",
+    "初始风险": "Initial risk",
+    "Setup 标签": "Setup tags",
+    "不完整": "Incomplete",
+    "账户 TWR": "Account TWR",
+    "相对主基准": "Relative to primary benchmark",
+    "可评估退出": "Evaluable exits",
+    "回合": "round trips",
+    "有完整后续行情": "Complete subsequent market data",
+    "20日后继续涨 >10%": "Continued >10% higher after 20 days",
+    "卖出后20日平均": "Average 20-day post-exit move",
+    "反事实观察，不是真实损失": "Counterfactual observation, not an actual loss",
+    "趋势未破退出": "Exit before trend failure",
+    "需要复核退出触发条件": "Review the exit trigger",
+    "全部交易证据": "All trade evidence"
+    ,"账户敞口": "Account exposure"
+    ,"IBKR 当前持仓": "Current IBKR positions"
+    ,"日期": "Date"
+    ,"收盘": "Close"
+    ,"涨跌幅": "Change"
+    ,"个人成交": "Your fills"
+    ,"市值": "Market value"
+    ,"持仓": "Position"
+    ,"分组": "Group"
+    ,"颜色": "Color"
+    ,"触发": "Trigger"
+    ,"最新价": "Latest price"
+    ,"点击任意交易日K线后显示当日个人买卖明细": "Select any trading-day candle to show that day's fills"
+    ,"未填写": "Not provided"
+    ,"结果质量": "Outcome quality"
+    ,"跑输主基准": "Underperformed primary benchmark"
+    ,"跑赢主基准": "Outperformed primary benchmark"
+    ,"过程风险": "Process risk"
+    ,"主题判断风险": "Theme-selection risk"
+    ,"交易摩擦风险": "Trading-friction risk"
+    ,"选股风险": "Stock-selection risk"
+    ,"叙事风险": "Narrative risk"
+    ,"入场风险": "Entry risk"
+    ,"退出风险": "Exit risk"
+    ,"尾部风险": "Tail risk"
+    ,"近期行为": "Recent behavior"
+    ,"样本不足，趋势判断需谨慎": "Small sample; interpret the trend cautiously"
+    ,"数据可信度": "Data confidence"
+    ,"低": "Low"
+    ,"中": "Medium"
+    ,"高": "High"
+    ,"现在最该处理的问题": "Highest-priority issues"
+    ,"探索仓位超限": "Exploratory allocation exceeds limit"
+    ,"初始风险覆盖不足": "Insufficient initial-risk coverage"
+    ,"交易计划覆盖不足": "Insufficient trade-plan coverage"
+    ,"完整": "Complete"
+    ,"查看交易证据": "View trade evidence"
+    ,"设为铁律": "Track as a rule"
+    ,"可复制优势候选": "Candidate repeatable advantages"
+    ,"当前没有达到最低样本要求的候选优势": "No candidate advantage meets the minimum sample requirement"
+    ,"当前铁律": "Active rules"
+    ,"尚未选择本周期铁律": "No rule is active for this cycle"
+    ,"全部": "All"
+    ,"跟随当前年份": "Use the current year"
+    ,"暂无触发器，点击“新增”开始记录": "No triggers yet. Select Add to create one."
+  }
+}

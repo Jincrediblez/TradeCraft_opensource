@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "name": "简体中文",
+    "locale": "zh-CN"
+  },
+  "nav": {
+    "home": "首页",
+    "replay": "复盘",
+    "data": "数据",
+    "trades": "交易记录",
+    "market": "市场",
+    "watchlist": "自选",
+    "performance": "业绩",
+    "audit": "测评",
+    "settings": "设置"
+  },
+  "settings": {
+    "language": "语言",
+    "languageAuto": "跟随浏览器",
+    "languageEnglish": "English",
+    "languageChinese": "简体中文"
+  },
+  "watchlist": {
+    "batchPlaceholder": "每行或逗号分隔一个代码：\nNVDA / 700.HK / NASDAQ:TSLA\n（支持 TradingView 格式）"
+  },
+  "demo": {
+    "badge": "演示数据",
+    "description": "当前工作台使用本次重新随机生成、完全虚构的合成数据。",
+    "useReal": "使用真实数据",
+    "reset": "重新随机生成"
+  },
+  "api": {
+    "notFound": "未找到请求的资源。",
+    "invalidJson": "请求必须使用 application/json。",
+    "invalidRequest": "请求参数无效。",
+    "internalError": "TradeCraft 无法完成该请求。",
+    "demoActive": "演示模式已启用。",
+    "demoReset": "演示数据已重置。",
+    "demoExited": "已退出演示模式。",
+    "demoExitRequired": "上传真实数据前请先退出演示模式。",
+    "demoOffline": "演示模式正在使用缓存的合成行情。"
+  },
+  "fragments": {},
+  "legacy": {}
+}
