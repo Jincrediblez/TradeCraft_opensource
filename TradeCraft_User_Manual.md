@@ -8,7 +8,7 @@ TradeCraft is a local-first trade review system for active traders. It reconstru
 
 All account values, trades, positions, returns, symbols, and audit conclusions shown in this manual come from a randomized synthetic Demo workspace. They are not real personal data.
 
-The interface screenshots use the standard 16:9 widescreen aspect ratio and are stored at 3840 × 2160 pixels for clear viewing on high-density displays. The capture viewport is 1920 × 1080 CSS pixels at 2× device scale.
+The interface screenshots use a desktop aspect ratio that mirrors a typical personal computer display and are stored as lossless dark-mode PNGs at 3452 × 2358 pixels. The capture viewport is 1726 × 1179 CSS pixels at 2× device scale.
 
 ## 1. Install and start TradeCraft
 
@@ -39,7 +39,7 @@ make smoke
 
 An empty workspace starts in Demo mode automatically. The yellow `DEMO DATA` banner means that the current account, trades, positions, performance, Watchlist, audit findings, and cached candles are entirely fictional.
 
-![English TradeCraft dashboard using randomized Demo data](docs/images/feature-guide/01-home.jpg)
+![English TradeCraft dashboard using randomized Demo data](docs/images/feature-guide/01-home.png)
 
 Use Demo mode to learn the workflow safely:
 
@@ -75,13 +75,13 @@ Never commit broker exports, generated state, workbooks, local databases, logs, 
 
 Home combines net asset value, stock exposure, cash, drawdown, leverage, period return, data freshness, a review queue, and the largest P&L contributors. Confirm data freshness first, then choose one to three symbols that deserve a deeper review.
 
-![English Home dashboard](docs/images/feature-guide/01-home.jpg)
+![English Home dashboard](docs/images/feature-guide/01-home.png)
 
 ### 4.2 Replay - reconstruct the decision from evidence
 
 Replay places adjusted daily candles, volume, moving averages, BUY and SELL markers, and fill-level records on one timeline. The left side summarizes account exposure and recent symbols. The right side contains the selected day details and the trade-plan form.
 
-![English symbol-level Replay](docs/images/feature-guide/02-replay.jpg)
+![English symbol-level Replay](docs/images/feature-guide/02-replay.png)
 
 Recommended Replay sequence:
 
@@ -95,19 +95,19 @@ Recommended Replay sequence:
 
 Trades groups executions by symbol. Expand a symbol to inspect dates, times, sides, quantities, prices, and setup classifications. This is the fill-level source for FIFO round trips and evidence drill-down.
 
-![English execution records](docs/images/feature-guide/03-trades.jpg)
+![English execution records](docs/images/feature-guide/03-trades.png)
 
 ### 4.4 Watchlist - maintain a local research queue
 
 Watchlist is a local, SQLite-backed research queue with groups, colors, sorting, search, charts, position context, and trigger fields. Use it to separate candidates from active positions and to record what must happen before a candidate becomes actionable.
 
-![English Watchlist workspace](docs/images/feature-guide/04-watchlist.jpg)
+![English Watchlist workspace](docs/images/feature-guide/04-watchlist.png)
 
 ### 4.5 Add symbols - build a candidate pool efficiently
 
 Click `Add symbols` to add one or more tickers, select a target group, assign a color, or create a new group. The bulk field accepts one symbol per line, comma-separated symbols, and common TradingView Watchlist formats.
 
-![English Add symbols panel](docs/images/feature-guide/05-watchlist-add.jpg)
+![English Add symbols panel](docs/images/feature-guide/05-watchlist-add.png)
 
 ## 5. Review the account path
 
@@ -115,13 +115,13 @@ Click `Add symbols` to add one or more tickers, select a target group, assign a 
 
 Performance shows monthly account values, monthly returns, cumulative returns, and YTD returns. Use it to distinguish steady progress from a result dominated by one large win or a recovery after a deep drawdown.
 
-![English Performance page](docs/images/feature-guide/06-performance.jpg)
+![English Performance page](docs/images/feature-guide/06-performance.png)
 
 ### 5.2 YTD view - isolate the current year
 
 Click `YTD` to focus the chart on the current year. This is useful when a strategy or risk process changed recently and older history would dilute the comparison.
 
-![English Performance YTD view](docs/images/feature-guide/07-performance-ytd.jpg)
+![English Performance YTD view](docs/images/feature-guide/07-performance-ytd.png)
 
 ## 6. Understand capital and attention
 
@@ -129,25 +129,25 @@ Click `YTD` to focus the chart on the current year. This is useful when a strate
 
 Rankings show the symbols with the largest trading notional, the most fills, the largest gains and losses, and non-stock instrument P&L. Use the page to compare where you believed your attention went with where capital and executions actually went.
 
-![English trading-data rankings](docs/images/feature-guide/09-data-rank.jpg)
+![English trading-data rankings](docs/images/feature-guide/09-data-rank.png)
 
 ### 6.2 P&L heatmap
 
 The P&L heatmap uses area for relative contribution and color for direction. It makes result concentration visible immediately.
 
-![English P&L heatmap](docs/images/feature-guide/10-data-pnl.jpg)
+![English P&L heatmap](docs/images/feature-guide/10-data-pnl.png)
 
 ### 6.3 Trading notional heatmap
 
 The trading-notional heatmap shows cumulative traded capital. Compare it with P&L contribution to identify excessive turnover, weak capital efficiency, or sizing that did not match conviction.
 
-![English trading-notional heatmap](docs/images/feature-guide/11-data-amount.jpg)
+![English trading-notional heatmap](docs/images/feature-guide/11-data-amount.png)
 
 ### 6.4 Trading activity
 
 Trading activity plots daily fill count and traded amount over time. Look for bursts of frequency or notional that may indicate overtrading, emotional acceleration, or an unusual event window.
 
-![English trading-activity charts](docs/images/feature-guide/12-data-activity.jpg)
+![English trading-activity charts](docs/images/feature-guide/12-data-activity.png)
 
 ## 7. Add market context
 
@@ -155,25 +155,25 @@ The Market page uses visible third-party TradingView and Finviz surfaces. These 
 
 ### 7.1 Nasdaq daily heatmap
 
-![English Nasdaq daily heatmap](docs/images/feature-guide/13-market-nasdaq.jpg)
+![English Nasdaq daily heatmap](docs/images/feature-guide/13-market-nasdaq.png)
 
 ### 7.2 S&P 500 daily heatmap
 
-![English S&P 500 daily heatmap](docs/images/feature-guide/14-market-sp500.jpg)
+![English S&P 500 daily heatmap](docs/images/feature-guide/14-market-sp500.png)
 
 ### 7.3 Nasdaq YTD heatmap
 
-![English Nasdaq YTD heatmap](docs/images/feature-guide/15-market-nasdaq-ytd.jpg)
+![English Nasdaq YTD heatmap](docs/images/feature-guide/15-market-nasdaq-ytd.png)
 
 ### 7.4 S&P 500 YTD heatmap
 
-![English S&P 500 YTD heatmap](docs/images/feature-guide/16-market-sp500-ytd.jpg)
+![English S&P 500 YTD heatmap](docs/images/feature-guide/16-market-sp500-ytd.png)
 
 ### 7.5 Finviz map
 
 Finviz opens in a separate browser tab. Use it as an additional external market-map view.
 
-![English Finviz S&P 500 map](docs/images/feature-guide/17-market-finviz.jpg)
+![English Finviz S&P 500 map](docs/images/feature-guide/17-market-finviz.png)
 
 Do not interpret broad market strength as proof of stock-selection skill. Compare account results with the selected benchmark and use the heatmaps only as context.
 
@@ -192,43 +192,43 @@ The workbench keeps four questions separate:
 
 Overview presents outcome, process, behavior, and confidence scorecards together with the highest-priority findings and the current improvement rule.
 
-![English Audit overview](docs/images/feature-guide/18-audit-overview.jpg)
+![English Audit overview](docs/images/feature-guide/18-audit-overview.png)
 
 ### 8.2 Return attribution
 
 Return attribution compares account TWR with the primary and reference benchmarks, then shows setup results and the largest positive and negative contributors.
 
-![English return attribution](docs/images/feature-guide/19-audit-outcome.jpg)
+![English return attribution](docs/images/feature-guide/19-audit-outcome.png)
 
 ### 8.3 Process quality
 
 Process quality reviews seven weighted risk dimensions: churn and friction, stock selection, entry quality, tail risk, theme judgment, narrative hype, and exit quality.
 
-![English process-quality view](docs/images/feature-guide/20-audit-process.jpg)
+![English process-quality view](docs/images/feature-guide/20-audit-process.png)
 
 ### 8.4 Behavior
 
 Behavior compares the most recent 20 active trading days with the previous 20-day window. Use it to identify changes in frequency, holding period, size, and win rate.
 
-![English behavior comparison](docs/images/feature-guide/21-audit-behavior.jpg)
+![English behavior comparison](docs/images/feature-guide/21-audit-behavior.png)
 
 ### 8.5 Evidence
 
 Evidence drills from a finding into complete BUY and SELL round trips, related fills, holding days, and realized P&L. Add missing plan or review context before confirming a conclusion.
 
-![English trade evidence](docs/images/feature-guide/22-audit-evidence.jpg)
+![English trade evidence](docs/images/feature-guide/22-audit-evidence.png)
 
 ### 8.6 Improvement log
 
 The improvement log records confirmed or dismissed findings and tracks a selected rule over the next 20 trading days. A useful rule has a baseline, target, measurement window, and completion result.
 
-![English improvement log](docs/images/feature-guide/23-audit-improvement.jpg)
+![English improvement log](docs/images/feature-guide/23-audit-improvement.png)
 
 ### 8.7 AI summary
 
 The optional AI summary compresses the current deterministic audit snapshot. It does not calculate P&L, FIFO matching, attribution, or risk scores. In Demo mode, the English summary is generated offline and no external provider is called.
 
-![English Demo AI summary](docs/images/feature-guide/24-audit-ai.jpg)
+![English Demo AI summary](docs/images/feature-guide/24-audit-ai.png)
 
 For a real workspace, Kimi is called only after the user explicitly selects `Generate AI summary` and a local API key is configured.
 
@@ -236,7 +236,7 @@ For a real workspace, Kimi is called only after the user explicitly selects `Gen
 
 Settings controls language, default period, default symbol, market-data refresh interval, Kimi model, theme benchmark, audit benchmarks, data upload and refresh, and Watchlist triggers.
 
-![English Settings page](docs/images/feature-guide/08-settings.jpg)
+![English Settings page](docs/images/feature-guide/08-settings.png)
 
 The browser UI language options are `English` and `Simplified Chinese`.
 English is the default, and the selected value is saved locally. TradeCraft

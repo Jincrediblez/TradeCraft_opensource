@@ -97,6 +97,7 @@ def main() -> None:
             url for url in external_requests
             if not url.startswith("https://s3.tradingview.com/")
             and not url.startswith("https://www.tradingview-widget.com/")
+            and not url.startswith("https://widget-sheriff.tradingview-widget.com/")
         ]
         assert not unexpected, f"Unexpected external browser requests: {unexpected}"
         browser.close()

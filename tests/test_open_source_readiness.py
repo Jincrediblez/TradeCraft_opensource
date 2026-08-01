@@ -111,12 +111,12 @@ def test_browser_dependencies_are_pinned_and_local():
     assert (ROOT / "static" / "vendor" / "LICENSE.d3").is_file()
 
 
-def test_feature_guide_images_are_high_resolution_widescreen():
+def test_feature_guide_images_match_the_retina_desktop_capture():
     image_dir = ROOT / "docs" / "images" / "feature-guide"
-    images = sorted(image_dir.glob("*.jpg"))
+    images = sorted(image_dir.glob("*.png"))
     assert len(images) == 24
-    assert not list(image_dir.glob("*.png"))
-    assert {image_dimensions(path) for path in images} == {(3840, 2160)}
+    assert not list(image_dir.glob("*.jpg"))
+    assert {image_dimensions(path) for path in images} == {(3452, 2358)}
 
 
 def test_documentation_screenshot_references_exist():
