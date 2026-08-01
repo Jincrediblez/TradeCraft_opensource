@@ -15,7 +15,7 @@
   <a href="SECURITY.md">Security</a>
 </p>
 
-![TradeCraft home dashboard with randomized demo data](docs/images/feature-guide/01-home.png)
+![TradeCraft home dashboard with randomized demo data](docs/images/feature-guide/01-home.jpg)
 
 <p align="center">
   <a href="TradeCraft_User_Manual.pdf"><strong>TradeCraft Illustrated User Manual (English PDF)</strong></a> ·
@@ -82,73 +82,75 @@ The deterministic pipeline remains the source of truth. Optional AI summarizes t
 
 ## Feature gallery
 
+The gallery uses 16:9 widescreen screenshots stored at 3840 × 2160 pixels, matching a 1920 × 1080 desktop viewport at 2× device scale. The same image set is used by the illustrated manual so README and PDF examples stay aligned.
+
 These views are not designed to show more numbers. They help an active trader answer three questions faster: what happened, why it happened, and what should change next time.
 
 ### Replay: put every execution back into market context
 
 Review candles, volume, moving averages, BUY / SELL markers, and fill details together instead of reconstructing the trade from memory.
 
-![TradeCraft symbol-level trade replay](docs/images/feature-guide/02-replay.png)
+![TradeCraft symbol-level trade replay](docs/images/feature-guide/02-replay.jpg)
 
 ### Add to Watchlist: turn a passing idea into structured research
 
 Capture a symbol, group, color, and trigger fields so an intraday observation can enter a deliberate research and review queue.
 
-![TradeCraft add-to-Watchlist panel](docs/images/feature-guide/05-watchlist-add.png)
+![TradeCraft add-to-Watchlist panel](docs/images/feature-guide/05-watchlist-add.jpg)
 
 ### Trades: move from a conclusion back to the underlying fills
 
 Verify dates, sides, quantities, prices, and commissions by symbol, giving attribution and audit findings a traceable evidence base.
 
-![TradeCraft execution records](docs/images/feature-guide/03-trades.png)
+![TradeCraft execution records](docs/images/feature-guide/03-trades.jpg)
 
 ### Performance: review the path, not only the ending P&L
 
 Place monthly account values and returns on a timeline to distinguish steady compounding from one large win or an accidental recovery.
 
-![TradeCraft performance path](docs/images/feature-guide/06-performance.png)
+![TradeCraft performance path](docs/images/feature-guide/06-performance.jpg)
 
 ### Rankings: find where capital and attention are concentrated
 
 Turnover and fill rankings reveal which symbols consumed the most capital, time, and decision-making energy.
 
-![TradeCraft trading-data rankings](docs/images/feature-guide/09-data-rank.png)
+![TradeCraft trading-data rankings](docs/images/feature-guide/09-data-rank.jpg)
 
 ### P&L treemap: see result concentration at a glance
 
 Area represents relative contribution while color shows direction, making the symbols that dominated portfolio results immediately visible.
 
-![TradeCraft P&L treemap](docs/images/feature-guide/10-data-pnl.png)
+![TradeCraft P&L treemap](docs/images/feature-guide/10-data-pnl.jpg)
 
 ### Trading-amount treemap: test whether capital matched conviction
 
 Visualize traded capital to expose excessive turnover, concentration, and cases where position size was stronger than the underlying thesis.
 
-![TradeCraft trading-amount treemap](docs/images/feature-guide/11-data-amount.png)
+![TradeCraft trading-amount treemap](docs/images/feature-guide/11-data-amount.jpg)
 
 ### Trading activity: identify bursts of frequency and emotion
 
 Put fill counts and traded amount back on a timeline to surface overtrading, impulsive acceleration, and unusually active periods.
 
-![TradeCraft trading-activity charts](docs/images/feature-guide/12-data-activity.png)
+![TradeCraft trading-activity charts](docs/images/feature-guide/12-data-activity.jpg)
 
 ### Market context: place stock performance inside market breadth
 
 Use the Nasdaq heatmap to understand the broader growth-stock environment and avoid mistaking market beta for stock-selection skill.
 
-![TradeCraft Nasdaq market heatmap](docs/images/feature-guide/13-market-nasdaq.png)
+![TradeCraft Nasdaq market heatmap](docs/images/feature-guide/13-market-nasdaq.jpg)
 
 ### Audit overview: separate outcome, process, behavior, and confidence
 
 Review attribution, process risk, behavioral patterns, and evidence quality in one workbench without letting a single score replace judgment.
 
-![TradeCraft trading-audit overview](docs/images/feature-guide/18-audit-overview.png)
+![TradeCraft trading-audit overview](docs/images/feature-guide/18-audit-overview.jpg)
 
 ### AI summary: compress the review without replacing the facts
 
 AI summarizes the current deterministic audit snapshot; P&L, FIFO round trips, and risk dimensions remain products of the auditable data pipeline.
 
-![TradeCraft AI audit summary](docs/images/feature-guide/24-audit-ai.png)
+![TradeCraft AI audit summary](docs/images/feature-guide/24-audit-ai.jpg)
 
 ## Product tour
 

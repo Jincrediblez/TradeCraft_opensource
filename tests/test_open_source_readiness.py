@@ -1,5 +1,6 @@
 import json
 import re
+import struct
 from datetime import date
 from pathlib import Path
 
@@ -11,6 +12,31 @@ TEXT_SUFFIXES = {
     ".css", ".env", ".html", ".ini", ".js", ".json", ".md", ".py",
     ".sh", ".toml", ".txt", ".yaml", ".yml",
 }
+
+
+def image_dimensions(path: Path):
+    payload = path.read_bytes()
+    if payload.startswith(b"\x89PNG\r\n\x1a\n"):
+        return struct.unpack(">II", payload[16:24])
+    if payload.startswith(b"\xff\xd8"):
+        offset = 2
+        while offset < len(payload):
+            if payload[offset] != 0xFF:
+                offset += 1
+                continue
+            while offset < len(payload) and payload[offset] == 0xFF:
+                offset += 1
+            marker = payload[offset]
+            offset += 1
+            if marker in {0xD8, 0xD9}:
+                continue
+            segment_length = int.from_bytes(payload[offset : offset + 2], "big")
+            if marker in range(0xC0, 0xC4):
+                height = int.from_bytes(payload[offset + 3 : offset + 5], "big")
+                width = int.from_bytes(payload[offset + 5 : offset + 7], "big")
+                return width, height
+            offset += segment_length
+    raise AssertionError(f"Unsupported image format: {path}")
 
 
 def public_text_files():
@@ -83,6 +109,24 @@ def test_browser_dependencies_are_pinned_and_local():
     assert "unpkg.com" not in html
     assert (ROOT / "static" / "vendor" / "LICENSE.lightweight-charts").is_file()
     assert (ROOT / "static" / "vendor" / "LICENSE.d3").is_file()
+
+
+def test_feature_guide_images_are_high_resolution_widescreen():
+    image_dir = ROOT / "docs" / "images" / "feature-guide"
+    images = sorted(image_dir.glob("*.jpg"))
+    assert len(images) == 24
+    assert not list(image_dir.glob("*.png"))
+    assert {image_dimensions(path) for path in images} == {(3840, 2160)}
+
+
+def test_documentation_screenshot_references_exist():
+    for document in (ROOT / "README.md", ROOT / "TradeCraft_User_Manual.md"):
+        references = re.findall(
+            r"!\[[^]]*\]\((docs/images/feature-guide/[^)]+)\)",
+            document.read_text(encoding="utf-8"),
+        )
+        assert references
+        assert all((ROOT / reference).is_file() for reference in references)
 
 
 def test_ai_prompt_is_english_only():

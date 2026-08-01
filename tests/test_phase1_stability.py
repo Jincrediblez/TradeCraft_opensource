@@ -595,7 +595,12 @@ def test_frontend_inline_scripts_parse():
     parser.feed(html)
     assert parser.scripts
     script = "\n".join(f"new Function({source!r});" for source in parser.scripts)
-    result = subprocess.run([node, "-e", script], capture_output=True, text=True, check=False)
+    # Passing the full application through ``node -e`` can exceed Linux's
+    # per-process argument-size limit as the build-free frontend grows.
+    with TemporaryDirectory() as temporary_directory:
+        script_path = Path(temporary_directory) / "inline-scripts.js"
+        script_path.write_text(script, encoding="utf-8")
+        result = subprocess.run([node, str(script_path)], capture_output=True, text=True, check=False)
     assert result.returncode == 0, result.stderr
 
 
