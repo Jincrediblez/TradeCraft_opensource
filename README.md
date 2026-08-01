@@ -438,6 +438,8 @@ With the help of AI-assisted development, I built the first version around my ac
 
 Today, TradeCraft has become part of my daily trading review process.
 
+Email: zhouwenjin@live.com
+
 ## License
 
 Copyright TradeCraft contributors.
