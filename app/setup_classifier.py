@@ -2,14 +2,14 @@
 """Setup classifier: rule-based automatic setup type detection for closed trades.
 
 Rules (priority order, first match wins):
-  1. FOMO追涨     : fomo_score >= 60
-  2. 突破         : close >= 20d_high * 0.98, volume > 1.5x 20d_avg_vol,
+  1. FOMO chase       : fomo_score >= 60
+  2. Breakout         : close >= 20d_high * 0.98, volume > 1.5x 20d_avg_vol,
                     prior 5d range < 8% (convergence)
-  3. 回踩均线      : price within MA20 ±4%, MA20 trending up,
+  3. Pullback         : price within MA20 +/-4%, MA20 trending up,
                     prior 20d gain > 10%
-  4. 超跌反弹      : prior 20d loss > 15%, long lower shadow or volume contraction
-  5. 主题趋势      : theme benchmark 20d gain > 5%, no more specific setup matched
-  6. 未分类        : fallback
+  4. Oversold rebound : prior 20d loss > 15%, long lower shadow or volume contraction
+  5. Theme rotation   : theme benchmark 20d gain > 5%, no more specific setup matched
+  6. Unclassified     : fallback
 
 Confidence levels:
   high   : clear multi-factor match
@@ -20,6 +20,8 @@ Confidence levels:
 import json
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+
+from app.setup_types import CANONICAL_SETUP_TYPES
 
 
 try:  # normal package import (server, cli, pytest)
@@ -36,22 +38,7 @@ STATE_DIR = ROOT / "data" / "state"
 CLOSED_TRADES_FILE = STATE_DIR / "closed_trades.json"
 TRADE_SETUPS_FILE = STATE_DIR / "trade_setups.json"
 
-SETUP_TYPES = [
-    "趋势突破（计划内）",
-    "趋势突破（冲动追入）",
-    "回调买入",
-    "超跌反弹",
-    "基本面驱动",
-    "主题轮动",
-    "FOMO追高",
-    "止损",
-    "止盈",
-    "风控减仓",
-    "趋势走弱减仓",
-    "调仓换股",
-    "被迫平仓",
-    "未分类",
-]
+SETUP_TYPES = list(CANONICAL_SETUP_TYPES)
 
 def build_date_index(rows: List[dict]) -> Dict[str, dict]:
     result = {}
@@ -85,18 +72,18 @@ def classify_setup(closed_trade: dict) -> Tuple[str, str, List[str]]:
 
     rows = load_kline(symbol)
     if not rows:
-        return "未分类", "low", ["无K线数据"]
+        return "Unclassified", "low", ["No candle data"]
 
     by_date = build_date_index(rows)
     dates = sorted(by_date.keys())
     target = entry_date.replace("-", "")
 
     if target not in by_date:
-        return "未分类", "low", ["入场日无K线数据"]
+        return "Unclassified", "low", ["No candle data on the entry date"]
 
     entry_idx = dates.index(target)
     if entry_idx < 25:
-        return "未分类", "low", ["K线历史不足25日"]
+        return "Unclassified", "low", ["Fewer than 25 days of candle history"]
 
     closes = []
     highs = []
@@ -116,12 +103,12 @@ def classify_setup(closed_trade: dict) -> Tuple[str, str, List[str]]:
             vols.append(0)
 
     if len(closes) < 25:
-        return "未分类", "low", ["数据不足"]
+        return "Unclassified", "low", ["Insufficient data"]
 
-    # --- Rule 1: FOMO追高 / 冲动突破 ---
+    # Rule 1: FOMO chase / impulsive breakout.
     fomo = fomo_score_for_trade(symbol, entry_date, entry_price)
     if fomo is not None and fomo >= 60:
-        return "FOMO追高", "high", [f"FOMO分数{fomo}"]
+        return "FOMO chase", "high", [f"FOMO score {fomo}"]
 
     # Pre-compute common metrics
     ma20 = sum(closes[-20:]) / 20 if len(closes) >= 20 else 0
@@ -149,27 +136,27 @@ def classify_setup(closed_trade: dict) -> Tuple[str, str, List[str]]:
 
     reasons: List[str] = []
 
-    # --- Rule 2: 趋势突破（计划内 / 冲动追入） ---
+    # Rule 2: planned or impulsive trend breakout.
     if high20 > 0 and closes[-1] >= high20 * 0.95:
         if avg_vol_20 > 0 and entry_vol > avg_vol_20 * 1.3:
             if prior_5d_range < 0.10:
-                reasons.append(f"close接近20日高点({closes[-1]:.2f}/{high20:.2f})")
-                reasons.append(f"成交量{entry_vol / avg_vol_20:.1f}倍均量")
-                reasons.append(f"前5日振幅{prior_5d_range:.1%}")
+                reasons.append(f"Close near 20-day high ({closes[-1]:.2f}/{high20:.2f})")
+                reasons.append(f"Volume {entry_vol / avg_vol_20:.1f}x the 20-day average")
+                reasons.append(f"Prior 5-day range {prior_5d_range:.1%}")
                 if fomo is not None and fomo >= 50:
-                    return "趋势突破（冲动追入）", "medium", reasons + [f"FOMO分数{fomo}"]
-                return "趋势突破（计划内）", "high", reasons
+                    return "Impulsive breakout", "medium", reasons + [f"FOMO score {fomo}"]
+                return "Planned breakout", "high", reasons
 
-    # --- Rule 3: 回调买入 ---
+    # --- Rule 3: Pullback entry ---
     if ma20 > 0 and abs(entry_price - ma20) / ma20 <= 0.04:
         if ma20_slope > 0.03:
             if prior_20d_return > 0.10:
-                reasons.append(f"价格在MA20±4%内({entry_price:.2f}/MA20={ma20:.2f})")
-                reasons.append(f"MA20向上斜率{ma20_slope:.1%}")
-                reasons.append(f"前20日涨幅{prior_20d_return:.1%}")
-                return "回调买入", "high", reasons
+                reasons.append(f"Price within 4% of MA20 ({entry_price:.2f}/MA20={ma20:.2f})")
+                reasons.append(f"Upward MA20 slope {ma20_slope:.1%}")
+                reasons.append(f"Prior 20-day gain {prior_20d_return:.1%}")
+                return "Pullback entry", "high", reasons
 
-    # --- Rule 4: 超跌反弹 ---
+    # --- Rule 4: Oversold rebound ---
     if prior_20d_return < -0.15:
         entry_high = highs[-1]
         entry_low = lows[-1]
@@ -179,14 +166,14 @@ def classify_setup(closed_trade: dict) -> Tuple[str, str, List[str]]:
         )
         vol_contraction = avg_vol_20 > 0 and entry_vol < avg_vol_20 * 0.7
         if shadow_ratio > 0.6 or vol_contraction:
-            reasons.append(f"前20日跌幅{prior_20d_return:.1%}")
+            reasons.append(f"Prior 20-day decline {prior_20d_return:.1%}")
             if shadow_ratio > 0.6:
-                reasons.append(f"长下影线(比例{shadow_ratio:.2f})")
+                reasons.append(f"Long lower shadow (ratio {shadow_ratio:.2f})")
             if vol_contraction:
-                reasons.append("缩量止跌")
-            return "超跌反弹", "medium", reasons
+                reasons.append("Volume contraction with price stabilization")
+            return "Oversold rebound", "medium", reasons
 
-    # --- Rule 5: 主题轮动 ---
+    # --- Rule 5: Theme rotation ---
     try:
         from app.theme_classifier import classify_symbol, load_themes_config
         config = load_themes_config()
@@ -210,15 +197,15 @@ def classify_setup(closed_trade: dict) -> Tuple[str, str, List[str]]:
                                 else 0
                             )
                             if bench_20d_ret > 0.10:
-                                reasons.append(f"主题基准20日涨幅{bench_20d_ret:.1%}")
-                                return "主题轮动", "medium", reasons
+                                reasons.append(f"Theme benchmark 20-day gain {bench_20d_ret:.1%}")
+                                return "Theme rotation", "medium", reasons
                         except Exception:
                             pass
     except Exception:
         pass
 
     # --- Fallback ---
-    return "未分类", "low", ["未匹配任何规则"]
+    return "Unclassified", "low", ["No rule matched"]
 
 
 def auto_classify_all(force: bool = False) -> dict:
@@ -264,7 +251,7 @@ def auto_classify_all(force: bool = False) -> dict:
 
     distribution = {}
     for s in setups.values():
-        st = s.get("setupType", "未分类")
+        st = s.get("setupType", "Unclassified")
         distribution[st] = distribution.get(st, 0) + 1
 
     return {

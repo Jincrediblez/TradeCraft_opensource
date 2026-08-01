@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from app.setup_classifier import auto_classify_all
+from app.setup_types import CANONICAL_SETUP_TYPES
 
 
 try:  # normal package import (server, cli, pytest)
@@ -24,22 +25,7 @@ STATE_DIR = ROOT / "data" / "state"
 TRADE_SETUPS_FILE = STATE_DIR / "trade_setups.json"
 CLOSED_TRADES_FILE = STATE_DIR / "closed_trades.json"
 
-SETUP_TYPES = [
-    "趋势突破（计划内）",
-    "趋势突破（冲动追入）",
-    "回调买入",
-    "超跌反弹",
-    "基本面驱动",
-    "主题轮动",
-    "FOMO追高",
-    "止损",
-    "止盈",
-    "风控减仓",
-    "趋势走弱减仓",
-    "调仓换股",
-    "被迫平仓",
-    "未分类",
-]
+SETUP_TYPES = list(CANONICAL_SETUP_TYPES)
 
 
 def _read_json(path: Path, default):
@@ -61,7 +47,17 @@ def _old_key(symbol: str, open_date: str) -> str:
 
 
 def load_trade_setups() -> Dict[str, dict]:
-    return _read_json(TRADE_SETUPS_FILE, {})
+    payload = _read_json(TRADE_SETUPS_FILE, {})
+    if not isinstance(payload, dict):
+        return {}
+    for setup in payload.values():
+        setup_type = str(setup.get("setupType") or "") if isinstance(setup, dict) else ""
+        if setup_type and setup_type not in SETUP_TYPES:
+            raise ValueError(
+                "Legacy or unsupported trade setup value detected. "
+                "Rebuild this workspace with the English-first schema."
+            )
+    return payload
 
 
 def get_setup_for_trade(symbol: str, trade_date: str, trade_time: str = "") -> Optional[dict]:
@@ -86,7 +82,7 @@ def save_setup_for_trade(symbol: str, trade_date: str, setup_type: str, note: st
         "tradeDate": trade_date,
         "tradeTime": trade_time,
         "side": side,
-        "setupType": setup_type or "未分类",
+        "setupType": setup_type or "Unclassified",
         "confidence": "manual",
         "source": "manual",
         "reasons": [],
@@ -121,7 +117,7 @@ def save_setup_batch(items: List[dict]) -> dict:
             "tradeDate": trade_date,
             "tradeTime": trade_time,
             "side": side,
-            "setupType": setup_type or "未分类",
+            "setupType": setup_type or "Unclassified",
             "confidence": "manual",
             "source": "manual",
             "reasons": [],

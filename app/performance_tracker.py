@@ -16,7 +16,7 @@ except ImportError:  # standalone script execution puts app/ on sys.path
 
 ROOT = Path(__file__).resolve().parent.parent
 STATE_DIR = ROOT / "data" / "state"
-LOCAL_XLSX_PATH = ROOT / "data" / "inbox" / "收益曲线.xlsx"
+LOCAL_XLSX_PATH = ROOT / "data" / "inbox" / "performance.xlsx"
 CACHE_FILE = STATE_DIR / "performance.json"
 
 MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -186,15 +186,15 @@ def build_performance_payload(force_refresh: bool = False) -> dict:
             cached = dict(cached)
             cached["stale"] = True
             cached["warning"] = (
-                "无法读取配置的收益曲线工作簿，当前继续使用业绩缓存。"
-                "如需刷新，请把文件放到 data/inbox/收益曲线.xlsx，或给本地服务授予文件访问权限。"
+                "The configured performance workbook could not be read; cached performance data remains in use."
+                "To refresh it, place the file at data/inbox/performance.xlsx or grant the local service file access."
             )
             cached["sourceError"] = str(exc)
             return cached
         return {
             "error": (
-                "无法读取收益曲线.xlsx。请把文件放到 data/inbox/收益曲线.xlsx，"
-                "或检查 TRADECRAFT_PERFORMANCE_FILE 的访问权限。"
+                "performance.xlsx could not be read. Place it at data/inbox/performance.xlsx, "
+                "or check access to TRADECRAFT_PERFORMANCE_FILE."
             ),
             "sourceError": str(exc),
         }
@@ -204,7 +204,7 @@ def build_performance_payload(force_refresh: bool = False) -> dict:
         if cached:
             cached = dict(cached)
             cached["stale"] = True
-            cached["warning"] = "未找到收益曲线.xlsx，当前继续使用业绩缓存。"
+            cached["warning"] = "performance.xlsx was not found; cached performance data remains in use."
             return cached
         return {"error": "XLSX not found or empty"}
 

@@ -9,23 +9,14 @@
   const originalText = new WeakMap();
   const originalAttributes = new WeakMap();
 
-  function normalize(value, allowAuto = false) {
+  function normalize(value) {
     const raw = String(value || "").trim().replaceAll("_", "-").toLowerCase();
-    if (allowAuto && raw === "auto") return "auto";
-    if (raw.startsWith("zh")) return "zh-CN";
-    if (raw.startsWith("en")) return "en";
+    if (raw === "zh-cn") return "zh-CN";
     return FALLBACK;
   }
 
-  function browserLocale() {
-    const languages = navigator.languages?.length ? navigator.languages : [navigator.language || ""];
-    return normalize(languages[0]);
-  }
-
   function resolve(requested) {
-    const normalized = normalize(requested, true);
-    if (normalized !== "auto") return normalized;
-    return browserLocale();
+    return normalize(requested);
   }
 
   function lookup(key) {
@@ -43,14 +34,14 @@
     return text;
   }
 
-  function translateLegacyText(text) {
-    if (locale === "zh-CN") return text;
+  function translateUiText(text) {
+    if (locale !== "zh-CN") return text;
     const trimmed = String(text || "").trim();
     if (!trimmed) return text;
-    const translated = catalog.legacy?.[trimmed];
+    const translated = catalog.translations?.[trimmed];
     if (translated) return String(text).replace(trimmed, translated);
     let result = String(text);
-    Object.entries(catalog.fragments || {}).forEach(([source, target]) => {
+    Object.entries(catalog.partialTranslations || {}).forEach(([source, target]) => {
       result = result.replaceAll(source, target);
     });
     return result;
@@ -76,7 +67,7 @@
     nodes.forEach((node) => {
       if (!originalText.has(node)) originalText.set(node, node.nodeValue);
       const source = originalText.get(node);
-      const translated = locale === "zh-CN" ? source : translateLegacyText(source);
+      const translated = translateUiText(source);
       if (translated !== node.nodeValue) node.nodeValue = translated;
     });
     root.querySelectorAll?.("[placeholder],[title],[aria-label]").forEach((element) => {
@@ -88,14 +79,14 @@
         if (!(attr in originals)) originals[attr] = element.getAttribute(attr);
         const current = element.getAttribute(attr);
         const source = originals[attr];
-        const translated = locale === "zh-CN" ? source : translateLegacyText(source);
+        const translated = translateUiText(source);
         if (translated !== current) element.setAttribute(attr, translated);
       }
     });
   }
 
   async function setLocale(requested, options = {}) {
-    const resolved = resolve(requested || "auto");
+    const resolved = resolve(requested || FALLBACK);
     const response = await fetch(`/static/locales/${resolved}.json`, {cache: "no-store"});
     if (!response.ok) throw new Error(`Locale catalog unavailable: ${resolved}`);
     catalog = await response.json();
@@ -112,7 +103,7 @@
         if (node.nodeType === Node.TEXT_NODE && node.parentElement) {
           if (!originalText.has(node)) originalText.set(node, node.nodeValue);
           const source = originalText.get(node);
-          node.nodeValue = locale === "zh-CN" ? source : translateLegacyText(source);
+          node.nodeValue = translateUiText(source);
         }
       }));
     });
@@ -132,7 +123,6 @@
 
   window.TradeCraftI18n = {
     apply,
-    browserLocale,
     formatDate,
     formatNumber,
     get locale() { return locale; },
@@ -142,19 +132,8 @@
     t,
   };
 
-  const nativeFetch = window.fetch.bind(window);
-  window.fetch = function (input, init = {}) {
-    const url = typeof input === "string" ? input : String(input?.url || "");
-    if (url.startsWith("/api/") || url === "/api") {
-      const headers = new Headers(init.headers || (typeof input !== "string" ? input.headers : undefined));
-      headers.set("Accept-Language", locale);
-      init = {...init, headers};
-    }
-    return nativeFetch(input, init);
-  };
-
   document.addEventListener("DOMContentLoaded", () => {
-    const saved = localStorage.getItem("tradecraft-locale") || "auto";
+    const saved = localStorage.getItem("tradecraft-locale") || FALLBACK;
     setLocale(saved, {persist: false}).catch(() => {});
   });
 })();

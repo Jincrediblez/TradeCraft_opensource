@@ -3,32 +3,50 @@ import re
 from pathlib import Path
 
 from app.demo_data import demo_status, exit_demo, render_demo_audit_report, reset_demo, seed_demo
-from app.i18n import load_catalog, localize_payload, normalize_locale, resolve_locale, translate
+from app.i18n import load_catalog, normalize_locale, translate
 from app.scoring_engine import STYLE_DRIFT_WEIGHTS, weighted_style_drift
+from app.trade_setup_manager import SETUP_TYPES
 
 
 def test_locale_resolution_and_fallback():
-    assert normalize_locale("zh-Hans-CN") == "zh-CN"
+    assert normalize_locale("zh-CN") == "zh-CN"
+    assert normalize_locale("zh") == "en"
+    assert normalize_locale("auto") == "en"
     assert normalize_locale("fr-FR") == "en"
-    assert resolve_locale("", "zh-CN,zh;q=0.9", "auto") == "zh-CN"
-    assert resolve_locale("", "zh-CN", "en") == "en"
-    assert resolve_locale("invalid", "zh-CN", "auto") == "en"
 
 
 def test_locale_catalogs_share_stable_keys():
     english = load_catalog("en")
     chinese = load_catalog("zh-CN")
-    for section in ("nav", "settings", "demo", "api"):
+    for section in ("nav", "settings", "watchlist", "demo", "api", "ai"):
         assert set(english[section]) == set(chinese[section])
     assert translate("en", "nav.home") == "Home"
     assert translate("zh-CN", "nav.home") == "首页"
     assert translate("en", "api.internalError") == "TradeCraft could not complete the request."
-    payload = localize_payload(
-        {"title": "探索仓位超限", "detail": "数据截止 2026-01-01 · 10 笔成交"},
-        "en",
-    )
-    assert payload["title"] == "Exploratory allocation exceeds limit"
-    assert payload["detail"] == "Data through 2026-01-01 · 10 executions"
+    assert english["translations"]["Home"] == "Home"
+    assert chinese["translations"]["Home"] == "首页"
+    assert set(SETUP_TYPES).issubset(english["translations"])
+    assert set(SETUP_TYPES).issubset(chinese["translations"])
+
+
+def test_canonical_setup_enum_is_complete_and_ordered():
+    assert SETUP_TYPES == [
+        "Planned breakout",
+        "Impulsive breakout",
+        "Pullback entry",
+        "Oversold rebound",
+        "Fundamental catalyst",
+        "Theme rotation",
+        "FOMO chase",
+        "Stop loss",
+        "Take profit",
+        "Risk reduction",
+        "Trend weakness reduction",
+        "Portfolio rotation",
+        "Forced liquidation",
+        "Unclassified",
+        "Unplanned",
+    ]
 
 
 def test_seven_dimension_style_weights_are_normalized():
@@ -80,7 +98,7 @@ def test_demo_reset_replaces_the_entire_random_dataset(tmp_path):
     assert len(marker["files"]) == len(set(marker["files"]))
 
 
-def test_demo_audit_report_is_bilingual_explicitly_synthetic_and_offline():
+def test_demo_audit_report_is_english_only_explicitly_synthetic_and_offline():
     snapshot = {
         "meta": {"executionCount": 24, "roundTripCount": 11},
         "outcome": {
@@ -98,14 +116,13 @@ def test_demo_audit_report_is_bilingual_explicitly_synthetic_and_offline():
         },
         "findings": [
             {
-                "title": "探索仓位超限",
-                "detail": "探索仓（optionality）占持仓 100.0%，超过20%上限。主线资产 0.0%。",
+                "title": "Exploratory allocation exceeds limit",
+                "detail": "Exploratory positions represent 100.0% of holdings, above the 20% limit. Core positions: 0.0%.",
             }
         ],
         "advantages": [],
     }
-    english = render_demo_audit_report(snapshot, "en")
-    chinese = render_demo_audit_report(snapshot, "zh-CN")
+    english = render_demo_audit_report(snapshot)
     assert english.startswith("# Demo AI Trading Audit")
     assert "No external AI was called" in english
     assert "randomized Demo" in english
@@ -113,9 +130,6 @@ def test_demo_audit_report_is_bilingual_explicitly_synthetic_and_offline():
     assert "Exploratory positions represent 100.0% of holdings" in english
     assert "Core positions: 0.0%." in english
     assert not re.search(r"[\u3400-\u9fff]", english)
-    assert chinese.startswith("# Demo AI 交易测评")
-    assert "没有调用外部 AI" in chinese
-    assert "随机 Demo" in chinese
 
 
 def test_market_widgets_are_available_in_demo_mode():

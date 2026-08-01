@@ -38,7 +38,7 @@ def test_high_score_on_parabolic_entry():
     result = compute_fomo_score(rows, rows[-1]["time"], closes[-1])
     assert result is not None
     assert result["score"] >= 60
-    assert any("涨幅" in r for r in result["reasons"])
+    assert any("gain" in r for r in result["reasons"])
 
 
 def test_low_score_on_flat_entry():
@@ -49,7 +49,7 @@ def test_low_score_on_flat_entry():
     assert result is not None
     assert result["score"] == 10
     assert fomo_level(result["score"]) == "low"
-    assert result["reasons"] == ["接近20日高点"]
+    assert result["reasons"] == ["Near the 20-day high"]
 
 
 def test_date_format_flexibility():

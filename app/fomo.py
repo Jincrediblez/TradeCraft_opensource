@@ -23,7 +23,7 @@ def compute_fomo_score(rows: List[dict], entry_date: str, entry_price: float) ->
     """Score how "FOMO-like" an entry was. Returns None when data is insufficient.
 
     ``entry_date`` may be ``YYYYMMDD`` or ``YYYY-MM-DD``. The result dict carries
-    ``score`` (0–100), ``reasons`` (zh strings), and ``ret5``/``ret10``/``ma20``.
+    ``score`` (0-100), English ``reasons``, and ``ret5``/``ret10``/``ma20``.
     """
     if not rows:
         return None
@@ -56,25 +56,25 @@ def compute_fomo_score(rows: List[dict], entry_date: str, entry_price: float) ->
     ret5 = (closes[-1] - closes[-6]) / closes[-6] if len(closes) >= 6 and closes[-6] > 0 else 0
     if ret5 > 0.15:
         score += 20
-        reasons.append(f"5日涨幅 {ret5:.1%}")
+        reasons.append(f"5-day gain {ret5:.1%}")
     elif ret5 > 0.10:
         score += 10
-        reasons.append(f"5日涨幅 {ret5:.1%}")
+        reasons.append(f"5-day gain {ret5:.1%}")
 
     # 2. Price above MA20
     ma20 = sum(closes[-20:]) / 20 if len(closes) >= 20 else closes[-1]
     if ma20 > 0 and entry_price > ma20 * 1.08:
         score += 15
-        reasons.append(f"高于MA20 {(entry_price / ma20 - 1):.1%}")
+        reasons.append(f"Above MA20 by {(entry_price / ma20 - 1):.1%}")
     elif ma20 > 0 and entry_price > ma20 * 1.04:
         score += 8
-        reasons.append(f"高于MA20 {(entry_price / ma20 - 1):.1%}")
+        reasons.append(f"Above MA20 by {(entry_price / ma20 - 1):.1%}")
 
     # 3. 10-day return before buy
     ret10 = (closes[-1] - closes[-11]) / closes[-11] if len(closes) >= 11 and closes[-11] > 0 else 0
     if ret10 > 0.25:
         score += 10
-        reasons.append(f"10日涨幅 {ret10:.1%}")
+        reasons.append(f"10-day gain {ret10:.1%}")
 
     # 4. Entry day gap vs prior close
     prior_close = closes[-2] if len(closes) >= 2 else closes[-1]
@@ -82,16 +82,16 @@ def compute_fomo_score(rows: List[dict], entry_date: str, entry_price: float) ->
         day_gap = (entry_price - prior_close) / prior_close
         if day_gap > 0.05:
             score += 10
-            reasons.append(f"当日跳空 {day_gap:.1%}")
+            reasons.append(f"Same-day gap {day_gap:.1%}")
         elif day_gap > 0.03:
             score += 5
-            reasons.append(f"当日涨幅 {day_gap:.1%}")
+            reasons.append(f"Same-day gain {day_gap:.1%}")
 
     # 5. Near 20-day high
     high20 = max(closes[-20:]) if len(closes) >= 20 else closes[-1]
     if high20 > 0 and entry_price >= high20 * 0.97:
         score += 10
-        reasons.append("接近20日高点")
+        reasons.append("Near the 20-day high")
 
     # 6. Volume spike (if turnover available)
     try:
@@ -100,10 +100,10 @@ def compute_fomo_score(rows: List[dict], entry_date: str, entry_price: float) ->
         avg_vol = sum(float(by_date[d].get("turnover", 0)) for d in dates[-20:entry_idx + 1]) / 20
         if avg_vol > 0 and vol > avg_vol * 2.5:
             score += 10
-            reasons.append(f"成交量为20日均量 {(vol / avg_vol):.1f} 倍")
+            reasons.append(f"Volume {(vol / avg_vol):.1f}x the 20-day average")
         elif avg_vol > 0 and vol > avg_vol * 1.5:
             score += 5
-            reasons.append(f"成交量放大 {(vol / avg_vol):.1f} 倍")
+            reasons.append(f"Volume expansion {(vol / avg_vol):.1f}x")
     except Exception:
         pass
 

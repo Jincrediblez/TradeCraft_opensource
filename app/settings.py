@@ -13,7 +13,7 @@ STATE_DIR = ROOT / "data" / "state"
 SETTINGS_FILE = STATE_DIR / "settings.json"
 
 DEFAULT_SETTINGS = {
-    "locale": "auto",
+    "locale": "en",
     "defaultPeriod": "",
     "defaultSymbol": "INTC.US",
     "yahooRefreshSeconds": 300,
@@ -50,8 +50,8 @@ def load_settings() -> Dict[str, object]:
         str(settings.get("auditSecondaryBenchmark") or DEFAULT_SETTINGS["auditSecondaryBenchmark"])
     )
     settings["defaultPeriod"] = str(settings.get("defaultPeriod") or "")
-    locale = str(settings.get("locale") or "auto").strip()
-    settings["locale"] = locale if locale in {"auto", "en", "zh-CN"} else "auto"
+    locale = str(settings.get("locale") or "en").strip()
+    settings["locale"] = locale if locale in {"en", "zh-CN"} else "en"
     return settings
 
 
@@ -81,7 +81,7 @@ def save_settings(payload: dict) -> Dict[str, object]:
     settings["yahooRefreshSeconds"] = max(60, min(refresh_seconds, 3600))
     settings["longbridgeRefreshSeconds"] = settings["yahooRefreshSeconds"]
     settings["defaultPeriod"] = str(settings.get("defaultPeriod") or "")
-    locale = str(settings.get("locale") or "auto").strip()
-    settings["locale"] = locale if locale in {"auto", "en", "zh-CN"} else "auto"
+    locale = str(settings.get("locale") or "en").strip()
+    settings["locale"] = locale if locale in {"en", "zh-CN"} else "en"
     state_store.write_json(SETTINGS_FILE, settings, root=ROOT, metadata_file=STATE_DIR / "_metadata.json")
     return settings

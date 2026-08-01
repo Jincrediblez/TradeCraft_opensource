@@ -43,7 +43,7 @@ def cmd_audit(args):
     # Phase 1a: Auto classify setups and apply to closed trades
     from app.trade_setup_manager import run_auto_classify_and_apply
     setup_result = run_auto_classify_and_apply(force=getattr(args, 'force', False))
-    print("\n[Phase 1a] 买卖逻辑分类完成:")
+    print("\n[Phase 1a] Trade setup classification complete:")
     if "error" not in setup_result:
         classify = setup_result.get("classify", {})
         apply = setup_result.get("apply", {})
@@ -118,7 +118,7 @@ def main():
     p_audit.add_argument("--period", default="ytd", help="Audit period (ytd, last_20d, etc.)")
     p_audit.add_argument("--llm", action="store_true", help="Generate LLM critique report")
     p_audit.add_argument("--export", help="Export audit JSON to file path")
-    p_audit.add_argument("--force", action="store_true", help="重新分类所有买卖逻辑（覆盖自动分类）")
+    p_audit.add_argument("--force", action="store_true", help="Reclassify all trade setups (overwrite automatic classifications)")
     p_audit.set_defaults(func=cmd_audit)
 
     args = parser.parse_args()

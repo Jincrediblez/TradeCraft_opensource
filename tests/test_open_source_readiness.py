@@ -39,7 +39,7 @@ def test_required_open_source_documents_exist():
     for name in (
         "LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.md", "SECURITY.md",
         "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "DISCLAIMER.md",
-        "README.md", "README.en.md",
+        "README.md", "TradeCraft_User_Manual.md", "TradeCraft_User_Manual.pdf",
     ):
         assert (ROOT / name).is_file(), name
 
@@ -85,18 +85,51 @@ def test_browser_dependencies_are_pinned_and_local():
     assert (ROOT / "static" / "vendor" / "LICENSE.d3").is_file()
 
 
-def test_ai_prompts_are_locale_specific():
+def test_ai_prompt_is_english_only():
     prompts = {path.name for path in (ROOT / "prompts").glob("critique_audit*")}
-    assert prompts == {"critique_audit_en.md", "critique_audit_zh-CN.md"}
+    assert prompts == {"critique_audit_en.md"}
 
 
 def test_locale_catalogs_have_matching_stable_keys():
     english = json.loads((ROOT / "static" / "locales" / "en.json").read_text(encoding="utf-8"))
     chinese = json.loads((ROOT / "static" / "locales" / "zh-CN.json").read_text(encoding="utf-8"))
-    stable_sections = ("nav", "settings", "watchlist", "demo", "api")
-    assert nested_keys({key: english[key] for key in stable_sections}) == nested_keys(
-        {key: chinese[key] for key in stable_sections}
-    )
+    assert nested_keys(english) == nested_keys(chinese)
+
+    placeholders = re.compile(r"\{([a-zA-Z][a-zA-Z0-9_]*)\}")
+
+    def walk(left, right):
+        for key, value in left.items():
+            peer = right[key]
+            if isinstance(value, dict):
+                walk(value, peer)
+            elif isinstance(value, str):
+                assert set(placeholders.findall(value)) == set(placeholders.findall(peer)), key
+
+    walk(english, chinese)
+
+
+def test_repository_is_english_only_outside_the_chinese_ui_catalog():
+    allowed = {
+        ROOT / "static" / "locales" / "zh-CN.json",
+        ROOT / "tests" / "test_i18n_demo.py",
+    }
+    han = re.compile(r"[\u3400-\u9fff]")
+    for path in public_text_files():
+        if path in allowed:
+            continue
+        assert not han.search(path.read_text(encoding="utf-8", errors="ignore")), path
+
+
+def test_legacy_localized_document_paths_are_removed():
+    chinese_manual = "TradeCraft_\u7cfb\u7edf\u529f\u80fd\u624b\u518c_zh-CN.pdf"
+    for path in (
+        ROOT / "README.en.md",
+        ROOT / "TradeCraft_User_Manual_en.md",
+        ROOT / "TradeCraft_User_Manual_en.pdf",
+        ROOT / chinese_manual,
+        ROOT / "docs" / "images" / "feature-guide-en",
+    ):
+        assert not path.exists(), path
 
 
 def test_demo_contains_current_and_prior_year_periods(tmp_path):

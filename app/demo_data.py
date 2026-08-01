@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Tuple
 
 
-DEMO_SCHEMA_VERSION = 2
+DEMO_SCHEMA_VERSION = 3
 DEMO_MARKER = Path("data/state/tradecraft_demo.json")
 DEMO_DISABLED = Path("data/state/demo_disabled.json")
 BENCHMARKS = ("QQQ.US", "SPY.US")
@@ -45,17 +45,8 @@ def _write_json(path: Path, payload) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def render_demo_audit_report(snapshot: dict, locale: str = "en") -> str:
+def render_demo_audit_report(snapshot: dict) -> str:
     """Render an explicitly synthetic, offline audit narrative for demo mode."""
-
-    chinese = str(locale).lower().startswith("zh")
-    if not chinese:
-        # The persisted audit snapshot intentionally remains locale-neutral and
-        # may contain legacy Chinese finding text. Localize a copy before the
-        # English template interpolates those fields into the report.
-        from app.i18n import localize_payload
-
-        snapshot = localize_payload(snapshot, "en")
     outcome = snapshot.get("outcome") or {}
     scorecards = snapshot.get("scorecards") or {}
     data_quality = snapshot.get("dataQuality") or {}
@@ -72,47 +63,6 @@ def render_demo_audit_report(snapshot: dict, locale: str = "en") -> str:
             return f"{float(value):.2f}{suffix}"
         except (TypeError, ValueError):
             return "—"
-
-    if chinese:
-        finding_lines = [
-            f"- **{item.get('title') or '待核查发现'}**：{item.get('detail') or item.get('reason') or '请下钻查看合成交易证据。'}"
-            for item in findings
-        ] or ["- 当前合成样本没有形成高优先级发现。"]
-        advantage_lines = [
-            f"- **{item.get('title') or item.get('name') or '候选优势'}**：{item.get('reason') or '仅作为待验证候选，不代表已证明策略。'}"
-            for item in advantages
-        ] or ["- 当前样本不足以确认稳定优势；这也是演示工作台对证据边界的正常表达。"]
-        return "\n".join([
-            "# Demo AI 交易测评",
-            "",
-            "> 本报告由 TradeCraft 使用当前随机合成快照离线生成，仅用于演示产品流程。它没有调用外部 AI，也不包含真实账户、交易或投资建议。",
-            "",
-            "## 执行摘要",
-            "",
-            f"- 合成账户收益：**{number(account_return, '%')}**；相对 {benchmark}：**{number(alpha, ' 个百分点')}**。",
-            f"- 最高过程风险：**{number(process_risk, '/100')}**；数据可信度：**{number(confidence, '/100')}**。",
-            f"- 当前快照包含 **{snapshot.get('meta', {}).get('executionCount', 0)}** 笔合成成交、**{snapshot.get('meta', {}).get('roundTripCount', 0)}** 个合成交易回合。",
-            "",
-            "## 优先核查",
-            "",
-            *finding_lines,
-            "",
-            "## 候选优势",
-            "",
-            *advantage_lines,
-            "",
-            "## 下一步动作",
-            "",
-            "1. 从最高优先级发现进入“证据”页，检查完整的合成 BUY/SELL 回合。",
-            "2. 选择一条可执行规则，使用 20 个交易日铁律周期观察行为变化。",
-            "3. 在真实数据环境中重新验证；不要把 Demo 结果视为个人交易结论。",
-            "",
-            "## 数据边界",
-            "",
-            f"- 初始风险覆盖率：{number(data_quality.get('initialRiskCoveragePct'), '%')}。",
-            f"- 交易计划覆盖率：{number(data_quality.get('tradePlanCoveragePct'), '%')}。",
-            "- 所有证券、日期、数量、价格、收益和审计结论均来自本次随机 Demo。",
-        ]) + "\n"
 
     finding_lines = [
         f"- **{item.get('title') or 'Finding to review'}**: {item.get('detail') or item.get('reason') or 'Drill into the synthetic trade evidence.'}"

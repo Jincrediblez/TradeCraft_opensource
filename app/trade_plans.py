@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Dict
 
 from app import state_store
+from app.setup_types import CANONICAL_SETUP_TYPES
 from app.symbols import normalize_symbol  # re-exported for backward compatibility
 from app.schemas import coerce_holding_days, coerce_invalidation_price
 
@@ -16,29 +17,25 @@ ROOT = Path(__file__).resolve().parent.parent
 STATE_DIR = ROOT / "data" / "state"
 TRADE_PLANS_FILE = STATE_DIR / "trade_plans.json"
 TRADE_PLAN_HISTORY_FILE = STATE_DIR / "trade_plan_history.json"
+SCHEMA_VERSION = 3
 
-SETUP_TYPES = [
-    "趋势突破（计划内）",
-    "趋势突破（冲动追入）",
-    "回调买入",
-    "超跌反弹",
-    "基本面驱动",
-    "主题轮动",
-    "FOMO追高",
-    "止损",
-    "止盈",
-    "风控减仓",
-    "趋势走弱减仓",
-    "调仓换股",
-    "被迫平仓",
-]
+SETUP_TYPES = list(CANONICAL_SETUP_TYPES)
 
 
 
 
 def load_trade_plans() -> Dict[str, dict]:
     payload = state_store.read_json(TRADE_PLANS_FILE, {})
-    return payload if isinstance(payload, dict) else {}
+    if not isinstance(payload, dict):
+        return {}
+    for plan in payload.values():
+        setup_type = str(plan.get("setupType") or "") if isinstance(plan, dict) else ""
+        if setup_type and setup_type not in SETUP_TYPES:
+            raise ValueError(
+                "Legacy or unsupported trade-plan setup value detected. "
+                "Rebuild this workspace with the English-first schema."
+            )
+    return payload
 
 
 def load_trade_plan_history() -> dict:
@@ -47,7 +44,7 @@ def load_trade_plan_history() -> dict:
         payload = {}
     versions = payload.get("versions")
     return {
-        "schemaVersion": 2,
+        "schemaVersion": SCHEMA_VERSION,
         "updatedAt": str(payload.get("updatedAt") or ""),
         "versions": versions if isinstance(versions, dict) else {},
     }
@@ -79,6 +76,8 @@ def normalize_plan(symbol: str, payload: dict) -> dict:
                 "stopCondition": str(payload.get("stopCondition") or "")[:1000],
             }
         )
+        if plan["setupType"] and plan["setupType"] not in SETUP_TYPES:
+            raise ValueError(f"Invalid setupType: {plan['setupType']}. Must be one of {SETUP_TYPES}")
         # Reject inf/NaN/negative values (the old float()/int() casts let
         # those through); invalid input falls back to None.
         plan["invalidationPrice"] = coerce_invalidation_price(payload.get("invalidationPrice"))

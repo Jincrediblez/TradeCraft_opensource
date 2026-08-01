@@ -27,14 +27,14 @@ def _closed(rows, avg_entry):
 def test_no_kline_data_is_unclassified(monkeypatch):
     monkeypatch.setattr(sc, "load_kline", lambda s: [])
     setup, conf, reasons = classify_setup({"symbol": "X.US", "open_date": "2026-05-01", "avg_entry": 10})
-    assert setup == "未分类" and conf == "low"
+    assert setup == "Unclassified" and conf == "low"
 
 
 def test_insufficient_history_is_unclassified(monkeypatch):
     rows = _rows([100.0] * 10)  # < 25 days
     monkeypatch.setattr(sc, "load_kline", lambda s: rows)
     setup, conf, _ = classify_setup(_closed(rows, 100.0))
-    assert setup == "未分类" and conf == "low"
+    assert setup == "Unclassified" and conf == "low"
 
 
 def test_parabolic_entry_classified_as_fomo(monkeypatch):
@@ -44,7 +44,7 @@ def test_parabolic_entry_classified_as_fomo(monkeypatch):
     rows = _rows(closes, vols)
     monkeypatch.setattr(sc, "load_kline", lambda s: rows)
     setup, conf, reasons = classify_setup(_closed(rows, closes[-1]))
-    assert setup == "FOMO追高" and conf == "high"
+    assert setup == "FOMO chase" and conf == "high"
 
 
 def test_result_is_always_a_known_setup_type(monkeypatch):

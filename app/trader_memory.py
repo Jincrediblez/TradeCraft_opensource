@@ -64,7 +64,7 @@ def build_memory() -> dict:
     for trade in closed_trades:
         symbol = trade.get("symbol", "")
         theme, tier, _ = classify_symbol(symbol, config)
-        setup = trade.get("setup_type", "").strip() or "未分类"
+        setup = trade.get("setup_type", "").strip() or "Unclassified"
         tag = f"{theme} + {setup}"
         tag_trades[tag].append({
             **trade,
@@ -218,6 +218,6 @@ if __name__ == "__main__":
         print(f"Memory tags: {result['tagCount']}")
         for m in result["memories"][:5]:
             s = m["stats"]
-            print(f"  {m['memoryTag']}: {s['tradeCount']}笔, 胜率{s['winRate']}%, "
+            print(f"  {m['memoryTag']}: {s['tradeCount']} trades, win rate {s['winRate']}%, "
                   f"PnL=${s['totalRealizedPnl']:,.0f}, Exp={s['expectancy']:.2f}, "
                   f"conf={m['confidence']}")

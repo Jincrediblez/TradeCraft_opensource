@@ -54,7 +54,7 @@ class _FakeResp:
             raise requests.exceptions.HTTPError(response=self)
 
 
-_GOOD_PAYLOAD = {"choices": [{"message": {"content": "审计结论"}}]}
+_GOOD_PAYLOAD = {"choices": [{"message": {"content": "Audit conclusion"}}]}
 
 
 def test_kimi_retries_then_succeeds():
@@ -62,7 +62,7 @@ def test_kimi_retries_then_succeeds():
     with mock.patch.object(llm_reporter.requests, "post", side_effect=responses) as post, \
             mock.patch("time.sleep"):  # make tenacity backoff instant
         content, err = llm_reporter.call_kimi_api_with_error("prompt", "key")
-    assert content == "审计结论"
+    assert content == "Audit conclusion"
     assert err is None
     assert post.call_count == 2
 
@@ -116,7 +116,7 @@ def test_cap_context_json_truncates_when_oversized():
     big = "x" * (llm_reporter.MAX_CONTEXT_CHARS + 100)
     out = llm_reporter.cap_context_json(big)
     assert len(out) < len(big)
-    assert "截断" in out
+    assert "truncated" in out
 
 
 if __name__ == "__main__":

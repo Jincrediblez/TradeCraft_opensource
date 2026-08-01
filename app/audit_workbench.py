@@ -16,7 +16,6 @@ import hashlib
 import json
 import math
 import re
-import shutil
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -24,9 +23,10 @@ from typing import Callable, Dict, Iterable, List, Optional, Tuple
 
 from app.state_store import read_json, write_json
 from app.symbols import normalize_symbol
+from app.trade_setup_manager import SETUP_TYPES as CONTROLLED_SETUP_TYPES
 
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 WORKBENCH_FILE = "audit_workbench.json"
 ROUND_TRIPS_FILE = "audit_round_trips.json"
 REPORT_META_FILE = "audit_report_meta.json"
@@ -39,14 +39,17 @@ RULE_OPERATORS = {"<=", ">="}
 
 
 def _ensure_supported_schema(payload: object, label: str) -> None:
-    if not isinstance(payload, dict):
+    if not isinstance(payload, dict) or not payload:
         return
     try:
         version = int(payload.get("schemaVersion", 1) or 1)
     except (TypeError, ValueError):
         version = 1
-    if version > SCHEMA_VERSION:
-        raise ValueError(f"{label} schemaVersion={version} 高于当前支持版本 {SCHEMA_VERSION}，已拒绝覆盖")
+    if version != SCHEMA_VERSION:
+        raise ValueError(
+            f"{label} schemaVersion={version} is incompatible with English-first schemaVersion={SCHEMA_VERSION}. "
+            "Rebuild this workspace from the original broker exports. The existing file was not modified."
+        )
 
 
 def _stable_id(prefix: str, *parts: object) -> str:
@@ -196,8 +199,8 @@ def enrich_round_trips(closed_rows: List[dict], executions: List[dict]) -> List[
         item["closeDate"] = _iso_date(item["close_date"])
         item["realizedPnl"] = _round(item.get("realized_pnl"))
         item["holdingDays"] = int(_finite(item.get("holding_days")))
-        item["setupType"] = str(item.get("setup_type") or "未分类")
-        item["exitSetupType"] = str(item.get("exit_setup_type") or "未标注")
+        item["setupType"] = str(item.get("setup_type") or "Unclassified")
+        item["exitSetupType"] = str(item.get("exit_setup_type") or "Unlabeled")
         item["riskStatus"] = str(item.get("risk_status") or "risk_missing")
         item.pop("_sourceIndex", None)
         out.append(item)
@@ -207,7 +210,7 @@ def enrich_round_trips(closed_rows: List[dict], executions: List[dict]) -> List[
 def _aggregate_round_trips(rows: List[dict], field: str) -> List[dict]:
     grouped: Dict[str, List[dict]] = defaultdict(list)
     for row in rows:
-        key = str(row.get(field) or "未分类")
+        key = str(row.get(field) or "Unclassified")
         grouped[key].append(row)
 
     output = []
@@ -291,10 +294,10 @@ def build_behavior_comparison(executions: List[dict], round_trips: List[dict], w
 
     comparison = []
     labels = {
-        "dailyAverage": "日均成交",
-        "medianHoldingDays": "持仓周期中位数",
-        "averagePositionSize": "平均交易回合规模",
-        "winRate": "已平仓胜率",
+        "dailyAverage": "Average daily executions",
+        "medianHoldingDays": "Median holding period",
+        "averagePositionSize": "Average round-trip size",
+        "winRate": "Closed-trade win rate",
     }
     for key, label in labels.items():
         comparison.append(
@@ -334,7 +337,7 @@ def _benchmark_return(
         if start_date <= day <= end_date and close > 0:
             candidates.append((day, close))
     if len(candidates) < 2:
-        return {"symbol": symbol, "returnPct": None, "fresh": False, "reason": "行情覆盖不足"}
+        return {"symbol": symbol, "returnPct": None, "fresh": False, "reason": "Insufficient market-data coverage"}
     candidates.sort()
     first_day, first_close = candidates[0]
     last_day, last_close = candidates[-1]
@@ -349,7 +352,7 @@ def _benchmark_return(
         "startDate": first_day,
         "endDate": last_day,
         "fresh": fresh,
-        "reason": "" if fresh else f"行情只更新到 {last_day}",
+        "reason": "" if fresh else f"Market data is only available through {last_day}",
     }
 
 
@@ -370,13 +373,13 @@ def _account_outcome(
         "symbol": primary_symbol,
         "returnPct": None,
         "fresh": False,
-        "reason": "缺少账户报告区间",
+        "reason": "Account statement period is missing",
     }
     secondary = _benchmark_return(secondary_symbol, start, report_end, kline_loader) if start and report_end else {
         "symbol": secondary_symbol,
         "returnPct": None,
         "fresh": False,
-        "reason": "缺少账户报告区间",
+        "reason": "Account statement period is missing",
     }
     alpha = None
     if twr is not None and primary.get("fresh") and primary.get("returnPct") is not None:
@@ -390,9 +393,9 @@ def _account_outcome(
         "secondaryBenchmark": secondary,
         "alphaVsPrimaryPct": alpha,
         "verdict": (
-            "跑赢主基准" if alpha is not None and alpha > 0
-            else "跑输主基准" if alpha is not None
-            else "基准数据不足，暂不判断 alpha"
+            "Outperformed primary benchmark" if alpha is not None and alpha > 0
+            else "Underperformed primary benchmark" if alpha is not None
+            else "Benchmark data is insufficient; alpha is not evaluated"
         ),
     }
 
@@ -497,13 +500,13 @@ def _build_findings(summary: dict, round_trips: List[dict], plan_coverage: dict)
         if row.get("risk_status") in {None, "", "risk_missing", "invalid_risk"}
     )
     if risk_missing:
-        detail = f"{risk_missing} / {len(round_trips)} 个已平仓回合缺少初始风险，R 倍数无法判断"
+        detail = f"{risk_missing} / {len(round_trips)} closed round trips lack initial risk, so R multiples cannot be evaluated"
         refs = [row["roundTripId"] for row in round_trips if row.get("risk_status") != "planned"]
         findings.append(
             {
                 "findingId": _stable_id("finding", "data_quality_risk", detail),
                 "type": "data_quality_risk",
-                "title": "初始风险覆盖不足",
+                "title": "Insufficient initial-risk coverage",
                 "detail": detail,
                 "severity": "high",
                 "status": "needs_data",
@@ -516,18 +519,18 @@ def _build_findings(summary: dict, round_trips: List[dict], plan_coverage: dict)
                 "evidenceCount": len(refs),
                 "evidenceFilter": {"riskStatuses": ["risk_missing", "invalid_risk", ""]},
                 "allEvidence": [],
-                "suggestedRule": "新交易在首笔买入前必须填写无效价，缺失时不计入有效交易样本。",
+                "suggestedRule": "New trades must include an invalidation price before the first buy; otherwise they are excluded from the valid sample.",
             }
         )
 
     missing_plans = int(plan_coverage.get("missing_plan_count", 0) or 0)
     if missing_plans:
-        detail = f"{missing_plans} / {plan_coverage.get('tracked_symbol_count', 0)} 个跟踪标的缺少事前计划"
+        detail = f"{missing_plans} / {plan_coverage.get('tracked_symbol_count', 0)} tracked symbols lack a pre-trade plan"
         findings.append(
             {
                 "findingId": _stable_id("finding", "data_quality_plan", detail),
                 "type": "data_quality_plan",
-                "title": "交易计划覆盖不足",
+                "title": "Insufficient trade-plan coverage",
                 "detail": detail,
                 "severity": "high",
                 "status": "needs_data",
@@ -540,7 +543,7 @@ def _build_findings(summary: dict, round_trips: List[dict], plan_coverage: dict)
                 "evidenceCount": 0,
                 "evidenceFilter": {},
                 "allEvidence": list(plan_coverage.get("missing_symbols") or [])[:20],
-                "suggestedRule": "新增标的首笔买入前必须填写 thesis、无效价和目标持有期。",
+                "suggestedRule": "Before the first buy in a new symbol, record the thesis, invalidation price, and target holding period.",
             }
         )
 
@@ -553,7 +556,7 @@ def _build_findings(summary: dict, round_trips: List[dict], plan_coverage: dict)
             {
                 "findingId": _stable_id("finding", finding_type, item.get("rule"), detail),
                 "type": finding_type,
-                "title": str(item.get("title") or item.get("rule") or "仓位纪律"),
+                "title": str(item.get("title") or item.get("rule") or "Position discipline"),
                 "detail": detail,
                 "severity": str(item.get("severity") or "medium"),
                 "status": "confirmed",
@@ -566,7 +569,7 @@ def _build_findings(summary: dict, round_trips: List[dict], plan_coverage: dict)
                 "evidenceCount": len(refs),
                 "evidenceFilter": {"symbols": symbols} if symbols else {"roundTripIds": refs},
                 "allEvidence": [],
-                "suggestedRule": "仓位必须与主线角色和预设风险预算一致。",
+                "suggestedRule": "Position size must match the intended role and predefined risk budget.",
             }
         )
 
@@ -586,12 +589,12 @@ def _build_findings(summary: dict, round_trips: List[dict], plan_coverage: dict)
 
 def _suggest_rule(finding_type: str) -> str:
     return {
-        "asymmetric_exit": "卖出前必须记录退出触发条件；趋势未破时只能按计划减仓。",
-        "churn_friction": "同一标的三日内重新进入前，必须写明与上一笔不同的新信息。",
-        "narrative_hype": "非主线仓位必须遵守仓位上限，并在买入前定义失效条件。",
-        "tail_risk": "新增仓位不得继续提高单一主题和前三大持仓集中度。",
-        "entry_quality": "高 FOMO 入场必须延后一个交易日并重新确认无效价。",
-    }.get(finding_type, "下一笔同类交易前必须记录计划、失效条件和风险预算。")
+        "asymmetric_exit": "Record the exit trigger before selling; reduce only according to plan while the trend remains intact.",
+        "churn_friction": "Before re-entering the same symbol within three days, record the new information that differs from the prior trade.",
+        "narrative_hype": "Non-core positions must respect the allocation cap and define invalidation before entry.",
+        "tail_risk": "New positions must not increase single-theme or top-three concentration.",
+        "entry_quality": "High-FOMO entries must be delayed by one trading day and the invalidation price reconfirmed.",
+    }.get(finding_type, "Record the plan, invalidation condition, and risk budget before the next similar trade.")
 
 
 def _plan_coverage(summary: dict) -> dict:
@@ -616,13 +619,13 @@ def _plan_coverage(summary: dict) -> dict:
 
 def _score_risks(summary: dict) -> List[dict]:
     labels = {
-        "theme_judgment": "主题判断风险",
-        "churn_friction": "交易摩擦风险",
-        "stock_selection": "选股风险",
-        "narrative_hype": "叙事风险",
-        "entry_quality": "入场风险",
-        "asymmetric_exit": "退出风险",
-        "tail_risk": "尾部风险",
+        "theme_judgment": "Theme-selection risk",
+        "churn_friction": "Trading-friction risk",
+        "stock_selection": "Stock-selection risk",
+        "narrative_hype": "Narrative risk",
+        "entry_quality": "Entry risk",
+        "asymmetric_exit": "Exit risk",
+        "tail_risk": "Tail risk",
     }
     rows = []
     for key, value in (summary.get("scores") or {}).items():
@@ -644,7 +647,7 @@ def _ai_report_status(report_path: Path, meta_path: Path, snapshot_id: str) -> d
     meta = read_json(meta_path, {})
     exists = report_path.exists()
     content = report_path.read_text(encoding="utf-8", errors="ignore") if exists else ""
-    placeholder = bool(re.search(r"\bX\b|\{\{|TODO|待补充", content))
+    placeholder = bool(re.search(r"\bX\b|\{\{|TODO|TBD", content))
     bound = bool(meta.get("snapshotId")) and meta.get("snapshotId") == snapshot_id
     stale = exists and (not bound or placeholder)
     return {
@@ -656,9 +659,9 @@ def _ai_report_status(report_path: Path, meta_path: Path, snapshot_id: str) -> d
         "generatedAt": meta.get("generatedAt", ""),
         "placeholderDetected": placeholder,
         "message": (
-            "AI 总结与当前数据一致" if exists and not stale
-            else "AI 总结已过期，请按需重新生成" if exists
-            else "尚未生成 AI 总结"
+            "AI summary matches the current snapshot" if exists and not stale
+            else "AI summary is stale; regenerate it when needed" if exists
+            else "AI summary has not been generated"
         ),
     }
 
@@ -695,7 +698,7 @@ def build_workbench(
     risk_known = sum(1 for row in round_trips if row.get("risk_status") == "planned")
     classified = sum(
         1 for row in round_trips
-        if str(row.get("setup_type") or "") not in {"", "未分类", "未计划"}
+        if str(row.get("setup_type") or "") not in {"", "Unclassified", "Unplanned"}
     )
     opening_missing = len((summary.get("audit_coverage") or {}).get("missing") or [])
     initial_risk_pct = round(risk_known / closed_count * 100, 1) if closed_count else 0.0
@@ -756,12 +759,12 @@ def build_workbench(
             advantages.append(
                 {
                     **row,
-                    "title": f"{row['name']} 是候选优势",
+                    "title": f"{row['name']} is a candidate strength",
                     "proven": row["riskCoveragePct"] >= 70 and row["closedTradeCount"] >= 20,
                     "reason": (
-                        "样本和风险覆盖达到可验证标准"
+                        "Sample size and risk coverage meet the validation threshold"
                         if row["riskCoveragePct"] >= 70 and row["closedTradeCount"] >= 20
-                        else "盈利为正，但初始风险或样本覆盖不足，只能视为候选"
+                        else "P&L is positive, but initial-risk or sample coverage is insufficient; treat this only as a candidate"
                     ),
                 }
             )
@@ -778,36 +781,36 @@ def build_workbench(
             "executionCount": len(executions),
             "roundTripCount": closed_count,
             "allTradeDates": behavior.get("tradeDates", []),
-            "riskScoreSemantics": "0=低风险，100=高风险",
+            "riskScoreSemantics": "0=lower risk, 100=higher risk",
         },
         "scorecards": {
             "result": {
-                "title": "结果质量",
+                "title": "Outcome quality",
                 "value": outcome.get("timeWeightedReturnPct"),
                 "unit": "%",
                 "verdict": outcome.get("verdict"),
             },
             "process": {
-                "title": "过程风险",
+                "title": "Process risk",
                 "value": max_risk,
                 "unit": "/100",
-                "verdict": score_risks[0]["label"] if score_risks else "暂无可评估数据",
+                "verdict": score_risks[0]["label"] if score_risks else "No evaluable data",
             },
             "behavior": {
-                "title": "近期行为",
+                "title": "Recent behavior",
                 "value": behavior.get("current", {}).get("dailyAverage"),
-                "unit": "笔/交易日",
+                "unit": " fills/trading day",
                 "verdict": (
-                    "近20日与前20日样本完整"
+                    "The recent and prior 20-day samples are complete"
                     if behavior.get("sampleSufficient")
-                    else "样本不足，趋势判断需谨慎"
+                    else "Small sample; interpret the trend cautiously"
                 ),
             },
             "confidence": {
-                "title": "数据可信度",
+                "title": "Data confidence",
                 "value": confidence_score,
                 "unit": "/100",
-                "verdict": "低" if confidence_score < 40 else "中" if confidence_score < 70 else "高",
+                "verdict": "Low" if confidence_score < 40 else "Medium" if confidence_score < 70 else "High",
             },
         },
         "outcome": outcome,
@@ -894,7 +897,6 @@ def load_review_state(state_dir: Path) -> dict:
     _ensure_supported_schema(payload, REVIEW_STATE_FILE)
     if not isinstance(payload, dict):
         payload = {}
-    # v1 or unversioned state is losslessly normalized in memory.
     feedback = payload.get("feedback") if isinstance(payload.get("feedback"), dict) else {}
     cycles = payload.get("ruleCycles") if isinstance(payload.get("ruleCycles"), list) else []
     return {
@@ -908,14 +910,7 @@ def load_review_state(state_dir: Path) -> dict:
 def _save_review_state(state_dir: Path, state: dict) -> dict:
     path = state_dir / REVIEW_STATE_FILE
     existing = read_json(path, {})
-    try:
-        existing_version = int(existing.get("schemaVersion", 1) or 1) if isinstance(existing, dict) else 1
-    except (TypeError, ValueError):
-        existing_version = 1
-    if path.exists() and existing_version < SCHEMA_VERSION:
-        backup = path.with_suffix(path.suffix + f".schema-v{existing_version}.bak")
-        if not backup.exists():
-            shutil.copy2(path, backup)
+    _ensure_supported_schema(existing, REVIEW_STATE_FILE)
     state["schemaVersion"] = SCHEMA_VERSION
     state["updatedAt"] = datetime.now().isoformat(timespec="seconds")
     write_json(path, state)
@@ -931,9 +926,9 @@ def save_finding_feedback(
     note: str = "",
 ) -> dict:
     if decision not in DECISIONS:
-        raise ValueError("decision 必须是 confirmed、dismissed 或 undecided")
+        raise ValueError("decision must be confirmed, dismissed, or undecided")
     if not finding_id:
-        raise ValueError("findingId 不能为空")
+        raise ValueError("findingId must not be empty")
     state = load_review_state(state_dir)
     key = f"{period}:{finding_id}"
     state["feedback"][key] = {
@@ -966,15 +961,15 @@ def create_rule_cycle(
     state = load_review_state(state_dir)
     active = [cycle for cycle in state["ruleCycles"] if cycle.get("status") == "active"]
     if len(active) >= 3:
-        raise ValueError("同时最多跟踪 3 条铁律，请先完成或停用现有铁律")
+        raise ValueError("At most three rules may be tracked at once; complete or stop an active rule first")
     metric_key = str(finding.get("metricKey") or "")
     baseline = snapshot.get("metricCatalog", {}).get(metric_key)
     if baseline is None:
-        raise ValueError("该发现缺少可跟踪指标")
+        raise ValueError("This finding has no trackable metric")
     suggested_operator, suggested_target = _suggest_target(_finite(baseline), finding.get("direction", "lower"))
     selected_operator = operator or suggested_operator
     if selected_operator not in RULE_OPERATORS:
-        raise ValueError("operator 必须是 <= 或 >=")
+        raise ValueError("operator must be <= or >=")
     target = _finite(target_value, suggested_target) if target_value is not None else suggested_target
     trade_dates = snapshot.get("meta", {}).get("allTradeDates", []) or []
     start_date = trade_dates[-1] if trade_dates else ""
@@ -1006,7 +1001,7 @@ def stop_rule_cycle(state_dir: Path, cycle_id: str) -> dict:
     state = load_review_state(state_dir)
     cycle = next((item for item in state["ruleCycles"] if item.get("cycleId") == cycle_id), None)
     if not cycle:
-        raise ValueError("未找到该铁律周期")
+        raise ValueError("Rule cycle not found")
     if cycle.get("status") == "active":
         cycle["status"] = "stopped"
         cycle["completedAt"] = datetime.now().isoformat(timespec="seconds")
@@ -1048,7 +1043,10 @@ def save_round_trip_note(
     payload: dict,
 ) -> dict:
     if not round_trip_id:
-        raise ValueError("roundTripId 不能为空")
+        raise ValueError("roundTripId must not be empty")
+    setup_type = str(payload.get("setupType") or "")
+    if setup_type and setup_type not in CONTROLLED_SETUP_TYPES:
+        raise ValueError("setupType must use a canonical English value")
     path = state_dir / ROUND_TRIP_NOTES_FILE
     state = read_json(path, {})
     _ensure_supported_schema(state, ROUND_TRIP_NOTES_FILE)
@@ -1057,14 +1055,14 @@ def save_round_trip_note(
     notes = state.get("notes") if isinstance(state.get("notes"), dict) else {}
     invalidation = payload.get("invalidationPrice")
     if invalidation not in (None, "") and _finite(invalidation, -1) < 0:
-        raise ValueError("无效价必须是非负数")
+        raise ValueError("Invalidation price must be non-negative")
     holding = payload.get("targetHoldingDays")
     if holding not in (None, "") and not 1 <= int(_finite(holding)) <= 3650:
-        raise ValueError("目标持有期必须在 1 到 3650 天之间")
+        raise ValueError("Target holding period must be between 1 and 3650 days")
     note = {
         "period": period,
         "roundTripId": round_trip_id,
-        "setupType": str(payload.get("setupType") or "")[:80],
+        "setupType": setup_type,
         "invalidationPrice": _round(invalidation) if invalidation not in (None, "") else None,
         "targetHoldingDays": int(_finite(holding)) if holding not in (None, "") else None,
         "exitReason": str(payload.get("exitReason") or "")[:1000],

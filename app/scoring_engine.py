@@ -70,9 +70,9 @@ def _load_yaml(path: Path) -> dict:
         with open(path, encoding="utf-8") as f:
             return yaml.safe_load(f) or {}
     except FileNotFoundError as exc:
-        raise RuntimeError(f"缺少配置文件 {path.name}，请确认 config/ 目录完整。") from exc
+        raise RuntimeError(f"Missing configuration file {path.name}; verify that config/ is complete.") from exc
     except yaml.YAMLError as exc:
-        raise RuntimeError(f"配置文件 {path.name} 解析失败：{exc}") from exc
+        raise RuntimeError(f"Configuration file {path.name} could not be parsed: {exc}") from exc
 
 
 def load_config() -> dict:
@@ -242,10 +242,10 @@ def score_theme_judgment(theme_attribution: List[dict], config: dict) -> tuple:
         if theme_return is not None and user_return is not None:
             if user_return < theme_return * cfg.get("theme_vs_benchmark_ratio", 0.5):
                 score += 20
-                evidence.append(f"{attr['theme']}: 收益 {user_return:.1f}% 远低于主题基准 {theme_return:.1f}%")
+                evidence.append(f"{attr['theme']}: return {user_return:.1f}% is far below the theme benchmark {theme_return:.1f}%")
             if user_return < 0 and theme_return > 0:
                 score += 15
-                evidence.append(f"{attr['theme']}: 主题涨 {theme_return:.1f}% 但你亏损")
+                evidence.append(f"{attr['theme']}: theme gained {theme_return:.1f}% while the account lost money")
 
     # Unclassified loss contribution
     unclass = next((a for a in theme_attribution if a["theme"] == "unclassified"), None)
@@ -257,7 +257,7 @@ def score_theme_judgment(theme_attribution: List[dict], config: dict) -> tuple:
             threshold = cfg.get("unclassified_loss_contribution_pct", 30)
             if pct > threshold:
                 score += 20
-                evidence.append(f"未分类标的亏损占总亏损 {pct:.1f}%")
+                evidence.append(f"Unclassified-symbol losses as a share of total losses {pct:.1f}%")
 
     score = min(score, 100)
     level = "high" if score >= 60 else "medium" if score >= 40 else "low"
@@ -276,32 +276,32 @@ def score_churn_friction(trades: List[dict], closed_trades: List[dict], metrics:
     # Frequency spike
     if ytd_avg > 0 and recent_avg > ytd_avg * 2:
         score += 25
-        evidence.append(f"近20日日均 {recent_avg:.1f} 次，年初均值 {ytd_avg:.1f} 次")
+        evidence.append(f"Recent 20-day daily average {recent_avg:.1f}; YTD average {ytd_avg:.1f}")
     elif ytd_avg > 0 and recent_avg > ytd_avg * 1.5:
         score += 15
-        evidence.append(f"交易频率上升 {((recent_avg/ytd_avg - 1) * 100):.0f}%")
+        evidence.append(f"Trading frequency increased {((recent_avg/ytd_avg - 1) * 100):.0f}%")
 
     # Friction cost
     friction = metrics.get("friction_ratio_pct", 0)
     if friction > cfg.get("friction_cost_pct", 15):
         score += 25
-        evidence.append(f"摩擦成本占实现盈亏 {friction:.1f}%")
+        evidence.append(f"Friction costs as a share of realized P&L {friction:.1f}%")
     elif friction > 8:
         score += 12
-        evidence.append(f"摩擦成本占实现盈亏 {friction:.1f}%")
+        evidence.append(f"Friction costs as a share of realized P&L {friction:.1f}%")
 
     # Holding period compression
     ytd_hold = metrics.get("ytd_median_hold_days", 0)
     recent_hold = metrics.get("recent_median_hold_days", 0)
     if ytd_hold > 0 and recent_hold < ytd_hold * (1 - cfg.get("holding_days_compression_pct", 50) / 100):
         score += 20
-        evidence.append(f"持仓周期中位数从 {ytd_hold} 天压缩至 {recent_hold} 天")
+        evidence.append(f"Median holding period compressed from {ytd_hold} to {recent_hold} days")
 
     # Round trips
     rt = metrics.get("round_trips_3d", 0)
     if rt > cfg.get("round_trip_3d_threshold", 5):
         score += 15
-        evidence.append(f"3日内反复交易 {rt} 次")
+        evidence.append(f"Round trips within three days: {rt}")
 
     score = min(score, 100)
     level = "high" if score >= 60 else "medium" if score >= 40 else "low"
@@ -327,13 +327,13 @@ def score_narrative_hype(trades: List[dict], closed_trades: List[dict], theme_at
     opt_notional_pct = opt_notional / total_notional * 100
     if opt_notional_pct > cfg.get("max_optionality_notional_pct", 25):
         score += 20
-        evidence.append(f"Optionality tier 交易金额占比 {opt_notional_pct:.1f}%")
+        evidence.append(f"Optionality tier NotionalExposure {opt_notional_pct:.1f}%")
 
     if total_loss < 0:
         opt_loss_pct = abs(opt_loss) / abs(total_loss) * 100
         if opt_loss_pct > cfg.get("max_optionality_loss_contribution_pct", 40):
             score += 30
-            evidence.append(f"Optionality tier 亏损占总亏损 {opt_loss_pct:.1f}%")
+            evidence.append(f"Optionality-tier losses as a share of total losses {opt_loss_pct:.1f}%")
 
     # Optionality win rate
     for attr in optionality_attrs:
@@ -343,7 +343,7 @@ def score_narrative_hype(trades: List[dict], closed_trades: List[dict], theme_at
             avg_pnl = attr.get("realized_pnl", 0) / max(attr.get("trade_count", 1), 1)
             if avg_pnl < 0:
                 score += 15
-                evidence.append(f"{attr['theme']}: 平均每笔亏损 ${abs(avg_pnl):.0f}")
+                evidence.append(f"{attr['theme']}: average loss per trade ${abs(avg_pnl):.0f}")
 
     score = min(score, 100)
     level = "high" if score >= 60 else "medium" if score >= 40 else "low"
@@ -374,11 +374,11 @@ def score_stock_selection(theme_attribution: List[dict], config: dict) -> tuple:
         if sel < alpha_threshold_pct and pnl < 0:
             score += 20
             evidence.append(
-                f"{attr['theme']}: 选股α {sel:.1f}%，实现盈亏 {pnl:,.0f}"
+                f"{attr['theme']}: selection alpha {sel:.1f}%, realized P&L {pnl:,.0f}"
             )
         elif sel < alpha_threshold_pct and tc >= weak_theme_threshold:
             score += 12
-            evidence.append(f"{attr['theme']}: 选股α {sel:.1f}%（{tc} 笔）")
+            evidence.append(f"{attr['theme']}: selection alpha {sel:.1f}% ({tc} fills)")
 
         # Large loss contribution from poor stock selection
         if total_loss < 0 and pnl < 0 and sel < 0:
@@ -386,7 +386,7 @@ def score_stock_selection(theme_attribution: List[dict], config: dict) -> tuple:
             if loss_contrib > loss_contrib_threshold_pct:
                 score += 20
                 evidence.append(
-                    f"{attr['theme']}: 选股劣势导致亏损占总亏损 {loss_contrib:.1f}%"
+                    f"{attr['theme']}: selection-driven losses as a share of total losses {loss_contrib:.1f}%"
                 )
 
     # Unclassified / lack of clear theme hurts selection discipline
@@ -396,10 +396,10 @@ def score_stock_selection(theme_attribution: List[dict], config: dict) -> tuple:
         unclass_sel = unclass.get("avg_selection_alpha_pct")
         if unclass_sel is not None and unclass_sel < alpha_threshold_pct:
             score += 15
-            evidence.append(f"未分类标的选股α {unclass_sel:.1f}%")
+            evidence.append(f"Unclassified-symbol selection alpha {unclass_sel:.1f}%")
         elif unclass_pnl < 0 and unclass.get("trade_count", 0) >= weak_theme_threshold:
             score += 10
-            evidence.append(f"未分类标的亏损 {unclass_pnl:,.0f}（{unclass['trade_count']} 笔）")
+            evidence.append(f"Unclassified-symbol loss {unclass_pnl:,.0f} ({unclass['trade_count']} fills)")
 
     score = min(score, 100)
     level = "high" if score >= 60 else "medium" if score >= 40 else "low"
@@ -424,10 +424,10 @@ def score_entry_quality(trades: List[dict], closed_trades: List[dict], theme_att
         high_fomo_pct = len(high_fomo) / len(fomo_results) * 100
         if high_fomo_pct > cfg.get("high_fomo_trade_pct", 20):
             score += 25
-            evidence.append(f"高FOMO买入占比 {high_fomo_pct:.1f}%")
+            evidence.append(f"High-FOMO entries {high_fomo_pct:.1f}%")
         elif high_fomo_pct > 10:
             score += 12
-            evidence.append(f"高FOMO买入占比 {high_fomo_pct:.1f}%")
+            evidence.append(f"High-FOMO entries {high_fomo_pct:.1f}%")
 
         # Top FOMO trades
         top_fomo = sorted(fomo_results, key=lambda x: x["score"], reverse=True)[:5]
@@ -449,7 +449,7 @@ def score_entry_quality(trades: List[dict], closed_trades: List[dict], theme_att
         bad_dd_pct = sum(1 for d in drawdown_trades if d < -0.10) / len(drawdown_trades) * 100
         if bad_dd_pct > cfg.get("post_entry_drawdown_trade_pct", 30):
             score += 20
-            evidence.append(f"买入后回撤>10%的交易占比 {bad_dd_pct:.1f}%")
+            evidence.append(f"Trades with post-entry drawdown above 10% {bad_dd_pct:.1f}%")
 
     score = min(score, 100)
     level = "high" if score >= 60 else "medium" if score >= 40 else "low"
@@ -503,7 +503,7 @@ def score_asymmetric_exit(closed_trades: List[dict], trades: List[dict], config:
         fly_ratio = len(sell_flies) / len(closed_trades)
         if fly_ratio > cfg.get("sell_fly_ratio_threshold", 0.25):
             score += 25
-            evidence.append(f"卖飞交易占比 {fly_ratio:.1%}")
+            evidence.append(f"Premature-exit share {fly_ratio:.1%}")
         elif fly_ratio > 0.15:
             score += 12
 
@@ -512,7 +512,7 @@ def score_asymmetric_exit(closed_trades: List[dict], trades: List[dict], config:
         threshold = cfg.get("missed_upside_vs_pnl_threshold", 0.20)
         if total_pnl > 0 and total_missed_pnl > abs(total_pnl) * threshold:
             score += 25
-            evidence.append(f"估算卖飞少赚 ${total_missed_pnl:,.0f}，超过已实现盈利 {threshold:.0%}")
+            evidence.append(f"Estimated missed upside ${total_missed_pnl:,.0f}, exceeding realized profit {threshold:.0%}")
 
     # Loser holding vs winner holding asymmetry
     winner_hold = [c["holding_days"] for c in closed_trades if c.get("realized_pnl", 0) > 0]
@@ -522,7 +522,7 @@ def score_asymmetric_exit(closed_trades: List[dict], trades: List[dict], config:
         avg_loser = sum(loser_hold) / len(loser_hold)
         if avg_loser > avg_winner * cfg.get("loser_holding_ratio", 1.5):
             score += 20
-            evidence.append(f"亏损持仓平均 {avg_loser:.0f} 天，盈利仅 {avg_winner:.0f} 天")
+            evidence.append(f"Average losing-position holding period {avg_loser:.0f} days versus {avg_winner:.0f} days for winners")
 
     # Loser add-on detection: buy while current close is below running avg cost.
     lots_by_symbol = defaultdict(list)
@@ -551,7 +551,7 @@ def score_asymmetric_exit(closed_trades: List[dict], trades: List[dict], config:
 
     if loser_adds > cfg.get("max_loser_add_count", 3):
         score += 15
-        evidence.append(f"亏损状态下加仓 {loser_adds} 次")
+        evidence.append(f"Adds to losing positions: {loser_adds}")
 
     score = min(score, 100)
     level = "high" if score >= 60 else "medium" if score >= 40 else "low"
@@ -581,7 +581,7 @@ def score_tail_risk(open_positions: List[dict], trades: List[dict], config: dict
             top3_pct = top3_value / total_value * 100
             if top3_pct > cfg.get("max_top3_concentration_pct", 70):
                 score += 15
-                evidence.append(f"前3大持仓集中度 {top3_pct:.1f}%")
+                evidence.append(f"Top-three position concentration {top3_pct:.1f}%")
 
             # Single theme concentration (rough: use symbol grouping)
             themes_cfg = load_themes_config()
@@ -594,7 +594,7 @@ def score_tail_risk(open_positions: List[dict], trades: List[dict], config: dict
                 max_theme_pct = max(v / total_value * 100 for v in theme_values.values())
                 if max_theme_pct > cfg.get("max_single_theme_pct", 50):
                     score += 20
-                    evidence.append(f"单一主题集中度 {max_theme_pct:.1f}%")
+                    evidence.append(f"Single-theme concentration {max_theme_pct:.1f}%")
 
     # Estimated drawdown impact
     # Rough estimate: assume all positions drop 30% (2022-style tech drawdown)
@@ -614,7 +614,7 @@ def score_tail_risk(open_positions: List[dict], trades: List[dict], config: dict
 
     if cash_negative:
         score += 20
-        evidence.append("现金余额为负（使用 margin）")
+        evidence.append("Cash balance is negative (margin in use)")
 
     score = min(score, 100)
     level = "high" if score >= 60 else "medium" if score >= 40 else "low"
@@ -645,7 +645,7 @@ def _risk_level(score: int) -> str:
 
 
 def _level_text(level: str) -> str:
-    return {"high": "高", "medium": "中", "low": "低"}.get(level, "低")
+    return {"high": "High", "medium": "Medium", "low": "Low"}.get(level, "Low")
 
 
 def compute_behavior_radar(trades: List[dict], closed_trades: List[dict], metrics: dict, period: str = "ytd") -> dict:
@@ -690,90 +690,90 @@ def compute_behavior_radar(trades: List[dict], closed_trades: List[dict], metric
 
     if not all_mode and ytd_daily and frequency_change_pct >= 70:
         score += 25
-        alerts.append({"severity": "high", "text": f"最近30个交易日交易频率上升 {frequency_change_pct:.0f}%"})
+        alerts.append({"severity": "high", "text": f"Trading frequency increased over the last 30 trading days by {frequency_change_pct:.0f}%"})
     elif not all_mode and ytd_daily and frequency_change_pct >= 35:
         score += 14
-        alerts.append({"severity": "medium", "text": f"最近30个交易日交易频率上升 {frequency_change_pct:.0f}%"})
+        alerts.append({"severity": "medium", "text": f"Trading frequency increased over the last 30 trading days by {frequency_change_pct:.0f}%"})
 
     if not all_mode and median_hold and recent_median_hold and recent_median_hold <= median_hold * 0.5:
         score += 22
-        alerts.append({"severity": "high", "text": f"持仓周期从 {median_hold:g} 天压缩到 {recent_median_hold:g} 天"})
+        alerts.append({"severity": "high", "text": f"Holding period compressed from {median_hold:g} to {recent_median_hold:g} days"})
     elif not all_mode and median_hold and recent_median_hold and recent_median_hold <= median_hold * 0.7:
         score += 12
-        alerts.append({"severity": "medium", "text": f"持仓周期从 {median_hold:g} 天压缩到 {recent_median_hold:g} 天"})
+        alerts.append({"severity": "medium", "text": f"Holding period compressed from {median_hold:g} to {recent_median_hold:g} days"})
 
     if winner_avg and loser_avg and loser_avg > winner_avg * 1.5:
         score += 18
-        alerts.append({"severity": "medium", "text": f"亏损单平均持有 {loser_avg:g} 天，盈利单 {winner_avg:g} 天"})
+        alerts.append({"severity": "medium", "text": f"Average losing-trade holding period {loser_avg:g} days versus {winner_avg:g} days for winners"})
     elif winner_avg and loser_avg and winner_avg > loser_avg * 2:
         score += 12
-        alerts.append({"severity": "medium", "text": f"盈利单平均持有 {winner_avg:g} 天，亏损单 {loser_avg:g} 天，需核查是否过早砍亏或追涨失败"})
+        alerts.append({"severity": "medium", "text": f"Winning trades averaged {winner_avg:g} days versus {loser_avg:g} days for losers; review premature exits and failed chases"})
 
     if high_fomo_pct >= 25:
         score += 24
-        alerts.append({"severity": "high", "text": f"高 FOMO 买入占比 {high_fomo_pct:.1f}%"})
+        alerts.append({"severity": "high", "text": f"High-FOMO entry share {high_fomo_pct:.1f}%"})
     elif high_fomo_pct >= 12:
         score += 12
-        alerts.append({"severity": "medium", "text": f"高 FOMO 买入占比 {high_fomo_pct:.1f}%"})
+        alerts.append({"severity": "medium", "text": f"High-FOMO entry share {high_fomo_pct:.1f}%"})
 
     if round_trips_3d >= 8:
         score += 16
-        alerts.append({"severity": "high", "text": f"3日内反复交易 {round_trips_3d} 次"})
+        alerts.append({"severity": "high", "text": f"Round trips within three days: {round_trips_3d}"})
     elif round_trips_3d >= 4:
         score += 8
-        alerts.append({"severity": "medium", "text": f"3日内反复交易 {round_trips_3d} 次"})
+        alerts.append({"severity": "medium", "text": f"Round trips within three days: {round_trips_3d}"})
 
     score = min(score, 100)
     level = _risk_level(score)
     if all_mode:
-        verdict = "全部区间适合看长期行为轮廓，不适合判断最近30天行为漂移。"
+        verdict = "The All period shows long-term behavior and is not suitable for recent 30-day drift analysis."
     elif level == "high":
-        verdict = "近期行为风险高：交易正在变短、变密或更追涨。"
+        verdict = "Recent behavior risk is high: trading is becoming shorter, denser, or more chase-driven."
     elif level == "medium":
-        verdict = "近期行为风险中等：有短线化或追涨苗头，需要收紧规则。"
+        verdict = "Recent behavior risk is medium: short-term trading or chasing is emerging and rules should be tightened."
     else:
-        verdict = "近期行为风险低：没有明显行为漂移信号。"
+        verdict = "Recent behavior risk is low: no material behavior drift is visible."
 
     cards = [
         {
             "key": "frequency",
-            "title": "交易频率变化",
-            "value": "长期总览" if all_mode else f"{frequency_change_pct:+.0f}%",
-            "detail": f"近期日均 {recent_daily:g} 次 / 全区间 {ytd_daily:g} 次" if not all_mode else f"全区间日均 {ytd_daily:g} 次，共 {len(trades)} 笔",
+            "title": "Trading-frequency change",
+            "value": "Long-term overview" if all_mode else f"{frequency_change_pct:+.0f}%",
+            "detail": f"Recent daily average {recent_daily:g} / full-period average {ytd_daily:g}" if not all_mode else f"Full-period daily average {ytd_daily:g}; {len(trades)} executions",
             "level": "low" if all_mode else _risk_level(25 if frequency_change_pct >= 70 else 40 if frequency_change_pct >= 35 else 0),
         },
         {
             "key": "holding_period",
-            "title": "持仓周期变化",
-            "value": "不适用" if all_mode else f"{median_hold:g}→{recent_median_hold:g}天",
-            "detail": "全部区间不判断近期压缩" if all_mode else f"变化 {hold_change_pct:+.0f}%",
+            "title": "Holding-period change",
+            "value": "Not applicable" if all_mode else f"{median_hold:g} -> {recent_median_hold:g} days",
+            "detail": "Recent compression is not evaluated for the All period" if all_mode else f"Change {hold_change_pct:+.0f}%",
             "level": "low" if all_mode else _risk_level(65 if median_hold and recent_median_hold and recent_median_hold <= median_hold * 0.5 else 40 if median_hold and recent_median_hold and recent_median_hold <= median_hold * 0.7 else 0),
         },
         {
             "key": "winner_loser_hold",
-            "title": "盈亏单持仓差异",
-            "value": f"盈{winner_avg:g}天 / 亏{loser_avg:g}天" if winner_avg or loser_avg else "样本不足",
-            "detail": f"中位数：盈{winner_median:g}天 / 亏{loser_median:g}天" if winner_median or loser_median else "缺少已平仓样本",
+            "title": "Winner-versus-loser holding period",
+            "value": f"Winners {winner_avg:g} days / losers {loser_avg:g} days" if winner_avg or loser_avg else "Insufficient sample",
+            "detail": f"Median: winners {winner_median:g} days / losers {loser_median:g} days" if winner_median or loser_median else "No closed-trade sample",
             "level": _risk_level(45 if winner_avg and loser_avg and (loser_avg > winner_avg * 1.5 or winner_avg > loser_avg * 2) else 0),
         },
         {
             "key": "fomo",
-            "title": "追涨倾向",
+            "title": "Chasing tendency",
             "value": f"{high_fomo_pct:.1f}%",
-            "detail": f"高FOMO买入 {len(high_fomo)} / {len(fomo_results)} 笔" if fomo_results else "无可计算买入样本",
+            "detail": f"High-FOMO entries {len(high_fomo)} / {len(fomo_results)}" if fomo_results else "No calculable entry sample",
             "level": _risk_level(70 if high_fomo_pct >= 25 else 40 if high_fomo_pct >= 12 else 0),
         },
         {
             "key": "round_trips",
-            "title": "短线反复交易",
-            "value": f"{round_trips_3d} 次",
-            "detail": "3日内同标的买卖往返",
+            "title": "Repeated short-term trading",
+            "value": f"{round_trips_3d}",
+            "detail": "Same-symbol round trips within three days",
             "level": _risk_level(65 if round_trips_3d >= 8 else 35 if round_trips_3d >= 4 else 0),
         },
         {
             "key": "overall",
-            "title": "行为总评",
-            "value": f"{_level_text(level)}风险",
+            "title": "Overall behavior assessment",
+            "value": f"{_level_text(level)}risk",
             "detail": verdict,
             "level": level,
         },
@@ -796,7 +796,7 @@ def compute_setup_performance(closed_trades: List[dict]) -> List[dict]:
     """Aggregate closed-trade performance by planned setup type."""
     groups = defaultdict(list)
     for trade in closed_trades:
-        setup = (trade.get("setup_type") or "").strip() or "未计划"
+        setup = (trade.get("setup_type") or "").strip() or "Unplanned"
         groups[setup].append(trade)
 
     rows = []
@@ -830,7 +830,7 @@ def compute_exit_setup_performance(closed_trades: List[dict]) -> List[dict]:
     """Aggregate closed-trade performance by exit setup type (SELL tag)."""
     groups = defaultdict(list)
     for trade in closed_trades:
-        setup = (trade.get("exit_setup_type") or "").strip() or "未标注"
+        setup = (trade.get("exit_setup_type") or "").strip() or "Unlabeled"
         groups[setup].append(trade)
 
     rows = []
@@ -914,7 +914,7 @@ def compute_exit_quality(closed_trades: List[dict]) -> dict:
             "quantity": quantity,
             "realizedPnl": round(float(trade.get("realized_pnl", 0) or 0), 2),
             "entrySource": trade.get("entry_source", ""),
-            "setupType": trade.get("setup_type") or "未计划",
+            "setupType": trade.get("setup_type") or "Unplanned",
             **series,
         }
         ret20 = item.get("return20dPct")
@@ -957,26 +957,26 @@ def compute_discipline_summary(metrics: dict, behavior_radar: dict, setup_perfor
     if risk_missing:
         issues.append({
             "severity": "high",
-            "title": "初始风险缺失",
-            "evidence": f"{risk_missing} 笔已平仓交易缺少无效价 / 初始风险，R 倍数无法计算。",
-            "rule": "没有无效价和初始风险的交易，不计入有效逻辑。"
+            "title": "Missing initial risk",
+            "evidence": f"{risk_missing} closed trades lack an invalidation price or initial risk, so R multiples cannot be calculated.",
+            "rule": "Exclude trades without an invalidation price and initial risk from valid setup statistics."
         })
 
     for alert in (behavior_radar.get("alerts") or [])[:2]:
         issues.append({
             "severity": alert.get("severity", "medium"),
-            "title": "行为漂移",
+            "title": "Behavior drift",
             "evidence": alert.get("text", ""),
-            "rule": "触发行为漂移时，停止新增同类交易，先复盘最近一笔。"
+            "rule": "When behavior drift triggers, stop adding similar trades and review the most recent one first."
         })
 
-    unplanned = next((row for row in setup_performance if row.get("setupType") == "未计划"), None)
+    unplanned = next((row for row in setup_performance if row.get("setupType") == "Unplanned"), None)
     if unplanned and unplanned.get("closedTradeCount", 0):
         issues.append({
             "severity": "medium",
-            "title": "缺少事前计划",
-            "evidence": f"{unplanned.get('closedTradeCount', 0)} 笔已平仓交易没有买卖逻辑标签，盈亏 {unplanned.get('realizedPnl', 0)}。",
-            "rule": "下单前必须填写买卖逻辑、无效价、目标持有期和退出条件。"
+            "title": "Missing pre-trade plan",
+            "evidence": f"{unplanned.get('closedTradeCount', 0)} closed trades have no setup tag; P&L {unplanned.get('realizedPnl', 0)}.",
+            "rule": "Before placing a trade, record the setup, invalidation price, target holding period, and exit condition."
         })
 
     sell_too_early = int(exit_quality.get("sellTooEarlyCount20d", 0) or 0)
@@ -984,9 +984,9 @@ def compute_discipline_summary(metrics: dict, behavior_radar: dict, setup_perfor
     if sell_too_early or trend_unbroken:
         issues.append({
             "severity": "medium",
-            "title": "退出纪律需要复核",
-            "evidence": f"20日后继续涨超10%的卖出 {sell_too_early} 笔；趋势未破退出 {trend_unbroken} 笔。",
-            "rule": "趋势未破时，减仓要写明触发条件，禁止因为短期波动随手卖。"
+            "title": "Exit discipline needs review",
+            "evidence": f"Sales followed by gains above 10% after 20 days: {sell_too_early}; exits before trend failure: {trend_unbroken}.",
+            "rule": "When the trend remains intact, document the trigger for any reduction; do not sell because of short-term noise."
         })
 
     deduped = []
@@ -998,11 +998,11 @@ def compute_discipline_summary(metrics: dict, behavior_radar: dict, setup_perfor
             seen.add(key)
 
     hard_rules = [
-        "没有买卖逻辑、无效价、初始风险的交易，不计入有效交易。",
-        "FOMO 或交易频率报警后，下一笔同类交易必须延后一个交易日。",
-        "卖出后 20 日表现显著强于卖出价时，复盘退出触发条件，而不是归因于运气。",
-        "亏损状态下加仓必须证明原计划未失效，否则视为纪律违约。",
-        "每周只复盘规则执行，不把复盘写成市场预测。",
+        "Exclude trades without a setup, invalidation price, and initial risk from the valid sample.",
+        "After a FOMO or trading-frequency alert, delay the next similar trade by one trading day.",
+        "When price materially outperforms for 20 days after an exit, review the exit trigger instead of attributing it to luck.",
+        "Adding to a losing position requires evidence that the original plan remains valid; otherwise it is a discipline breach.",
+        "Review rule execution weekly; do not turn the review into a market forecast.",
     ]
     return {
         "topIssues": deduped[:3],
@@ -1083,20 +1083,20 @@ def compute_position_rules_check(trades: List[dict], closed_trades: List[dict], 
     if total_pos_value > 0:
         if optionality_pct > 0.20:
             alerts.append({
-                "rule": "仓位分配",
+                "rule": "Position allocation",
                 "severity": "high",
-                "title": "探索仓位超限",
+                "title": "Exploratory allocation exceeds limit",
                 "evidence": (
-                    f"探索仓（optionality）占持仓 {optionality_pct * 100:.1f}%，"
-                    f"超过20%上限。主线资产 {(1 - optionality_pct) * 100:.1f}%。"
+                    f"Exploratory positions represent {optionality_pct * 100:.1f}%, "
+                    f"above the 20% limit. Core positions {(1 - optionality_pct) * 100:.1f}%."
                 ),
             })
         elif optionality_pct > 0.18:
             alerts.append({
-                "rule": "仓位分配",
+                "rule": "Position allocation",
                 "severity": "medium",
-                "title": "探索仓位接近上限",
-                "evidence": f"探索仓占持仓 {optionality_pct * 100:.1f}%，接近20%上限。",
+                "title": "Exploratory allocation near the limit",
+                "evidence": f"Exploratory positions represent {optionality_pct * 100:.1f}% of holdings, near the 20% limit.",
             })
 
     # Rule 2: single exploration symbol loss > 1% NAV -> halt 7 days
@@ -1136,42 +1136,42 @@ def compute_position_rules_check(trades: List[dict], closed_trades: List[dict], 
                         days_since = (datetime.now() - last_dt).days
                         if days_since < 7:
                             alerts.append({
-                                "rule": "探索标的止损",
+                                "rule": "Exploratory-position stop loss",
                                 "severity": "high",
-                                "title": f"{sym} 亏损超1%且仍在交易",
+                                "title": f"{sym} loss exceeds 1% and trading continues",
                                 "evidence": (
-                                    f"{sym} 累计亏损 {loss:,.0f}（占账户 {loss / nav * 100:.2f}%），"
-                                    f"规则要求强制停止交易7天。最近交易在 {days_since} 天前。"
+                                    f"{sym} cumulative loss {loss:,.0f} ({loss / nav * 100:.2f}% of account); "
+                                    f"the rule requires a seven-day trading pause. The most recent trade was {days_since} days ago."
                                 ),
                             })
                         else:
                             alerts.append({
-                                "rule": "探索标的止损",
+                                "rule": "Exploratory-position stop loss",
                                 "severity": "medium",
-                                "title": f"{sym} 探索标的亏损超1%",
+                                "title": f"{sym} exploratory-position loss exceeds 1%",
                                 "evidence": (
-                                    f"{sym} 累计亏损 {loss:,.0f}（占账户 {loss / nav * 100:.2f}%），"
-                                    f"最近交易在 {days_since} 天前（已超7天停赛期）。"
+                                    f"{sym} cumulative loss {loss:,.0f} ({loss / nav * 100:.2f}% of account); "
+                                    f"the most recent trade was {days_since} days ago, beyond the seven-day pause."
                                 ),
                             })
                     except Exception:
                         alerts.append({
-                            "rule": "探索标的止损",
+                            "rule": "Exploratory-position stop loss",
                             "severity": "high",
-                            "title": f"{sym} 探索标的亏损超1%",
+                            "title": f"{sym} exploratory-position loss exceeds 1%",
                             "evidence": (
-                                f"{sym} 累计亏损 {loss:,.0f}（占账户 {loss / nav * 100:.2f}%），"
-                                f"规则要求强制停止交易7天。"
+                                f"{sym} cumulative loss {loss:,.0f} ({loss / nav * 100:.2f}% of account); "
+                                f"the rule requires a seven-day trading pause."
                             ),
                         })
                 else:
                     alerts.append({
-                        "rule": "探索标的止损",
+                        "rule": "Exploratory-position stop loss",
                         "severity": "high",
-                        "title": f"{sym} 探索标的亏损超1%",
+                        "title": f"{sym} exploratory-position loss exceeds 1%",
                         "evidence": (
-                            f"{sym} 累计亏损 {loss:,.0f}（占账户 {loss / nav * 100:.2f}%），"
-                            f"规则要求强制停止交易7天。"
+                            f"{sym} cumulative loss {loss:,.0f} ({loss / nav * 100:.2f}% of account); "
+                            f"the rule requires a seven-day trading pause."
                         ),
                     })
 
@@ -1194,10 +1194,10 @@ def compute_position_rules_check(trades: List[dict], closed_trades: List[dict], 
         if len(dates) > 5:
             emotion_entries.append((sym, week_key, len(dates)))
             alerts.append({
-                "rule": "情绪交易",
+                "rule": "Emotion-driven trading",
                 "severity": "high",
-                "title": f"{sym} {week_key} 情绪交易",
-                "evidence": f"{sym} 在 {week_key} 交易 {len(dates)} 笔，超过5笔/周上限，自动标记为情绪交易。",
+                "title": f"{sym} {week_key} Emotion-driven trading",
+                "evidence": f"{sym} traded {len(dates)} times in {week_key}, above the five-trades-per-week limit and automatically tagged as emotion-driven trading.",
             })
 
     return {
@@ -1338,23 +1338,23 @@ def _build_mtm_rankings(mtm_state: dict, theme_attribution: List[dict], evidence
         if m:
             sym = m.group(1)
             tags = behavior_map.setdefault(sym, [])
-            if "FOMO" in ev and "追高风险" not in tags:
-                tags.append("追高风险")
-            if "回撤" in ev and "入场回撤" not in tags:
-                tags.append("入场回撤")
+            if "FOMO" in ev and "Chasing risk" not in tags:
+                tags.append("Chasing risk")
+            if "drawdown" in ev and "post-entry drawdown" not in tags:
+                tags.append("post-entry drawdown")
 
     # Asymmetric exit: sell-fly symbol-level detail (we don't have it in evidence strings,
     # but we can infer from theme verdict for now)
     # Theme judgment: add theme-level tags
     for ev in evidence_map.get("theme_judgment", []):
-        if "选股优秀" in ev:
+        if "Strong stock selection" in ev:
             # Try to find which theme — evidence format is like "theme_name: ..."
             m = re.match(r'^([a-z_]+):', ev)
             if m:
                 th = m.group(1)
                 for sym, theme in sym_to_theme.items():
-                    if theme == th and "选股优秀" not in behavior_map.get(sym, []):
-                        behavior_map.setdefault(sym, []).append("选股优秀")
+                    if theme == th and "Strong stock selection" not in behavior_map.get(sym, []):
+                        behavior_map.setdefault(sym, []).append("Strong stock selection")
 
     # Build items
     items = []
@@ -1375,17 +1375,17 @@ def _build_mtm_rankings(mtm_state: dict, theme_attribution: List[dict], evidence
         if mtm < 0:
             sel = alpha.get("selection")
             tim = alpha.get("timing")
-            if sel is not None and sel < -0.03 and "选股差于ETF" not in tags:
-                tags.append("选股差于ETF")
-            if tim is not None and tim < -0.02 and "择时负贡献" not in tags:
-                tags.append("择时负贡献")
+            if sel is not None and sel < -0.03 and "Stock selection lagged ETF" not in tags:
+                tags.append("Stock selection lagged ETF")
+            if tim is not None and tim < -0.02 and "Negative timing contribution" not in tags:
+                tags.append("Negative timing contribution")
         else:
             sel = alpha.get("selection")
             tim = alpha.get("timing")
-            if sel is not None and sel > 0.03 and "选股优秀" not in tags:
-                tags.append("选股优秀")
-            if tim is not None and tim > 0.02 and "择时正贡献" not in tags:
-                tags.append("择时正贡献")
+            if sel is not None and sel > 0.03 and "Strong stock selection" not in tags:
+                tags.append("Strong stock selection")
+            if tim is not None and tim > 0.02 and "Positive timing contribution" not in tags:
+                tags.append("Positive timing contribution")
 
         items.append({
             "symbol": sym,

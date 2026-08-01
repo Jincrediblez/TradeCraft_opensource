@@ -13,7 +13,13 @@ pytest -q
 
 - Keep the service loopback-only and the frontend build-free.
 - Preserve stable API fields unless the change is documented.
-- Add or update English and Simplified Chinese catalog entries together.
+- Write source code, comments, logs, schemas, fixtures, CLI output, API text,
+  prompts, and documentation in English only.
+- Add English UI text first, then update the matching Simplified Chinese catalog
+  key. Chinese text is allowed only in `static/locales/zh-CN.json` and focused
+  UI-localization assertions.
+- Keep canonical form values and persisted state in English even when the
+  browser displays Simplified Chinese.
 - Use only deterministic synthetic fixtures in tests and documentation.
 - Add tests for behavior changes and run the privacy checks.
 - Keep optional AI synthesis separate from deterministic calculations.

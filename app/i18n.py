@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Shared locale resolution and message catalog access."""
+"""Browser UI locale helpers.
+
+The HTTP API and all persisted state are English-only.  The server exposes
+stable message keys so the browser may render Simplified Chinese locally.
+"""
 
 import json
 from functools import lru_cache
@@ -13,30 +17,11 @@ SUPPORTED_LOCALES = ("en", "zh-CN")
 DEFAULT_LOCALE = "en"
 
 
-def normalize_locale(value: Optional[str], *, allow_auto: bool = False) -> str:
+def normalize_locale(value: Optional[str]) -> str:
     raw = str(value or "").strip().replace("_", "-")
-    if allow_auto and raw.lower() == "auto":
-        return "auto"
-    lowered = raw.lower()
-    if lowered.startswith("zh"):
+    if raw.lower() == "zh-cn":
         return "zh-CN"
-    if lowered.startswith("en"):
-        return "en"
     return DEFAULT_LOCALE
-
-
-def resolve_locale(
-    explicit: Optional[str] = None,
-    accept_language: Optional[str] = None,
-    saved: Optional[str] = None,
-) -> str:
-    if explicit:
-        return normalize_locale(explicit)
-    saved_locale = normalize_locale(saved, allow_auto=True)
-    if saved_locale != "auto":
-        return saved_locale
-    first = str(accept_language or "").split(",", 1)[0].strip()
-    return normalize_locale(first)
 
 
 @lru_cache(maxsize=4)
@@ -75,29 +60,3 @@ def message(locale: str, key: str, default: str = "", **params: Any) -> dict:
         "messageKey": key,
         "messageParams": params,
     }
-
-
-def translate_text(locale: str, value: str) -> str:
-    """Translate display text at the API boundary without mutating stored state."""
-    if normalize_locale(locale) == "zh-CN" or not value:
-        return value
-    catalog = load_catalog(locale)
-    exact = catalog.get("legacy", {})
-    if value in exact:
-        return str(exact[value])
-    translated = value
-    fragments = catalog.get("fragments", {})
-    for source in sorted(fragments, key=len, reverse=True):
-        translated = translated.replace(source, str(fragments[source]))
-    return translated
-
-
-def localize_payload(payload: Any, locale: str) -> Any:
-    """Create a localized response copy while leaving persisted JSON unchanged."""
-    if isinstance(payload, dict):
-        return {key: localize_payload(value, locale) for key, value in payload.items()}
-    if isinstance(payload, (list, tuple)):
-        return [localize_payload(value, locale) for value in payload]
-    if isinstance(payload, str):
-        return translate_text(locale, payload)
-    return payload

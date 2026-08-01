@@ -35,7 +35,7 @@ from app import kline_cache
 from app import watchlist_manager
 from app.symbols import normalize_symbol
 from app.schemas import trades_from_rows
-from app.i18n import localize_payload, resolve_locale, translate
+from app.i18n import translate
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -81,8 +81,8 @@ YAHOO_NAME_CHART_FALLBACK_LIMIT = int(os.environ.get("YAHOO_NAME_CHART_FALLBACK_
 YAHOO_ERROR_RETRY_SECONDS = int(os.environ.get("YAHOO_ERROR_RETRY_SECONDS", "900"))
 
 MARKET_CLOSE_CONFIGS = {
-    "US": {"tz": "America/New_York", "close_hour": 16, "close_minute": 0, "label": "美股"},
-    "HK": {"tz": "Asia/Hong_Kong", "close_hour": 16, "close_minute": 10, "label": "港股"},
+    "US": {"tz": "America/New_York", "close_hour": 16, "close_minute": 0, "label": "US stocks"},
+    "HK": {"tz": "Asia/Hong_Kong", "close_hour": 16, "close_minute": 10, "label": "Hong Kong stocks"},
 }
 
 DEFAULT_SYMBOL = "INTC.US"
@@ -279,7 +279,7 @@ def mtm_file_for_period(period: str) -> Path:
 def period_label(period: str) -> str:
     p = normalize_period(period)
     if p == "ALL":
-        return "全部"
+        return "All"
     return p
 
 
@@ -331,14 +331,14 @@ def run_audit_pipeline_for_period(period: str) -> dict:
 def _run_audit_pipeline_for_period_unlocked(period: str) -> dict:
     p = normalize_period(period)
     if p == "ALL":
-        raise ValueError("全部区间暂不支持重新生成 AI 测评，请选择具体年度或 YTD 区间。")
+        raise ValueError("AI audit generation is unavailable for the All period; select a year or YTD.")
 
     trades_path = trades_file_for_period(p)
     mtm_path = mtm_file_for_period(p)
     if not trades_path.exists():
-        raise FileNotFoundError(f"{p} 缺少 trades.json")
+        raise FileNotFoundError(f"{p} is missing trades.json")
     if not mtm_path.exists():
-        raise FileNotFoundError(f"{p} 缺少 mtm.json")
+        raise FileNotFoundError(f"{p} is missing mtm.json")
 
     from app.position_matcher import run_matching
     from app.theme_classifier import run_theme_attribution
@@ -418,7 +418,7 @@ def build_all_period_audit_summary() -> dict:
     }
 
 
-def build_audit_workbench_for_period(period: str, persist: bool = True, locale: str = "") -> dict:
+def build_audit_workbench_for_period(period: str, persist: bool = True) -> dict:
     """Build the deterministic, versioned audit workbench for one period."""
     from app.audit_workbench import (
         REPORT_META_FILE,
@@ -429,9 +429,7 @@ def build_audit_workbench_for_period(period: str, persist: bool = True, locale: 
     )
     from app.kline_cache import get_kline
 
-    from app.i18n import normalize_locale
     p = normalize_period(period)
-    selected_locale = normalize_locale(locale or str(load_settings().get("locale") or "en"))
     if p == "ALL":
         summary = build_all_period_audit_summary()
         trades = [asdict(trade) for trade in load_period_trades("ALL")]
@@ -449,7 +447,7 @@ def build_audit_workbench_for_period(period: str, persist: bool = True, locale: 
             summary_path = STATE_DIR / "audit_summary.json"
         summary = read_json(summary_path, {})
         if not summary:
-            raise FileNotFoundError(f"{p} 缺少 audit_summary.json，请先刷新测评数据")
+            raise FileNotFoundError(f"{p} is missing audit_summary.json; refresh audit data first")
         summary["period"] = p
         summary["periodLabel"] = period_label(p)
         trades_path = trades_file_for_period(p)
@@ -464,9 +462,9 @@ def build_audit_workbench_for_period(period: str, persist: bool = True, locale: 
         statement_snapshot = read_json(statement_path, {})
 
     period_dir = period_state_dir(p)
-    report_path = period_dir / f"audit_report.{selected_locale}.md"
+    report_path = period_dir / "audit_report.md"
     if not report_path.exists() and p == CURRENT_PERIOD:
-        report_path = STATE_DIR / f"audit_report.{selected_locale}.md"
+        report_path = STATE_DIR / "audit_report.md"
     report_meta_path = period_dir / REPORT_META_FILE
     notes = load_round_trip_notes(STATE_DIR)
     from app.audit_workbench import ROUND_TRIPS_FILE
@@ -506,18 +504,16 @@ def build_audit_workbench_for_period(period: str, persist: bool = True, locale: 
     return snapshot
 
 
-def generate_audit_report_for_period(period: str, force: bool = False, locale: str = "en") -> Tuple[str, bool, bool]:
+def generate_audit_report_for_period(period: str, force: bool = False) -> Tuple[str, bool, bool]:
     """Returns (report_path, cached, stale).
 
     ``stale`` is True only when the Kimi call failed and we fell back to a
     previously generated report — so the UI can warn the user it isn't fresh.
     """
-    from app.i18n import normalize_locale
     p = normalize_period(period)
-    locale = normalize_locale(locale)
-    report_path = period_state_file(p, f"audit_report.{locale}.md")
+    report_path = period_state_file(p, "audit_report.md")
     today_report_path = period_state_file(
-        p, f"audit_report_{locale}_{datetime.now().strftime('%Y-%m-%d')}.md"
+        p, f"audit_report_{datetime.now().strftime('%Y-%m-%d')}.md"
     )
 
     summary_path = period_state_file(p, "audit_summary.json")
@@ -528,7 +524,7 @@ def generate_audit_report_for_period(period: str, force: bool = False, locale: s
         summary = read_json(summary_path, {})
 
     if not summary:
-        raise RuntimeError(f"{p} 审计上下文为空，无法生成 AI 测评。")
+        raise RuntimeError(f"The {p} audit context is empty; an AI audit cannot be generated.")
 
     from app.audit_workbench import REPORT_META_FILE, WORKBENCH_FILE
 
@@ -544,7 +540,7 @@ def generate_audit_report_for_period(period: str, force: bool = False, locale: s
         not force
         and report_path.exists()
         and report_meta.get("summaryHash") == summary_hash
-        and report_meta.get("locale") == locale
+        and report_meta.get("language") == "en"
     ):
         if not snapshot_id or report_meta.get("snapshotId") == snapshot_id:
             app_log("audit report cache hit", period=p, report=str(report_path.relative_to(ROOT)))
@@ -561,7 +557,7 @@ def generate_audit_report_for_period(period: str, force: bool = False, locale: s
     api_key = get_api_key()
     if not api_key:
         app_log("audit report missing kimi key", level="warning", period=p)
-        raise RuntimeError("Kimi API key 未配置，无法生成 AI 交易质量评测。请设置 KIMI_API_KEY。")
+        raise RuntimeError("KIMI_API_KEY is not configured; an AI trading-quality report cannot be generated.")
 
     audit_context = build_audit_context(summary)
     audit_context["period"] = p
@@ -577,21 +573,22 @@ def generate_audit_report_for_period(period: str, force: bool = False, locale: s
             "behavior_comparison": workbench.get("behavior", {}),
         }
     audit_json_str = cap_context_json(json.dumps(audit_context, ensure_ascii=False, indent=2))
-    prompt = load_prompt(locale).replace("{{AUDIT_CONTEXT}}", audit_json_str).replace("{{AUDIT_JSON}}", audit_json_str)
-    content, kimi_error = call_kimi_api_with_error(prompt, api_key, locale)
+    prompt = load_prompt().replace("{{AUDIT_CONTEXT}}", audit_json_str).replace("{{AUDIT_JSON}}", audit_json_str)
+    content, kimi_error = call_kimi_api_with_error(prompt, api_key)
     if content is None:
         app_log("audit report kimi failed", level="warning", period=p, error=kimi_error)
         if report_path.exists():
             # Kimi failed — serve the previous report but flag it as stale.
             return str(report_path), True, True
         raise RuntimeError(
-            f"Kimi API 调用失败，未生成 AI 交易质量评测。{kimi_error or '请检查 API key、账户状态或网络连接。'}"
+            f"Kimi API call failed and no AI trading-quality report was generated. "
+            f"{kimi_error or 'Check the API key, account status, or network connection.'}"
         )
-    if re.search(r"\bX\b|\{\{|TODO|待补充", content):
+    if re.search(r"\bX\b|\{\{|TODO|TBD", content):
         app_log("audit report rejected placeholders", level="warning", period=p)
         if report_path.exists():
             return str(report_path), True, True
-        raise RuntimeError("AI 总结包含未完成占位符，已拒绝保存。")
+        raise RuntimeError("The AI summary contains unfinished placeholders and was not saved.")
 
     report_path.parent.mkdir(parents=True, exist_ok=True)
     atomic_write_text(report_path, content)
@@ -599,10 +596,10 @@ def generate_audit_report_for_period(period: str, force: bool = False, locale: s
     write_json(
         report_meta_path,
         {
-            "schemaVersion": 2,
+            "schemaVersion": 3,
             "generatedAt": datetime.now().isoformat(timespec="seconds"),
             "period": p,
-            "locale": locale,
+            "language": "en",
             "snapshotId": snapshot_id,
             "summaryHash": summary_hash,
             "reportPath": str(report_path.relative_to(ROOT)),
@@ -612,32 +609,27 @@ def generate_audit_report_for_period(period: str, force: bool = False, locale: s
     return str(today_report_path), False, False
 
 
-def generate_demo_audit_report_for_period(period: str, locale: str = "en", snapshot: Optional[dict] = None) -> Tuple[str, bool, bool]:
+def generate_demo_audit_report_for_period(period: str, snapshot: Optional[dict] = None) -> Tuple[str, bool, bool]:
     """Generate a clearly labeled offline AI-style report from synthetic data."""
 
     from app.audit_workbench import REPORT_META_FILE
     from app.demo_data import render_demo_audit_report
-    from app.i18n import normalize_locale
-
     p = normalize_period(period)
-    selected_locale = normalize_locale(locale)
-    workbench = snapshot or build_audit_workbench_for_period(
-        p, persist=True, locale=selected_locale
-    )
-    report_path = period_state_file(p, f"audit_report.{selected_locale}.md")
+    workbench = snapshot or build_audit_workbench_for_period(p, persist=True)
+    report_path = period_state_file(p, "audit_report.md")
     dated_path = period_state_file(
-        p, f"audit_report_{selected_locale}_{datetime.now().strftime('%Y-%m-%d')}.md"
+        p, f"audit_report_{datetime.now().strftime('%Y-%m-%d')}.md"
     )
-    content = render_demo_audit_report(workbench, selected_locale)
+    content = render_demo_audit_report(workbench)
     atomic_write_text(report_path, content)
     atomic_write_text(dated_path, content)
     write_json(
         period_state_file(p, REPORT_META_FILE),
         {
-            "schemaVersion": 2,
+            "schemaVersion": 3,
             "generatedAt": datetime.now().isoformat(timespec="seconds"),
             "period": p,
-            "locale": selected_locale,
+            "language": "en",
             "snapshotId": str(workbench.get("snapshotId") or ""),
             "summaryHash": str(workbench.get("sourceDigest") or ""),
             "reportPath": str(report_path.relative_to(ROOT)),
@@ -649,7 +641,6 @@ def generate_demo_audit_report_for_period(period: str, locale: str = "en", snaps
     app_log(
         "demo audit report generated",
         period=p,
-        locale=selected_locale,
         report=str(report_path.relative_to(ROOT)),
     )
     return str(report_path), False, False
@@ -814,13 +805,13 @@ def parse_multipart(body: bytes, boundary: str) -> List[dict]:
 
 def validate_upload_file(filename: str, payload: bytes) -> Tuple[bool, str]:
     if not filename:
-        return False, "文件名不能为空"
+        return False, "Filename must not be empty"
     suffix = Path(filename).suffix.lower()
     if suffix == ".tlg":
         text = payload.decode("utf-8", errors="ignore")
         if "ACCOUNT_INFORMATION" in text or "STK_TRD" in text:
-            return True, "TLG 交易日志"
-        return False, "无效的 .tlg 文件，缺少交易记录标识"
+            return True, "TLG trade log"
+        return False, "Invalid .tlg file: trade-record marker is missing"
     if suffix == ".csv":
         text = payload.decode("utf-8", errors="ignore")
         lines = text.splitlines()[:10]
@@ -829,8 +820,8 @@ def validate_upload_file(filename: str, payload: bytes) -> Tuple[bool, str]:
                 return True, "Activity Statement"
             if "MTM Summary" in line:
                 return True, "MTM Summary"
-        return False, "无效的 CSV 文件，缺少 Activity Statement 或 MTM Summary 标识"
-    return False, f"不支持的文件类型: {suffix}"
+        return False, "Invalid CSV file: Activity Statement or MTM Summary marker is missing"
+    return False, f"Unsupported file type: {suffix}"
 
 
 def upload_target_for_file(filename: str, payload: bytes) -> Tuple[Path, str]:
@@ -852,7 +843,7 @@ def upload_target_for_file(filename: str, payload: bytes) -> Tuple[Path, str]:
         year = historical_year_from_statement_period(period or "")
         if title == "Activity Statement" and year:
             target_dir = HISTORICAL_INBOX_DIR / year
-            return target_dir / filename, f"历史 {year} Activity Statement"
+            return target_dir / filename, f"Historical {year} Activity Statement"
     if suffix == ".tlg":
         temp_path = Path("__upload_probe__.tlg")
         # Avoid writing a temp file: parse the STK_TRD dates directly from text.
@@ -867,8 +858,8 @@ def upload_target_for_file(filename: str, payload: bytes) -> Tuple[Path, str]:
             year = next(iter(years))
             if year.isdigit() and int(year) < CURRENT_YEAR:
                 target_dir = HISTORICAL_INBOX_DIR / year
-                return target_dir / filename, f"历史 {year} TLG 交易日志"
-    return INBOX_DIR / filename, "当前 YTD 文件"
+                return target_dir / filename, f"Historical {year} TLG trade log"
+    return INBOX_DIR / filename, "Current YTD file"
 
 
 def get_statement_title_and_period(path: Path) -> Tuple[Optional[str], Optional[str]]:
@@ -2055,7 +2046,7 @@ def prefetch_symbols_for_refresh(symbols: List[str], on_progress=None, force_ref
                 "symbol": symbol_lb,
                 "ok": False,
                 "skipped": True,
-                "error": "Yahoo 暂时限流，本轮已停止后续行情请求",
+                "error": "Yahoo is rate-limiting requests; remaining market-data requests were stopped",
             })
             continue
         trades = get_symbol_trades(symbol_lb)
@@ -2152,8 +2143,8 @@ def refresh_data(prefetch: bool = True, archive: bool = True) -> dict:
     except Exception as exc:
         REFRESH_STATE["running"] = False
         REFRESH_STATE["error"] = str(exc)
-        if not REFRESH_STATE.get("message") or not str(REFRESH_STATE.get("message")).startswith("刷新失败"):
-            REFRESH_STATE["message"] = f"刷新失败: {exc}"
+        if not REFRESH_STATE.get("message") or not str(REFRESH_STATE.get("message")).startswith("Refresh failed"):
+            REFRESH_STATE["message"] = f"Refresh failed: {exc}"
         log_exception("refresh failed", exc, prefetch=prefetch, archive=archive, step=REFRESH_STATE.get("step", ""))
         raise
 
@@ -2165,7 +2156,7 @@ def _refresh_data_impl(prefetch: bool = True, archive: bool = True) -> dict:
     REFRESH_STATE["progress"] = 0
     REFRESH_STATE["total"] = 100
     REFRESH_STATE["step"] = "init"
-    REFRESH_STATE["message"] = "准备刷新..."
+    REFRESH_STATE["message"] = "Preparing refresh..."
     REFRESH_STATE["result"] = None
     REFRESH_STATE["error"] = None
 
@@ -2175,9 +2166,9 @@ def _refresh_data_impl(prefetch: bool = True, archive: bool = True) -> dict:
         REFRESH_STATE["message"] = message
 
     ensure_data_dirs()
-    set_progress(3, "backup", "备份当前可用数据...")
+    set_progress(3, "backup", "Backing up the current valid data...")
     backup_snapshot = backup_latest_good_state()
-    set_progress(5, "scan", "扫描交易文件...")
+    set_progress(5, "scan", "Scanning trade files...")
     processed_paths = candidate_data_files("*.tlg") + candidate_data_files("*.csv")
     app_log("refresh files scanned", fileCount=len(processed_paths), files=[str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p) for p in processed_paths])
     file_records = []
@@ -2197,7 +2188,7 @@ def _refresh_data_impl(prefetch: bool = True, archive: bool = True) -> dict:
             }
         )
 
-    set_progress(10, "parse", "解析交易文件...")
+    set_progress(10, "parse", "Parsing trade files...")
     all_trades: Dict[str, Trade] = {}
     for row in read_json(TRADES_STATE_FILE, []):
         trade = Trade(**row)
@@ -2222,7 +2213,7 @@ def _refresh_data_impl(prefetch: bool = True, archive: bool = True) -> dict:
                 all_trades[trade_key(trade)] = trade
                 parsed_csv_count += 1
 
-    set_progress(25, "trades", "整理交易数据...")
+    set_progress(25, "trades", "Normalizing trading data...")
     trades_sorted = sorted(
         [t for t in all_trades.values() if t.source != "demo"],
         key=lambda t: (t.trade_date, t.trade_time, t.symbol_lb, t.side, t.quantity, t.price),
@@ -2235,7 +2226,7 @@ def _refresh_data_impl(prefetch: bool = True, archive: bool = True) -> dict:
         all_trade_rows[trade_key(Trade(**row))] = row
     write_json(TRADES_ALL_STATE_FILE, sorted(all_trade_rows.values(), key=lambda r: (r.get("trade_date", ""), r.get("trade_time", ""), r.get("symbol_lb", ""))))
 
-    set_progress(35, "mtm", "读取盈亏数据...")
+    set_progress(35, "mtm", "Reading P&L data...")
     activity_path = pick_statement_file("Activity Statement")
     report_end_date = ""
     stocks_mtm: Dict[str, dict] = {}
@@ -2262,7 +2253,7 @@ def _refresh_data_impl(prefetch: bool = True, archive: bool = True) -> dict:
     write_json(MTM_STATE_FILE, mtm_payload)
     write_json(period_state_file(CURRENT_PERIOD, "mtm.json"), mtm_payload)
 
-    set_progress(40, "snapshot", "读取账户快照...")
+    set_progress(40, "snapshot", "Reading account snapshot...")
     snapshot = parse_activity_statement_snapshot(activity_path) if activity_path else {}
     if snapshot:
         account_snapshot = snapshot.get("accountSnapshot", {})
@@ -2276,18 +2267,18 @@ def _refresh_data_impl(prefetch: bool = True, archive: bool = True) -> dict:
         write_json(POSITION_RECONCILIATION_FILE, reconciliation)
         write_json(period_state_file(CURRENT_PERIOD, "position_reconciliation.json"), reconciliation)
 
-    set_progress(45, "overview", "构建概览数据...")
+    set_progress(45, "overview", "Building overview data...")
     clear_runtime_caches()
     overview = build_overview_payload()
     prefetch_symbols = build_refresh_prefetch_symbols(overview, trades_sorted, stocks_mtm)
 
-    set_progress(50, "kline", f"补齐 {len(prefetch_symbols)} 个代码最近行情...")
+    set_progress(50, "kline", f"Refreshing recent market data for {len(prefetch_symbols)} symbols...")
     def on_kline_progress(current, total, symbol):
-        set_progress(50 + int(current / total * 45), "kline", f"补齐最近行情/K线: {symbol} ({current}/{total})")
+        set_progress(50 + int(current / total * 45), "kline", f"Refresh recent quotes/candles: {symbol} ({current}/{total})")
 
     prefetch_results = prefetch_symbols_for_refresh(prefetch_symbols, on_progress=on_kline_progress) if prefetch else []
 
-    set_progress(98, "archive", "归档文件...")
+    set_progress(98, "archive", "Archiving files...")
     archived = archive_inbox_files(processed_paths) if archive else []
     manifest = {
         "lastRefreshAt": datetime.now().isoformat(timespec="seconds"),
@@ -2306,13 +2297,13 @@ def _refresh_data_impl(prefetch: bool = True, archive: bool = True) -> dict:
     write_json(MANIFEST_STATE_FILE, manifest)
     write_json(period_state_file(CURRENT_PERIOD, "manifest.json"), manifest)
     clear_runtime_caches()
-    set_progress(100, "done", "数据刷新完成")
+    set_progress(100, "done", "Data refresh complete")
     REFRESH_STATE["running"] = False
     REFRESH_STATE["result"] = manifest
     app_log("refresh completed", tradeCount=len(trades_sorted), symbolCount=len({t.symbol_lb for t in trades_sorted}), reportEndDate=report_end_date, archived=len(archived), prefetchFailures=sum(1 for item in prefetch_results if not item.get("ok")))
     return {
         "ok": True,
-        "message": "数据刷新完成",
+        "message": "Data refresh complete",
         "manifest": manifest,
     }
 
@@ -2348,7 +2339,7 @@ def build_replay_payload(symbol_input: str, cache_only: bool = False, force_refr
     else:
         end = get_market_data_end_date()
         start = end - timedelta(days=1500)
-        message = "本期无个人交易。当前仅显示行情与指标。"
+        message = "There are no personal trades in this period. Only market data and indicators are shown."
 
     end_text = end.strftime("%Y-%m-%d")
     kline_result = fetch_kline_history(symbol_lb, start.strftime("%Y-%m-%d"), end_text, cache_only=cache_only, force_refresh=force_refresh)
@@ -2364,14 +2355,14 @@ def build_replay_payload(symbol_input: str, cache_only: bool = False, force_refr
     freshness["retryAllowed"] = yahoo_retry_allowed(freshness_manifest)
     market_status = latest_candle_market_status(symbol_lb, candle_day(candles[-1]) if candles else "")
     if freshness.get("stale"):
-        detail = f"行情未补齐，当前使用本地缓存到 {freshness.get('cacheEnd') or '--'}。"
+        detail = f"Market data is incomplete; using local cache through {freshness.get('cacheEnd') or '--'}."
         if freshness.get("skippedToday"):
-            detail += " 今日已尝试更新，已跳过重复调用。"
+            detail += " An update was already attempted today; duplicate request skipped."
         if freshness.get("error"):
-            detail += f" 错误: {freshness['error']}"
+            detail += f" Error: {freshness['error']}"
         message = f"{message} {detail}".strip()
     elif freshness.get("error"):
-        detail = f"Yahoo Finance 更新失败，当前使用本地缓存。错误: {freshness['error']}"
+        detail = f"Yahoo Finance refresh failed; using the local cache. Error: {freshness['error']}"
         message = f"{message} {detail}".strip()
 
     closes = [safe_float(c["close"]) for c in candles]
@@ -2774,18 +2765,9 @@ def watchlist_symbol_payload(symbol_input: str, refresh: bool = False) -> dict:
 
 
 class Handler(BaseHTTPRequestHandler):
-    def _request_locale(self, params=None) -> str:
-        explicit = (params.get("lang") or [""])[0] if params else ""
-        try:
-            saved = str(load_settings().get("locale") or "auto")
-        except Exception:
-            saved = "auto"
-        return resolve_locale(explicit, self.headers.get("Accept-Language", ""), saved)
-
     def do_GET(self):
         parsed = urlparse(self.path)
         params = parse_qs(parsed.query)
-        self.response_locale = self._request_locale(params)
         if parsed.path == "/":
             html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
             return self._send(200, "text/html; charset=utf-8", html.encode("utf-8"))
@@ -2924,7 +2906,7 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 period = normalize_period(params.get("period", [CURRENT_PERIOD])[0])
                 return self._json(
-                    build_audit_workbench_for_period(period, persist=False, locale=self.response_locale)
+                    build_audit_workbench_for_period(period, persist=False)
                 )
             except Exception as exc:
                 app_log("audit workbench endpoint failed", level="error", query=parsed.query, error=str(exc))
@@ -2934,9 +2916,7 @@ class Handler(BaseHTTPRequestHandler):
                 from app.audit_workbench import ROUND_TRIPS_FILE, evidence_page
 
                 period = normalize_period(params.get("period", [CURRENT_PERIOD])[0])
-                snapshot = build_audit_workbench_for_period(
-                    period, persist=False, locale=self.response_locale
-                )
+                snapshot = build_audit_workbench_for_period(period, persist=False)
                 round_trip_path = period_state_file(period, ROUND_TRIPS_FILE)
                 round_trip_payload = read_json(round_trip_path, {})
                 if round_trip_payload.get("snapshotId") != snapshot.get("snapshotId"):
@@ -2948,7 +2928,7 @@ class Handler(BaseHTTPRequestHandler):
                     None,
                 )
                 if finding_id and not finding:
-                    return self._json({"ok": False, "error": "未找到该测评发现"}, code=404)
+                    return self._json({"ok": False, "error": "Audit finding not found"}, code=404)
                 result = evidence_page(
                     round_trip_payload,
                     finding=finding,
@@ -2966,16 +2946,9 @@ class Handler(BaseHTTPRequestHandler):
         if parsed.path == "/api/audit/report":
             try:
                 period = normalize_period(params.get("period", [CURRENT_PERIOD])[0])
-                report_path = period_state_file(
-                    period, f"audit_report.{self.response_locale}.md"
-                )
+                report_path = period_state_file(period, "audit_report.md")
                 if not report_path.exists() and period == CURRENT_PERIOD:
-                    report_path = STATE_DIR / f"audit_report.{self.response_locale}.md"
-                if not report_path.exists():
-                    legacy_path = period_state_file(period, "audit_report.md")
-                    if not legacy_path.exists() and period == CURRENT_PERIOD:
-                        legacy_path = STATE_DIR / "audit_report.md"
-                    report_path = legacy_path
+                    report_path = STATE_DIR / "audit_report.md"
                 if report_path.exists():
                     content = report_path.read_text(encoding="utf-8")
                     return self._send(200, "text/markdown; charset=utf-8", content.encode("utf-8"))
@@ -3117,7 +3090,6 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         parsed = urlparse(self.path)
         params = parse_qs(parsed.query)
-        self.response_locale = self._request_locale(params)
         if parsed.path == "/api/demo/reset":
             try:
                 initialize_demo_workspace(force=True)
@@ -3152,7 +3124,7 @@ class Handler(BaseHTTPRequestHandler):
                 snapshot = build_audit_workbench_for_period(period, persist=False)
                 finding_id = str(payload.get("findingId") or "")
                 if not any(item.get("findingId") == finding_id for item in snapshot.get("findings", [])):
-                    return self._json({"ok": False, "error": "未找到该测评发现"}, code=404)
+                    return self._json({"ok": False, "error": "Audit finding not found"}, code=404)
                 feedback = save_finding_feedback(
                     STATE_DIR,
                     period=period,
@@ -3182,7 +3154,7 @@ class Handler(BaseHTTPRequestHandler):
                     None,
                 )
                 if not finding:
-                    return self._json({"ok": False, "error": "未找到该测评发现"}, code=404)
+                    return self._json({"ok": False, "error": "Audit finding not found"}, code=404)
                 cycle = create_rule_cycle(
                     STATE_DIR,
                     period=period,
@@ -3212,7 +3184,7 @@ class Handler(BaseHTTPRequestHandler):
                     round_trip_payload = read_json(round_trip_path, {})
                 round_trip_id = str(payload.get("roundTripId") or "")
                 if not any(item.get("roundTripId") == round_trip_id for item in round_trip_payload.get("items", [])):
-                    return self._json({"ok": False, "error": "未找到该交易回合"}, code=404)
+                    return self._json({"ok": False, "error": "Trade round trip not found"}, code=404)
                 note = save_round_trip_note(
                     STATE_DIR,
                     period=period,
@@ -3229,15 +3201,11 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 if demo_mode_active():
                     period = normalize_period(params.get("period", [CURRENT_PERIOD])[0])
-                    snapshot = build_audit_workbench_for_period(
-                        period, persist=True, locale=self.response_locale
-                    )
+                    snapshot = build_audit_workbench_for_period(period, persist=True)
                     report_path, cached, stale = generate_demo_audit_report_for_period(
-                        period, locale=self.response_locale, snapshot=snapshot
+                        period, snapshot=snapshot
                     )
-                    snapshot = build_audit_workbench_for_period(
-                        period, persist=True, locale=self.response_locale
-                    )
+                    snapshot = build_audit_workbench_for_period(period, persist=True)
                     return self._json({
                         "ok": True,
                         "period": period,
@@ -3250,15 +3218,9 @@ class Handler(BaseHTTPRequestHandler):
                         "aiReport": snapshot.get("aiReport", {}),
                     })
                 period = normalize_period(params.get("period", [CURRENT_PERIOD])[0])
-                build_audit_workbench_for_period(
-                    period, persist=True, locale=self.response_locale
-                )
-                report_path, cached, stale = generate_audit_report_for_period(
-                    period, force=True, locale=self.response_locale
-                )
-                snapshot = build_audit_workbench_for_period(
-                    period, persist=True, locale=self.response_locale
-                )
+                build_audit_workbench_for_period(period, persist=True)
+                report_path, cached, stale = generate_audit_report_for_period(period, force=True)
+                snapshot = build_audit_workbench_for_period(period, persist=True)
                 return self._json({
                     "ok": True,
                     "period": period,
@@ -3284,15 +3246,15 @@ class Handler(BaseHTTPRequestHandler):
                         code=409,
                     )
                 if REFRESH_STATE["running"]:
-                    return self._json({"ok": False, "error": "刷新正在进行中，请稍候"}, code=429)
+                    return self._json({"ok": False, "error": "A refresh is already running; wait for it to finish"}, code=429)
                 acquired_refresh_lock = REFRESH_LOCK.acquire(blocking=False)
                 if not acquired_refresh_lock:
-                    return self._json({"ok": False, "error": "刷新正在进行中，请稍候"}, code=429)
+                    return self._json({"ok": False, "error": "A refresh is already running; wait for it to finish"}, code=429)
                 REFRESH_STATE["running"] = True
                 REFRESH_STATE["progress"] = 0
                 REFRESH_STATE["total"] = 100
                 REFRESH_STATE["step"] = "init"
-                REFRESH_STATE["message"] = "刷新即将开始..."
+                REFRESH_STATE["message"] = "Refresh will start shortly..."
                 REFRESH_STATE["result"] = None
                 REFRESH_STATE["error"] = None
                 def run_refresh():
@@ -3302,14 +3264,14 @@ class Handler(BaseHTTPRequestHandler):
                     except Exception as exc:
                         log_exception("refresh thread failed", exc)
                         REFRESH_STATE["error"] = str(exc)
-                        REFRESH_STATE["message"] = f"刷新失败: {exc}"
+                        REFRESH_STATE["message"] = f"Refresh failed: {exc}"
                         REFRESH_STATE["running"] = False
                     finally:
                         REFRESH_STATE["running"] = False
                         if REFRESH_LOCK.locked():
                             REFRESH_LOCK.release()
                 threading.Thread(target=run_refresh, daemon=True).start()
-                return self._json({"ok": True, "message": "刷新已开始"})
+                return self._json({"ok": True, "message": "Refresh started"})
             except Exception as exc:
                 if acquired_refresh_lock and REFRESH_LOCK.locked():
                     REFRESH_LOCK.release()
@@ -3328,7 +3290,7 @@ class Handler(BaseHTTPRequestHandler):
                     )
                 content_type = self.headers.get("Content-Type", "")
                 if "multipart/form-data" not in content_type:
-                    return self._json({"ok": False, "error": "请使用 multipart/form-data 上传文件"}, code=400)
+                    return self._json({"ok": False, "error": "Upload files using multipart/form-data"}, code=400)
                 boundary = content_type.split("boundary=")[-1].strip().strip('"')
                 content_length = int(self.headers.get("Content-Length", 0))
                 body = self.rfile.read(content_length)
@@ -3375,9 +3337,7 @@ class Handler(BaseHTTPRequestHandler):
                 except Exception as memory_exc:
                     app_log("trader_memory_rebuild_skipped", level="warning", period=period, error=str(memory_exc))
 
-                workbench = build_audit_workbench_for_period(
-                    period, persist=True, locale=self.response_locale
-                )
+                workbench = build_audit_workbench_for_period(period, persist=True)
 
                 # Try to generate LLM report, but don't fail the deterministic workbench if it errors.
                 report_path = ""
@@ -3386,12 +3346,8 @@ class Handler(BaseHTTPRequestHandler):
                 report_error = None
                 if generate_ai:
                     try:
-                        report_path, cached, report_stale = generate_audit_report_for_period(
-                            period, force=force, locale=self.response_locale
-                        )
-                        workbench = build_audit_workbench_for_period(
-                            period, persist=True, locale=self.response_locale
-                        )
+                        report_path, cached, report_stale = generate_audit_report_for_period(period, force=force)
+                        workbench = build_audit_workbench_for_period(period, persist=True)
                     except Exception as report_exc:
                         report_error = str(report_exc)
                         app_log("audit_generate_report_skipped", level="warning", period=period, error=report_error)
@@ -3411,7 +3367,7 @@ class Handler(BaseHTTPRequestHandler):
                 }
                 if report_stale:
                     payload["stale"] = True
-                    payload["report_warning"] = "AI 测评生成失败，当前展示的是较早生成的缓存报告。"
+                    payload["report_warning"] = "AI audit generation failed; an older cached report is displayed."
                 if report_error:
                     payload["report_error"] = report_error
                 return self._json(payload)
@@ -3430,7 +3386,7 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 content_type = self.headers.get("Content-Type", "")
                 if "application/json" not in content_type:
-                    return self._json({"ok": False, "error": "请使用 application/json 保存交易计划"}, code=400)
+                    return self._json({"ok": False, "error": "Use application/json to save a trade plan"}, code=400)
                 content_length = int(self.headers.get("Content-Length", 0))
                 payload = json.loads(self.rfile.read(content_length).decode("utf-8") or "{}")
                 symbol = params.get("symbol", [payload.get("symbol") or DEFAULT_SYMBOL])[0]
@@ -3445,7 +3401,7 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 content_type = self.headers.get("Content-Type", "")
                 if "application/json" not in content_type:
-                    return self._json({"ok": False, "error": "请使用 application/json 保存设置"}, code=400)
+                    return self._json({"ok": False, "error": "Use application/json Save settings"}, code=400)
                 content_length = int(self.headers.get("Content-Length", 0))
                 payload = json.loads(self.rfile.read(content_length).decode("utf-8") or "{}")
                 settings = save_settings(payload)
@@ -3461,12 +3417,12 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 content_type = self.headers.get("Content-Type", "")
                 if "application/json" not in content_type:
-                    return self._json({"ok": False, "error": "请使用 application/json 保存 Watchlist 触发器"}, code=400)
+                    return self._json({"ok": False, "error": "Use application/json to save Watchlist triggers"}, code=400)
                 content_length = int(self.headers.get("Content-Length", 0))
                 payload = json.loads(self.rfile.read(content_length).decode("utf-8") or "{}")
                 rows = payload.get("triggers", payload) if isinstance(payload, dict) else payload
                 if not isinstance(rows, list):
-                    return self._json({"ok": False, "error": "triggers 必须是数组"}, code=400)
+                    return self._json({"ok": False, "error": "triggers must be an array"}, code=400)
                 triggers = save_watchlist_triggers(rows)
                 app_log("watchlist triggers saved", count=len(triggers))
                 return self._json({"ok": True, "triggers": triggers})
@@ -3513,7 +3469,7 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 content_type = self.headers.get("Content-Type", "")
                 if "application/json" not in content_type:
-                    return self._json({"ok": False, "error": "请使用 application/json"}, code=400)
+                    return self._json({"ok": False, "error": "Use application/json"}, code=400)
                 content_length = int(self.headers.get("Content-Length", 0))
                 payload = json.loads(self.rfile.read(content_length).decode("utf-8") or "{}")
                 from app.trade_setup_manager import save_setup_for_trade, SETUP_TYPES
@@ -3533,13 +3489,13 @@ class Handler(BaseHTTPRequestHandler):
             try:
                 content_type = self.headers.get("Content-Type", "")
                 if "application/json" not in content_type:
-                    return self._json({"ok": False, "error": "请使用 application/json"}, code=400)
+                    return self._json({"ok": False, "error": "Use application/json"}, code=400)
                 content_length = int(self.headers.get("Content-Length", 0))
                 payload = json.loads(self.rfile.read(content_length).decode("utf-8") or "{}")
                 from app.trade_setup_manager import save_setup_batch, SETUP_TYPES
                 items = payload.get("items", [])
                 if not isinstance(items, list):
-                    return self._json({"ok": False, "error": "items 必须是数组"}, code=400)
+                    return self._json({"ok": False, "error": "items must be an array"}, code=400)
                 result = save_setup_batch(items)
                 app_log("trade setup batch saved", count=result.get("saved", 0), errors=len(result.get("errors", [])))
                 return self._json({"ok": True, **result, "setupTypes": SETUP_TYPES})
@@ -3550,7 +3506,6 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_PATCH(self):
         parsed = urlparse(self.path)
-        self.response_locale = self._request_locale(parse_qs(parsed.query))
         if parsed.path.startswith("/api/watchlist/groups/"):
             try:
                 group_id = int(parsed.path.rsplit("/", 1)[-1])
@@ -3571,7 +3526,6 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_DELETE(self):
         parsed = urlparse(self.path)
-        self.response_locale = self._request_locale(parse_qs(parsed.query))
         if parsed.path.startswith("/api/watchlist/groups/"):
             try:
                 group_id = int(parsed.path.rsplit("/", 1)[-1])
@@ -3592,7 +3546,6 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_HEAD(self):
         parsed = urlparse(self.path)
-        self.response_locale = self._request_locale(parse_qs(parsed.query))
         if parsed.path.startswith("/static/"):
             file_path = STATIC_DIR / parsed.path[len("/static/"):]
             if file_path.exists() and file_path.is_file() and str(file_path.resolve()).startswith(str(STATIC_DIR.resolve())):
@@ -3632,7 +3585,7 @@ class Handler(BaseHTTPRequestHandler):
     def _read_json_payload(self) -> dict:
         content_type = self.headers.get("Content-Type", "")
         if content_type and "application/json" not in content_type:
-            raise ValueError("请使用 application/json")
+            raise ValueError("Use application/json")
         content_length = int(self.headers.get("Content-Length", 0))
         if not content_length:
             return {}
@@ -3650,12 +3603,11 @@ class Handler(BaseHTTPRequestHandler):
             payload.setdefault("messageParams", {})
         if isinstance(payload, dict) and payload.get("messageKey") and "message" not in payload:
             payload["message"] = translate(
-                getattr(self, "response_locale", "en"),
+                "en",
                 str(payload["messageKey"]),
                 str(payload.get("error") or ""),
                 **(payload.get("messageParams") or {}),
             )
-        payload = localize_payload(payload, getattr(self, "response_locale", "en"))
         return self._send(code, "application/json", json.dumps(payload, ensure_ascii=False).encode("utf-8"))
 
     def _send(self, code: int, content_type: str, body: bytes, include_body: bool = True):
@@ -3664,7 +3616,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Content-Type", content_type)
             self.send_header("Content-Length", str(len(body)))
             self.send_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
-            self.send_header("Content-Language", getattr(self, "response_locale", "en"))
+            self.send_header("Content-Language", "en")
             self.send_header("Pragma", "no-cache")
             self.send_header("Expires", "0")
             self.end_headers()
@@ -3711,15 +3663,10 @@ def initialize_demo_workspace(force: bool = False) -> dict:
             summary_path = period_state_file(period, "audit_summary.json")
             if not summary_path.exists():
                 run_audit_pipeline_for_period(period)
-            for locale in ("en", "zh-CN"):
-                snapshot = build_audit_workbench_for_period(
-                    period, persist=True, locale=locale
-                )
-                report_path = period_state_file(period, f"audit_report.{locale}.md")
-                if force or not report_path.exists():
-                    generate_demo_audit_report_for_period(
-                        period, locale=locale, snapshot=snapshot
-                    )
+            snapshot = build_audit_workbench_for_period(period, persist=True)
+            report_path = period_state_file(period, "audit_report.md")
+            if force or not report_path.exists():
+                generate_demo_audit_report_for_period(period, snapshot=snapshot)
         except Exception as exc:
             app_log(
                 "demo audit build skipped",

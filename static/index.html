@@ -3245,17 +3245,17 @@
         </svg>
         <span class="global-nav-wordmark">TradeCraft</span>
       </span>
-      <button id="tabHome" class="tab-chip" type="button" data-i18n="nav.home">首页</button>
-      <button id="tabReplay" class="tab-chip" type="button" data-i18n="nav.replay">复盘</button>
-      <button id="tabData" class="tab-chip" type="button" data-i18n="nav.data">数据</button>
-      <button id="tabTrades" class="tab-chip" type="button" data-i18n="nav.trades">交易记录</button>
-      <button id="tabMarket" class="tab-chip" type="button" data-i18n="nav.market">市场</button>
-      <button id="tabWatchlist" class="tab-chip" type="button" data-i18n="nav.watchlist">自选</button>
-      <button id="tabPerformance" class="tab-chip" type="button" data-i18n="nav.performance">业绩</button>
-      <button id="tabAudit" class="tab-chip" type="button" data-i18n="nav.audit">测评</button>
+      <button id="tabHome" class="tab-chip" type="button" data-i18n="nav.home">Home</button>
+      <button id="tabReplay" class="tab-chip" type="button" data-i18n="nav.replay">Replay</button>
+      <button id="tabData" class="tab-chip" type="button" data-i18n="nav.data">Data</button>
+      <button id="tabTrades" class="tab-chip" type="button" data-i18n="nav.trades">Trades</button>
+      <button id="tabMarket" class="tab-chip" type="button" data-i18n="nav.market">Market</button>
+      <button id="tabWatchlist" class="tab-chip" type="button" data-i18n="nav.watchlist">Watchlist</button>
+      <button id="tabPerformance" class="tab-chip" type="button" data-i18n="nav.performance">Performance</button>
+      <button id="tabAudit" class="tab-chip" type="button" data-i18n="nav.audit">Audit</button>
     </div>
     <div class="global-nav-right">
-      <button id="themeToggle" class="theme-toggle" type="button" aria-label="切换主题" title="切换主题">
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme">
         <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="12" cy="12" r="4"></circle>
           <path d="M12 2v2"></path>
@@ -3271,7 +3271,7 @@
           <path d="M20.5 14.5A7.8 7.8 0 0 1 9.5 3.5 8.6 8.6 0 1 0 20.5 14.5Z"></path>
         </svg>
       </button>
-      <button id="tabSettings" class="nav-icon-btn" type="button" aria-label="设置" title="设置"
+      <button id="tabSettings" class="nav-icon-btn" type="button" aria-label="Settings" title="Settings"
               data-i18n-title="nav.settings" data-i18n-aria-label="nav.settings">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="12" cy="12" r="3"></circle>
@@ -3281,51 +3281,51 @@
     </div>
   </nav>
   <div id="demoBanner" class="demo-banner" hidden>
-    <span class="demo-badge" data-i18n="demo.badge">演示数据</span>
-    <span data-i18n="demo.description">当前工作台使用本次重新随机生成、完全虚构的合成数据。</span>
-    <button id="demoReset" class="chip" type="button" data-i18n="demo.reset">重新随机生成</button>
-    <button id="demoExit" class="chip active" type="button" data-i18n="demo.useReal">使用真实数据</button>
+    <span class="demo-badge" data-i18n="demo.badge">Demo data</span>
+    <span data-i18n="demo.description">This workspace uses newly randomized, entirely fictional synthetic data.</span>
+    <button id="demoReset" class="chip" type="button" data-i18n="demo.reset">Generate new demo</button>
+    <button id="demoExit" class="chip active" type="button" data-i18n="demo.useReal">Use real data</button>
   </div>
   <div id="refreshProgressWrap" class="refresh-progress-wrap" style="display:none;">
     <div class="refresh-progress-track">
       <div id="refreshProgressBar" class="refresh-progress-bar" style="width:0%"></div>
     </div>
-    <div id="refreshProgressText" class="refresh-progress-text">准备刷新...</div>
+    <div id="refreshProgressText" class="refresh-progress-text">Preparing refresh...</div>
   </div>
 
   <div id="homeView" class="data-view">
     <div class="data-header">
       <div>
-        <h2 style="margin:0 0 4px 0; font-size:18px;">首页仪表盘</h2>
-        <div class="panel-sub">账户概览 / 待复盘股票 / 盈亏贡献</div>
+        <h2 style="margin:0 0 4px 0; font-size:18px;">Dashboard</h2>
+        <div class="panel-sub">Account overview / Review queue / P&L contribution</div>
       </div>
     </div>
     <div class="dashboard-row" id="homeAccountCards" style="display:none;"></div>
     <div class="dashboard-row" id="homeStatusCards">
-      <section class="dashboard-card"><h3>待复盘股票</h3><div class="dashboard-metric">-</div><div class="dashboard-note">加载中...</div></section>
-      <section class="dashboard-card"><h3>数据状态</h3><div class="dashboard-metric">-</div><div class="dashboard-note">加载中...</div></section>
+      <section class="dashboard-card"><h3>Review queue</h3><div class="dashboard-metric">-</div><div class="dashboard-note">Loading...</div></section>
+      <section class="dashboard-card"><h3>Data status</h3><div class="dashboard-metric">-</div><div class="dashboard-note">Loading...</div></section>
     </div>
     <div class="dashboard-grid">
       <div>
         <section class="dashboard-card" style="margin-bottom:16px;">
           <div class="dashboard-section-header">
-            <h3>今天优先复盘</h3>
-            <span class="panel-sub">最近交易 / 高频 / 大额</span>
+            <h3>Priority reviews</h3>
+            <span class="panel-sub">Recent / Frequent / Large trades</span>
           </div>
           <div id="homeReviewList" class="dashboard-list"></div>
         </section>
         <section class="dashboard-card">
           <div class="dashboard-section-header">
-            <h3>最大盈利 / 亏损贡献</h3>
-            <span class="panel-sub">点击代码进入复盘</span>
+            <h3>Largest gains / losses</h3>
+            <span class="panel-sub">Select a symbol to open replay</span>
           </div>
           <div class="data-grid">
             <div>
-              <div class="panel-sub" style="margin-bottom:8px;">盈利贡献</div>
+              <div class="panel-sub" style="margin-bottom:8px;">Profit contribution</div>
               <div id="homeWinnerList" class="dashboard-list"></div>
             </div>
             <div>
-              <div class="panel-sub" style="margin-bottom:8px;">亏损贡献</div>
+              <div class="panel-sub" style="margin-bottom:8px;">Loss contribution</div>
               <div id="homeLoserList" class="dashboard-list"></div>
             </div>
           </div>
@@ -3338,7 +3338,7 @@
   <div id="marketView" class="market-view">
     <div class="market-header">
       <div style="display:flex; gap:10px; align-items:center;">
-        <h2 style="margin:0; font-size:18px;">市场热力图</h2>
+        <h2 style="margin:0; font-size:18px;">Market heatmap</h2>
       </div>
       <div class="heatmap-tabs" id="marketHeatmapTabs">
         <button data-value="NASDAQ100|change" class="chip active" type="button">Nasdaq</button>
@@ -3356,60 +3356,60 @@
     <div class="watchlist-layout">
       <aside class="watchlist-panel watchlist-sidebar">
         <div class="watchlist-actions">
-          <button id="watchlistAddToggle" class="chip" type="button">新增自选</button>
-          <button id="watchlistImport" class="chip" type="button">导入自选</button>
+          <button id="watchlistAddToggle" class="chip" type="button">Add symbols</button>
+          <button id="watchlistImport" class="chip" type="button">Import watchlist</button>
           <input id="watchlistImportFile" type="file" accept=".txt,text/plain" style="display:none;" />
-          <button id="watchlistRefresh" class="chip" type="button">刷新行情</button>
+          <button id="watchlistRefresh" class="chip" type="button">Refresh market data</button>
         </div>
         <div class="watchlist-sidebar-top">
-          <input id="watchlistSearch" placeholder="搜索代码 / 名称 / 标签" />
+          <input id="watchlistSearch" placeholder="Search symbol / name / tag" />
           <div class="watchlist-filter-grid">
             <select id="watchlistFilterColor">
-              <option value="">全部颜色</option>
-              <option value="none">无颜色</option>
-              <option value="red">红色</option>
-              <option value="green">绿色</option>
-              <option value="blue">蓝色</option>
-              <option value="yellow">黄色</option>
-              <option value="purple">紫色</option>
-              <option value="gray">灰色</option>
+              <option value="">All colors</option>
+              <option value="none">No color</option>
+              <option value="red">Red</option>
+              <option value="green">Green</option>
+              <option value="blue">Blue</option>
+              <option value="yellow">Yellow</option>
+              <option value="purple">Purple</option>
+              <option value="gray">Gray</option>
             </select>
             <select id="watchlistFilterPosition">
-              <option value="">全部持仓</option>
-              <option value="position">有持仓</option>
-              <option value="none">无持仓</option>
+              <option value="">All positions</option>
+              <option value="position">With position</option>
+              <option value="none">Without position</option>
             </select>
           </div>
         </div>
         <div id="watchlistAddPanel" class="watchlist-action-panel">
-          <div class="watchlist-section-title">批量加入自选</div>
+          <div class="watchlist-section-title">Add symbols in bulk</div>
           <div class="watchlist-form">
             <textarea id="watchlistBatchSymbols"
-                      placeholder="每行或逗号分隔一个代码：&#10;NVDA / 700.HK / NASDAQ:TSLA&#10;（支持 TradingView 格式）"
+                      placeholder="One symbol per line or comma-separated:&#10;NVDA / 700.HK / NASDAQ:TSLA&#10;(TradingView format supported)"
                       data-i18n-placeholder="watchlist.batchPlaceholder"></textarea>
             <div class="watchlist-add-options">
-              <label class="watchlist-add-label">加入分组</label>
+              <label class="watchlist-add-label">Add to group</label>
               <select id="watchlistBatchGroup"></select>
-              <label class="watchlist-add-label">标注颜色</label>
+              <label class="watchlist-add-label">Color</label>
               <div class="watchlist-color-swatches" id="watchlistBatchColors" style="padding:0;"></div>
             </div>
-            <button id="watchlistBatchAdd" class="chip" type="button">加入自选</button>
+            <button id="watchlistBatchAdd" class="chip" type="button">Add to watchlist</button>
           </div>
           <div class="watchlist-menu-sep" style="margin:12px 0;"></div>
-          <div class="watchlist-section-title">新建分组</div>
+          <div class="watchlist-section-title">New group</div>
           <div class="watchlist-add-group-row">
-            <input id="watchlistNewGroupName" placeholder="分组名称，回车创建" />
-            <button id="watchlistCreateGroup" class="chip" type="button">创建</button>
+            <input id="watchlistNewGroupName" placeholder="Group name, press Enter to create" />
+            <button id="watchlistCreateGroup" class="chip" type="button">Create</button>
           </div>
         </div>
         <div class="watchlist-list-wrap">
           <div class="watchlist-quick-add">
             <span class="watchlist-quick-add-plus">+</span>
-            <input id="watchlistQuickAdd" placeholder="添加代码，回车确认（可逗号分隔）" autocomplete="off" spellcheck="false" />
+            <input id="watchlistQuickAdd" placeholder="Add symbols, press Enter (comma-separated supported)" autocomplete="off" spellcheck="false" />
             <span id="watchlistQuickAddTarget" class="watchlist-quick-add-target"></span>
           </div>
           <div id="watchlistRows" class="watchlist-list">
-            <div class="empty">加载中...</div>
+            <div class="empty">Loading...</div>
           </div>
         </div>
         <div>
@@ -3417,10 +3417,10 @@
             <span id="watchlistSelectionCount" class="watchlist-selection-count"></span>
             <span class="watchlist-color-swatches" id="watchlistSelectionColors" style="padding:0;"></span>
             <select id="watchlistSelectionMove">
-              <option value="">移动到...</option>
+              <option value="">Move to...</option>
             </select>
-            <button id="watchlistSelectionDelete" class="watchlist-icon-btn" type="button" title="删除选中">🗑</button>
-            <button id="watchlistSelectionClear" class="watchlist-icon-btn" type="button" title="取消选择">✕</button>
+            <button id="watchlistSelectionDelete" class="watchlist-icon-btn" type="button" title="Delete selected">🗑</button>
+            <button id="watchlistSelectionClear" class="watchlist-icon-btn" type="button" title="Clear selection">✕</button>
           </div>
           <span id="watchlistStatus" class="watchlist-status"></span>
         </div>
@@ -3435,7 +3435,7 @@
               </div>
             </div>
             <div class="toolbar-right">
-              <button id="watchlistMeasureToggle" class="chip icon-chip" type="button" title="测量涨跌幅" aria-label="测量涨跌幅">
+              <button id="watchlistMeasureToggle" class="chip icon-chip" type="button" title="Measure price change" aria-label="Measure price change">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M4 19L19 4"></path>
                   <path d="M7 16l2 2"></path>
@@ -3444,14 +3444,14 @@
                   <path d="M16 7l2 2"></path>
                 </svg>
               </button>
-              <button id="watchlistTradeMarkerToggle" class="chip icon-chip active" type="button" title="显示/隐藏买卖打点" aria-label="显示/隐藏买卖打点">
+              <button id="watchlistTradeMarkerToggle" class="chip icon-chip active" type="button" title="Show/hide trade markers" aria-label="Show/hide trade markers">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z"></path>
                   <circle cx="12" cy="12" r="2.5"></circle>
                 </svg>
               </button>
               <div class="tool-menu">
-                <button id="watchlistMaMenuToggle" class="chip icon-chip" type="button" title="显示/隐藏均线菜单" aria-label="显示/隐藏均线菜单">
+                <button id="watchlistMaMenuToggle" class="chip icon-chip" type="button" title="Show/hide moving averages" aria-label="Show/hide moving averages">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M3 16c3-6 6 3 9-3s6 3 9-3"></path>
                     <path d="M3 20h18"></path>
@@ -3473,33 +3473,33 @@
         </section>
         <section class="watchlist-detail-panel">
           <div class="watchlist-panel">
-            <h3 id="watchlistDetailTitle" class="watchlist-detail-title">未选择</h3>
-            <div id="watchlistDetailSub" class="watchlist-muted">选择一行查看详情</div>
+            <h3 id="watchlistDetailTitle" class="watchlist-detail-title">Nothing selected</h3>
+            <div id="watchlistDetailSub" class="watchlist-muted">Select a row to view details</div>
             <div id="watchlistDetailBody" style="margin-top:12px;"></div>
           </div>
           <div class="watchlist-panel">
-            <div class="watchlist-section-title">本地编辑</div>
+            <div class="watchlist-section-title">Local notes</div>
             <div class="watchlist-form">
               <div style="display:grid; grid-template-columns:minmax(0,1fr) 160px 140px; gap:8px;">
-                <input id="watchlistEditName" placeholder="名称" />
+                <input id="watchlistEditName" placeholder="Name" />
                 <select id="watchlistEditGroup"></select>
                 <select id="watchlistEditColor">
-                  <option value="none">无颜色</option>
-                  <option value="red">红色</option>
-                  <option value="green">绿色</option>
-                  <option value="blue">蓝色</option>
-                  <option value="yellow">黄色</option>
-                  <option value="purple">紫色</option>
-                  <option value="gray">灰色</option>
+                  <option value="none">No color</option>
+                  <option value="red">Red</option>
+                  <option value="green">Green</option>
+                  <option value="blue">Blue</option>
+                  <option value="yellow">Yellow</option>
+                  <option value="purple">Purple</option>
+                  <option value="gray">Gray</option>
                 </select>
               </div>
               <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
-                <input id="watchlistEditTrigger" placeholder="触发价" />
-                <input id="watchlistEditStop" placeholder="止损" />
-                <input id="watchlistEditTarget" placeholder="目标" />
+                <input id="watchlistEditTrigger" placeholder="Trigger price" />
+                <input id="watchlistEditStop" placeholder="Stop loss" />
+                <input id="watchlistEditTarget" placeholder="Target" />
               </div>
-              <textarea id="watchlistEditNote" placeholder="备注"></textarea>
-              <button id="watchlistSaveItem" class="chip" type="button">保存当前</button>
+              <textarea id="watchlistEditNote" placeholder="Notes"></textarea>
+              <button id="watchlistSaveItem" class="chip" type="button">Save</button>
             </div>
           </div>
         </section>
@@ -3513,8 +3513,8 @@
         <div id="replayExposureContent"></div>
       </section>
       <section class="card panel">
-        <div class="panel-title">最近交易</div>
-        <div class="panel-sub">点击代码快速复盘</div>
+        <div class="panel-title">Recent trades</div>
+        <div class="panel-sub">Select a symbol for a quick replay</div>
         <div id="recentlyTraded" class="recent-trade-list"></div>
       </section>
     </aside>
@@ -3529,7 +3529,7 @@
             </div>
           </div>
           <div class="toolbar-right">
-            <button id="measureToggle" class="chip icon-chip" type="button" title="测量涨跌幅" aria-label="测量涨跌幅">
+            <button id="measureToggle" class="chip icon-chip" type="button" title="Measure price change" aria-label="Measure price change">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M4 19L19 4"></path>
                 <path d="M7 16l2 2"></path>
@@ -3538,14 +3538,14 @@
                 <path d="M16 7l2 2"></path>
               </svg>
             </button>
-            <button id="tradeMarkerToggle" class="chip icon-chip active" type="button" title="显示/隐藏买卖打点" aria-label="显示/隐藏买卖打点">
+            <button id="tradeMarkerToggle" class="chip icon-chip active" type="button" title="Show/hide trade markers" aria-label="Show/hide trade markers">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6z"></path>
                 <circle cx="12" cy="12" r="2.5"></circle>
               </svg>
             </button>
             <div class="tool-menu">
-              <button id="maMenuToggle" class="chip icon-chip" type="button" title="显示/隐藏均线菜单" aria-label="显示/隐藏均线菜单">
+              <button id="maMenuToggle" class="chip icon-chip" type="button" title="Show/hide moving averages" aria-label="Show/hide moving averages">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M3 16c3-6 6 3 9-3s6 3 9-3"></path>
                   <path d="M3 20h18"></path>
@@ -3573,17 +3573,17 @@
 
     <aside class="detail-sidebar">
       <section class="card panel">
-        <div class="panel-title">复盘摘要</div>
+        <div class="panel-title">Replay summary</div>
         <div id="stats" class="stats"></div>
       </section>
       <section class="card panel">
-        <div class="panel-title">当日个人买卖明细（点击K线日期）</div>
-        <div id="selectedDay" class="selection">当前未选中交易日</div>
+        <div class="panel-title">Trades for selected date (select a candle)</div>
+        <div id="selectedDay" class="selection">No trading day selected</div>
         <div class="trade-table-wrap">
           <table>
             <thead>
               <tr>
-                <th>时间</th><th>方向</th><th>数量</th><th>价格</th><th>成交额</th><th class="hide-narrow">佣金</th><th>标签</th>
+                <th>Time</th><th>Side</th><th>Quantity</th><th>Price</th><th>Notional</th><th class="hide-narrow">Commission</th><th>Tag</th>
               </tr>
             </thead>
             <tbody id="tradeRows"></tbody>
@@ -3592,35 +3592,35 @@
         <div id="tradeSummary" class="trade-summary"></div>
       </section>
       <section class="card panel">
-        <div class="panel-title">交易计划</div>
-        <div class="panel-sub">记录买入假设、加减仓与止损纪律</div>
+        <div class="panel-title">Trade plan</div>
+        <div class="panel-sub">Record thesis, sizing and exit discipline</div>
         <div class="trade-plan-form">
-          <label>买卖逻辑
+          <label>Setup
             <select id="planSetupType"></select>
           </label>
-          <label>买入理由
-            <textarea id="planThesis" placeholder="为什么买，预期赚什么钱"></textarea>
+          <label>Thesis
+            <textarea id="planThesis" placeholder="Why buy, and what drives the expected return?"></textarea>
           </label>
           <div class="trade-plan-row">
-            <label>无效价
-              <input id="planInvalidationPrice" type="number" step="0.01" placeholder="如 118.5" />
+            <label>Invalidation price
+              <input id="planInvalidationPrice" type="number" step="0.01" placeholder="e.g. 118.5" />
             </label>
-            <label>目标天数
-              <input id="planTargetHoldingDays" type="number" min="0" step="1" placeholder="如 20" />
+            <label>Target days
+              <input id="planTargetHoldingDays" type="number" min="0" step="1" placeholder="e.g. 20" />
             </label>
           </div>
-          <label>加仓条件
-            <textarea id="planAddCondition" placeholder="什么情况下才允许加仓"></textarea>
+          <label>Add condition
+            <textarea id="planAddCondition" placeholder="Conditions required before adding"></textarea>
           </label>
-          <label>减仓条件
-            <textarea id="planReduceCondition" placeholder="什么情况下减仓"></textarea>
+          <label>Reduce condition
+            <textarea id="planReduceCondition" placeholder="Conditions for reducing"></textarea>
           </label>
-          <label>止损条件
-            <textarea id="planStopCondition" placeholder="什么情况下必须退出"></textarea>
+          <label>Exit condition
+            <textarea id="planStopCondition" placeholder="Conditions requiring an exit"></textarea>
           </label>
           <div class="trade-plan-footer">
             <span id="tradePlanStatus" class="title-muted"></span>
-            <button id="tradePlanSave" class="chip" type="button">保存计划</button>
+            <button id="tradePlanSave" class="chip" type="button">Save plan</button>
           </div>
         </div>
       </section>
@@ -3630,12 +3630,12 @@
   <!-- Data View -->
   <div id="dataView" class="data-view">
     <div class="data-header">
-      <h2 style="margin:0; font-size:18px;">交易数据</h2>
+      <h2 style="margin:0; font-size:18px;">Trading data</h2>
       <div class="data-sub-tabs">
-        <button class="chip active" data-mode="rank" type="button">排行</button>
-        <button class="chip" data-mode="pnl" type="button">盈亏热力图</button>
-        <button class="chip" data-mode="amount" type="button">交易金额热力图</button>
-        <button class="chip" data-mode="activity" type="button">交易行为图</button>
+        <button class="chip active" data-mode="rank" type="button">Rankings</button>
+        <button class="chip" data-mode="pnl" type="button">P&L heatmap</button>
+        <button class="chip" data-mode="amount" type="button">Trading notional heatmap</button>
+        <button class="chip" data-mode="activity" type="button">Trading activity</button>
       </div>
     </div>
 
@@ -3643,32 +3643,32 @@
     <div id="dataRankPanel" class="data-rank-panel active">
       <div class="data-rank-grid">
         <section class="data-card">
-          <div class="panel-title">交易金额前10</div>
-          <div class="panel-sub">按所选年度累计成交金额</div>
+          <div class="panel-title">Top 10 by notional</div>
+          <div class="panel-sub">Cumulative notional for the selected period</div>
           <div id="dataTopByAmount" class="overview-list"></div>
         </section>
         <section class="data-card">
-          <div class="panel-title">成交笔数前10</div>
-          <div class="panel-sub">按 IBKR fill 笔数统计</div>
+          <div class="panel-title">Top 10 by fills</div>
+          <div class="panel-sub">Ranked by IBKR fills</div>
           <div id="dataTopByCount" class="overview-list"></div>
         </section>
         <section class="data-card">
-          <div class="panel-title">盈利 / 亏损前10</div>
-          <div class="panel-sub">按 IBKR MTM 总盈亏</div>
+          <div class="panel-title">Top gains / losses</div>
+          <div class="panel-sub">Ranked by IBKR MTM P&L</div>
           <div class="loser-winner-grid">
             <div>
-              <div class="panel-sub">盈利前10</div>
+              <div class="panel-sub">Top 10 gains</div>
               <div id="dataTopWinners" class="overview-list"></div>
             </div>
             <div>
-              <div class="panel-sub">亏损前10</div>
+              <div class="panel-sub">Top 10 losses</div>
               <div id="dataTopLosers" class="overview-list"></div>
             </div>
           </div>
         </section>
         <section class="data-card">
-          <div class="panel-title">其他品种盈亏</div>
-          <div class="panel-sub">股票 / ETF 之外的品种，按绝对盈亏排序</div>
+          <div class="panel-title">Other instruments</div>
+          <div class="panel-sub">Non-stock and non-ETF instruments, sorted by absolute P&L</div>
           <div id="dataOtherPnl" class="other-pnl-list"></div>
         </section>
       </div>
@@ -3687,8 +3687,8 @@
         <section class="activity-chart-card">
           <div class="activity-chart-header">
             <div>
-              <div class="activity-chart-title">交易频率</div>
-              <div class="activity-chart-sub">每日成交笔数</div>
+              <div class="activity-chart-title">Trading frequency</div>
+              <div class="activity-chart-sub">Daily fills</div>
             </div>
             <div id="tradeFrequencyMeta" class="activity-chart-sub"></div>
           </div>
@@ -3697,8 +3697,8 @@
         <section class="activity-chart-card">
           <div class="activity-chart-header">
             <div>
-              <div class="activity-chart-title">交易密度</div>
-              <div class="activity-chart-sub">每日成交金额</div>
+              <div class="activity-chart-title">Trading density</div>
+              <div class="activity-chart-sub">Daily notional</div>
             </div>
             <div id="tradeDensityMeta" class="activity-chart-sub"></div>
           </div>
@@ -3711,7 +3711,7 @@
   <!-- Trades View -->
   <div id="tradesView" class="trades-view">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-      <h2 style="margin:0; font-size:18px;">交易记录</h2>
+      <h2 style="margin:0; font-size:18px;">Trades</h2>
       <span id="tradesCount" class="panel-sub"></span>
     </div>
     <div id="tradesGroups" class="trades-groups"></div>
@@ -3721,24 +3721,25 @@
   <div id="auditView" class="audit-view">
     <div class="audit-workbench-header">
       <div>
-        <h2 style="margin:0; font-size:18px;">交易测评工作台</h2>
-        <div id="auditFreshness" class="audit-freshness">确定性数据优先，AI 仅负责总结</div>
+        <h2 style="margin:0; font-size:18px;">Trading audit workbench</h2>
+        <div id="auditFreshness" class="audit-freshness">Deterministic data first; AI only summarizes</div>
       </div>
       <div class="audit-workbench-actions">
-        <button id="auditRefreshData" class="chip" type="button">刷新测评数据</button>
-        <button id="auditGenerate" class="chip" type="button">生成 AI 总结</button>
+        <button id="auditRefreshData" class="chip" type="button">Refresh audit data</button>
+        <button id="auditGenerate" class="chip" type="button">Generate AI summary</button>
+        <span class="muted" data-i18n="ai.englishOnly">AI reports are generated in English.</span>
       </div>
     </div>
     <div id="auditSubnav" class="audit-subnav">
-      <button class="chip active" type="button" data-audit-pane="overview">总览</button>
-      <button class="chip" type="button" data-audit-pane="outcome">收益归因</button>
-      <button class="chip" type="button" data-audit-pane="process">过程质量</button>
-      <button class="chip" type="button" data-audit-pane="behavior">行为模式</button>
-      <button class="chip" type="button" data-audit-pane="evidence">交易证据</button>
-      <button class="chip" type="button" data-audit-pane="improvement">改进记录</button>
-      <button class="chip" type="button" data-audit-pane="ai">AI 总结</button>
+      <button class="chip active" type="button" data-audit-pane="overview">Overview</button>
+      <button class="chip" type="button" data-audit-pane="outcome">Return attribution</button>
+      <button class="chip" type="button" data-audit-pane="process">Process quality</button>
+      <button class="chip" type="button" data-audit-pane="behavior">Behavior</button>
+      <button class="chip" type="button" data-audit-pane="evidence">Evidence</button>
+      <button class="chip" type="button" data-audit-pane="improvement">Improvement log</button>
+      <button class="chip" type="button" data-audit-pane="ai">AI summary</button>
     </div>
-    <div id="auditWorkbenchLoading" class="audit-workbench-loading">加载测评工作台...</div>
+    <div id="auditWorkbenchLoading" class="audit-workbench-loading">Loading audit workbench...</div>
     <div id="auditPaneOverview" class="audit-pane active"></div>
     <div id="auditPaneOutcome" class="audit-pane"></div>
     <div id="auditPaneProcess" class="audit-pane"></div>
@@ -3748,7 +3749,7 @@
     <div id="auditPaneAi" class="audit-pane">
       <div class="audit-section">
         <div id="auditAiStatus" class="panel-sub" style="margin-bottom:12px;"></div>
-        <div id="auditReport" class="audit-report">尚未加载 AI 总结</div>
+        <div id="auditReport" class="audit-report">AI summary has not been loaded</div>
       </div>
     </div>
   </div>
@@ -3757,8 +3758,8 @@
   <div id="performanceView" class="performance-view">
     <div class="performance-header">
       <div style="display:flex; gap:10px; align-items:center;">
-        <h2 style="margin:0; font-size:18px;">业绩追踪</h2>
-        <button id="perfRefreshBtn" class="chip" type="button">刷新月度数据</button>
+        <h2 style="margin:0; font-size:18px;">Performance tracking</h2>
+        <button id="perfRefreshBtn" class="chip" type="button">Refresh monthly data</button>
       </div>
     </div>
     <div id="perfChartWrap" class="performance-chart-wrap"></div>
@@ -3770,10 +3771,10 @@
       <table id="perfTable" class="performance-table">
         <thead>
           <tr>
-            <th>月份</th>
-            <th>资产金额（万）</th>
-            <th>月收益率</th>
-            <th>累计收益率</th>
+            <th>Month</th>
+            <th>Portfolio value (10k)</th>
+            <th>Monthly return</th>
+            <th>Cumulative return</th>
             <th>YTD</th>
           </tr>
         </thead>
@@ -3786,94 +3787,93 @@
   <div id="settingsView" class="data-view">
     <div class="data-header">
       <div>
-        <h2 style="margin:0 0 4px 0; font-size:18px;">设置</h2>
-        <div class="panel-sub">默认入口 / 行情刷新 / AI 模型</div>
+        <h2 style="margin:0 0 4px 0; font-size:18px;">Settings</h2>
+        <div class="panel-sub">Defaults / Market refresh / AI model</div>
       </div>
     </div>
     <div class="data-section">
-      <h3>工作台默认值</h3>
+      <h3>Workspace defaults</h3>
       <div class="trade-plan-form" style="max-width:720px;">
         <label>
-          <span data-i18n="settings.language">语言</span>
+          <span data-i18n="settings.language">Language</span>
           <select id="settingsLocale">
-            <option value="auto" data-i18n="settings.languageAuto">跟随浏览器</option>
             <option value="en" data-i18n="settings.languageEnglish">English</option>
-            <option value="zh-CN" data-i18n="settings.languageChinese">简体中文</option>
+            <option value="zh-CN" data-i18n="settings.languageChinese">Simplified Chinese</option>
           </select>
         </label>
         <label>
-          <span>当前区间</span>
-          <select id="periodSelect" class="period-select" title="选择年度区间"></select>
+          <span>Current period</span>
+          <select id="periodSelect" class="period-select" title="Select period"></select>
         </label>
         <label>
-          <span>默认区间</span>
+          <span>Default period</span>
           <select id="settingsDefaultPeriod"></select>
         </label>
         <label>
-          <span>默认股票代码</span>
+          <span>Default symbol</span>
           <input id="settingsDefaultSymbol" placeholder="INTC.US" />
         </label>
         <label>
-          <span>Yahoo Finance 盘中刷新间隔（秒）</span>
+          <span>Yahoo Finance refresh interval (seconds)</span>
           <input id="settingsRefreshSeconds" type="number" min="60" max="3600" step="30" />
         </label>
         <label>
-          <span>Kimi 模型</span>
+          <span>Kimi model</span>
           <input id="settingsKimiModel" placeholder="moonshot-v1-32k" />
         </label>
         <label>
-          <span>主题 benchmark</span>
+          <span>Theme benchmark</span>
           <input id="settingsThemeBenchmark" placeholder="SMH.US" />
         </label>
         <label>
-          <span>测评主 benchmark</span>
+          <span>Primary audit benchmark</span>
           <input id="settingsAuditPrimaryBenchmark" placeholder="QQQ.US" />
         </label>
         <label>
-          <span>测评参考 benchmark</span>
+          <span>Secondary audit benchmark</span>
           <input id="settingsAuditSecondaryBenchmark" placeholder="SPY.US" />
         </label>
         <div style="display:flex; gap:10px; align-items:center;">
-          <button id="settingsSave" class="chip" type="button">保存设置</button>
+          <button id="settingsSave" class="chip" type="button">Save settings</button>
           <span id="settingsStatus" class="title-muted"></span>
         </div>
       </div>
     </div>
     <div class="data-section">
-      <h3>数据更新</h3>
-      <div class="panel-sub" style="margin-bottom:12px;">上传 IBKR 文件后刷新交易与最近行情缓存</div>
+      <h3>Data update</h3>
+      <div class="panel-sub" style="margin-bottom:12px;">Upload IBKR files, then refresh trades and market cache</div>
       <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-        <button id="dataUpload" class="chip" type="button">上传数据</button>
+        <button id="dataUpload" class="chip" type="button">Upload data</button>
         <input id="dataUploadInput" type="file" multiple accept=".tlg,.csv" style="display:none;" />
-        <button id="dataRefresh" class="chip" type="button">更新数据</button>
+        <button id="dataRefresh" class="chip" type="button">Refresh data</button>
       </div>
     </div>
     <div class="data-section">
       <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;">
         <div>
-          <h3 style="margin-bottom:4px;">Watchlist 触发器</h3>
-          <div class="panel-sub">关注价 / 突破价 / 回踩区 / 财报日期</div>
+          <h3 style="margin-bottom:4px;">Watchlist triggers</h3>
+          <div class="panel-sub">Watch / breakout / pullback / earnings</div>
         </div>
         <div style="display:flex; gap:8px; align-items:center;">
-          <button id="watchlistAddTrigger" class="chip" type="button">新增</button>
-          <button id="watchlistSaveTriggers" class="chip" type="button">保存触发器</button>
+          <button id="watchlistAddTrigger" class="chip" type="button">Add</button>
+          <button id="watchlistSaveTriggers" class="chip" type="button">Save triggers</button>
         </div>
       </div>
       <div style="overflow-x:auto;">
         <table class="detail-table">
           <thead>
             <tr>
-              <th>代码</th>
-              <th>关注价</th>
-              <th>突破价</th>
-              <th>回踩区</th>
-              <th>财报日期</th>
-              <th>备注</th>
+              <th>Symbol</th>
+              <th>Watch price</th>
+              <th>Breakout price</th>
+              <th>Pullback zone</th>
+              <th>Earnings date</th>
+              <th>Notes</th>
               <th></th>
             </tr>
           </thead>
           <tbody id="watchlistTriggerRows">
-            <tr><td colspan="7" class="empty">加载中...</td></tr>
+            <tr><td colspan="7" class="empty">Loading...</td></tr>
           </tbody>
         </table>
       </div>
@@ -3881,12 +3881,12 @@
     </div>
   </div>
 
-  <button id="sidebarToggle" class="rail-toggle" type="button" title="隐藏左栏" aria-label="隐藏左栏">
+  <button id="sidebarToggle" class="rail-toggle" type="button" title="Hide left panel" aria-label="Hide left panel">
     <svg viewBox="0 0 12 24" aria-hidden="true">
       <polyline points="8,4 4,12 8,20"></polyline>
     </svg>
   </button>
-  <button id="detailSidebarToggle" class="rail-toggle rail-toggle-right" type="button" title="隐藏右栏" aria-label="隐藏右栏">
+  <button id="detailSidebarToggle" class="rail-toggle rail-toggle-right" type="button" title="Hide right panel" aria-label="Hide right panel">
     <svg viewBox="0 0 12 24" aria-hidden="true">
       <polyline points="4,4 8,12 4,20"></polyline>
     </svg>
@@ -4030,8 +4030,8 @@
       },
     };
 
-    const BUY_SETUP_TYPES = ["趋势突破（计划内）", "趋势突破（冲动追入）", "回调买入", "超跌反弹", "基本面驱动", "主题轮动", "FOMO追高", "未分类"];
-    const SELL_SETUP_TYPES = ["止损", "止盈", "风控减仓", "趋势走弱减仓", "调仓换股", "被迫平仓", "未分类"];
+    const BUY_SETUP_TYPES = ["Planned breakout", "Impulsive breakout", "Pullback entry", "Oversold rebound", "Fundamental catalyst", "Theme rotation", "FOMO chase", "Unclassified", "Unplanned"];
+    const SELL_SETUP_TYPES = ["Stop loss", "Take profit", "Risk reduction", "Trend weakness reduction", "Portfolio rotation", "Forced liquidation", "Unclassified", "Unplanned"];
 
     function showError(message) {
       document.getElementById("error").textContent = message || "";
@@ -4100,8 +4100,8 @@
       if (window.TradeCraftI18n?.locale !== "zh-CN") {
         return Math.abs(n) >= 10 ? `${(n / 10).toFixed(1)}B` : `${(n * 100).toFixed(0)}M`;
       }
-      if (Math.abs(n) >= 1000) return `${(n / 1000).toFixed(1)}千亿`;
-      return `${n.toFixed(1)}亿`;
+      if (Math.abs(n) >= 1000) return `${(n / 1000).toFixed(1)} hundred billion`;
+      return `${n.toFixed(1)} hundred million`;
     }
 
     function formatPct(v) {
@@ -4118,14 +4118,14 @@
 
     function normalizeApiError(res, data, fallback) {
       const status = res?.status ? `HTTP ${res.status}` : "";
-      if (!data || typeof data !== "object") return fallback || status || "请求失败";
+      if (!data || typeof data !== "object") return fallback || status || "Request failed";
       const primary = data.error || (data.ok === false ? data.message : "") || data.warning || "";
       const detail = data.detail || data.sourceError || "";
       const code = data.code || res?.status || "";
-      const parts = [primary || fallback || "请求失败"];
+      const parts = [primary || fallback || "Request failed"];
       if (detail && detail !== primary) parts.push(detail);
       if (code && !String(parts[0]).includes(String(code))) parts.push(`code=${code}`);
-      return parts.filter(Boolean).join("；");
+      return parts.filter(Boolean).join("; ");
     }
 
     function assertApiOk(res, data, fallback) {
@@ -4152,10 +4152,10 @@
       const tbody = document.getElementById("tradeRows");
       const selectedDay = document.getElementById("selectedDay");
       tbody.innerHTML = "";
-      selectedDay.textContent = day ? `当前锁定日期: ${day}` : "当前未选中交易日";
+      selectedDay.textContent = day ? `Selected date: ${day}` : "No trading day selected";
       if (!day) {
         const tr = document.createElement("tr");
-        tr.innerHTML = "<td colspan='7' class='title-muted'>点击任意交易日K线后显示当日个人买卖明细</td>";
+        tr.innerHTML = "<td colspan='7' class='title-muted'>Select any trading-day candle to show that day's fills</td>";
         tbody.appendChild(tr);
         document.getElementById("tradeSummary").innerHTML = "";
         return;
@@ -4163,7 +4163,7 @@
       const items = rows.filter(r => r.time === day)[0]?.myTrades || [];
       if (items.length === 0) {
         const tr = document.createElement("tr");
-        tr.innerHTML = "<td colspan='7' class='title-muted'>该日期无个人买卖记录</td>";
+        tr.innerHTML = "<td colspan='7' class='title-muted'>No personal executions on this date</td>";
         tbody.appendChild(tr);
         document.getElementById("tradeSummary").innerHTML = "";
         return;
@@ -4174,7 +4174,7 @@
         const tr = document.createElement("tr");
         const sideClass = t.side === "BUY" ? "buy" : "sell";
         const timeMin = (t.trade_time || "").slice(0, 5);
-        const currentSetup = t.setup_type || "未分类";
+        const currentSetup = t.setup_type || "Unclassified";
         const tradeTime = t.trade_time || "";
         const isBuy = t.side === "BUY";
         const setupTypes = isBuy ? BUY_SETUP_TYPES : SELL_SETUP_TYPES;
@@ -4215,20 +4215,20 @@
               const result = await res.json();
               if (result.ok) {
                 target.style.borderColor = "var(--green)";
-                showToast("标签已保存", "success", 2000);
+                showToast("Tag saved", "success", 2000);
               } else {
                 target.style.borderColor = "var(--red)";
-                showToast("保存失败: " + (result.error || ""), "error", 3000);
+                showToast("Save failed: " + (result.error || ""), "error", 3000);
               }
             } catch (err) {
               target.style.borderColor = "var(--red)";
-              showToast("保存失败: " + (err.message || err), "error", 3000);
+              showToast("Save failed: " + (err.message || err), "error", 3000);
             }
           }, 200);
         });
       });
 
-      // 当日交易总结
+      // Daily execution summary.
       const buyItems = items.filter(t => t.side === "BUY");
       const sellItems = items.filter(t => t.side === "SELL");
       const buyQty = buyItems.reduce((s, t) => s + Number(t.quantity || 0), 0);
@@ -4244,15 +4244,15 @@
 
       const summaryEl = document.getElementById("tradeSummary");
       const sumItems = [
-        ["买入笔数", buyItems.length],
-        ["卖出笔数", sellItems.length],
-        ["净买入数量", fmtNum(netQty)],
-        ["净买入金额", (netAmt >= 0 ? "+" : "") + localeNumber(netAmt, { minimumFractionDigits: 1, maximumFractionDigits: 1 })],
-        ["当日成交金额", localeNumber(totalAmt, { minimumFractionDigits: 1, maximumFractionDigits: 1 })],
-        ["佣金合计", localeNumber(totalCommission, { minimumFractionDigits: 1, maximumFractionDigits: 1 })],
+        ["Buy fills", buyItems.length],
+        ["Sell fills", sellItems.length],
+        ["Net quantity", fmtNum(netQty)],
+        ["Net notional", (netAmt >= 0 ? "+" : "") + localeNumber(netAmt, { minimumFractionDigits: 1, maximumFractionDigits: 1 })],
+        ["Daily notional", localeNumber(totalAmt, { minimumFractionDigits: 1, maximumFractionDigits: 1 })],
+        ["Total commission", localeNumber(totalCommission, { minimumFractionDigits: 1, maximumFractionDigits: 1 })],
       ];
-      if (buyAvgPrice > 0) sumItems.push(["买入均价", localeNumber(buyAvgPrice, { minimumFractionDigits: 1, maximumFractionDigits: 1 })]);
-      if (sellAvgPrice > 0) sumItems.push(["卖出均价", localeNumber(sellAvgPrice, { minimumFractionDigits: 1, maximumFractionDigits: 1 })]);
+      if (buyAvgPrice > 0) sumItems.push(["Average buy", localeNumber(buyAvgPrice, { minimumFractionDigits: 1, maximumFractionDigits: 1 })]);
+      if (sellAvgPrice > 0) sumItems.push(["Average sell", localeNumber(sellAvgPrice, { minimumFractionDigits: 1, maximumFractionDigits: 1 })]);
       summaryEl.innerHTML = sumItems.map(([k, v]) => `<div class="trade-summary-item"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("");
     }
 
@@ -4291,11 +4291,11 @@
       const changePct = prevClose ? ((close - prevClose) / prevClose) * 100 : 0;
       const tradeCount = (row.myTrades || []).length;
       infoBar.innerHTML = `
-        <div class="info-pill"><span>日期</span><b>${formatDayWithWeekday(row.time)}</b></div>
-        <div class="info-pill"><span>收盘</span><b>${fmtNum(row.close)}</b></div>
-        <div class="info-pill"><span>涨跌幅</span><b style="color:${changePct >= 0 ? '#089981' : '#f23645'}">${formatPct(changePct)}</b></div>
-        <div class="info-pill"><span>成交额</span><b>${formatTurnover(row.turnover)}</b></div>
-        <div class="info-pill"><span>个人成交</span><b>${tradeCount ? `${tradeCount} 笔` : "无"}</b></div>
+        <div class="info-pill"><span>Date</span><b>${formatDayWithWeekday(row.time)}</b></div>
+        <div class="info-pill"><span>Close</span><b>${fmtNum(row.close)}</b></div>
+        <div class="info-pill"><span>Change</span><b style="color:${changePct >= 0 ? '#089981' : '#f23645'}">${formatPct(changePct)}</b></div>
+        <div class="info-pill"><span>Notional</span><b>${formatTurnover(row.turnover)}</b></div>
+        <div class="info-pill"><span>Your fills</span><b>${tradeCount ? `${tradeCount} fills` : "None"}</b></div>
       `;
     }
 
@@ -4440,8 +4440,8 @@
       const button = document.getElementById("tradeMarkerToggle");
       if (button) {
         button.classList.toggle("active", active);
-        button.title = active ? "隐藏买卖打点" : "显示买卖打点";
-        button.setAttribute("aria-label", active ? "隐藏买卖打点" : "显示买卖打点");
+        button.title = active ? "Hide trade markers" : "Show trade markers";
+        button.setAttribute("aria-label", active ? "Hide trade markers" : "Show trade markers");
       }
       renderTradeOverlay();
     }
@@ -4521,7 +4521,7 @@
       const width = Math.max(1, chartNode.clientWidth);
       const height = Math.max(1, chartNode.clientHeight);
 
-      // 区间统计
+      // Selected-range statistics.
       const stats = getRangeStats(STATE.measureStart.time, STATE.measureEnd.time);
 
       const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -4551,7 +4551,7 @@
       if (bars > 0) {
         labelHTML += `<span style="opacity:0.82;font-size:11px;font-weight:500">${bars} bars</span>`;
       }
-      labelHTML += `<button class="measure-clear" type="button" title="清除测量" aria-label="清除测量">×</button>`;
+      labelHTML += `<button class="measure-clear" type="button" title="Clear measurement" aria-label="Clear measurement">×</button>`;
       label.innerHTML = labelHTML;
       const labelX = Math.max(80, Math.min(width - 80, (start.x + end.x) / 2));
       const labelY = Math.max(22, Math.min(height - 22, (start.y + end.y) / 2 - 18));
@@ -4644,7 +4644,7 @@
       document.body.classList.toggle("night", STATE.dark);
       const colors = themeColors();
       const label = document.getElementById("themeToggle");
-      const nextThemeLabel = STATE.dark ? "切换浅色主题" : "切换深色主题";
+      const nextThemeLabel = STATE.dark ? "Switch to light theme" : "Switch to dark theme";
       label.setAttribute("aria-label", nextThemeLabel);
       label.title = nextThemeLabel;
       if (STATE.chart && STATE.volChart) {
@@ -4807,8 +4807,8 @@
       const toggle = document.getElementById("sidebarToggle");
       document.body.classList.toggle("sidebar-collapsed", STATE.leftSidebarCollapsed);
       shell.classList.toggle("sidebar-collapsed", STATE.leftSidebarCollapsed);
-      toggle.title = STATE.leftSidebarCollapsed ? "显示左栏" : "隐藏左栏";
-      toggle.setAttribute("aria-label", STATE.leftSidebarCollapsed ? "显示左栏" : "隐藏左栏");
+      toggle.title = STATE.leftSidebarCollapsed ? "Show left panel" : "Hide left panel";
+      toggle.setAttribute("aria-label", STATE.leftSidebarCollapsed ? "Show left panel" : "Hide left panel");
       toggle.innerHTML = STATE.leftSidebarCollapsed
         ? `<svg viewBox="0 0 12 24" aria-hidden="true"><polyline points="4,4 8,12 4,20"></polyline></svg>`
         : `<svg viewBox="0 0 12 24" aria-hidden="true"><polyline points="8,4 4,12 8,20"></polyline></svg>`;
@@ -4826,8 +4826,8 @@
       const toggle = document.getElementById("detailSidebarToggle");
       document.body.classList.toggle("detail-collapsed", STATE.rightSidebarCollapsed);
       shell.classList.toggle("detail-collapsed", STATE.rightSidebarCollapsed);
-      toggle.title = STATE.rightSidebarCollapsed ? "显示右栏" : "隐藏右栏";
-      toggle.setAttribute("aria-label", STATE.rightSidebarCollapsed ? "显示右栏" : "隐藏右栏");
+      toggle.title = STATE.rightSidebarCollapsed ? "Show right panel" : "Hide right panel";
+      toggle.setAttribute("aria-label", STATE.rightSidebarCollapsed ? "Show right panel" : "Hide right panel");
       toggle.innerHTML = STATE.rightSidebarCollapsed
         ? `<svg viewBox="0 0 12 24" aria-hidden="true"><polyline points="8,4 4,12 8,20"></polyline></svg>`
         : `<svg viewBox="0 0 12 24" aria-hidden="true"><polyline points="4,4 8,12 4,20"></polyline></svg>`;
@@ -4876,11 +4876,11 @@
 
     function renderStats(summary) {
       const stats = [
-        ["买入笔数", summary.buyCount],
-        ["卖出笔数", summary.sellCount],
-        ["赢率", summary.winRate > 0 ? summary.winRate + "%" : "-"],
-        ["交易金额", localeNumber(summary.tradeAmount, { minimumFractionDigits: 1, maximumFractionDigits: 1 })],
-        ["年初至今MTM", (summary.mtmTotal > 0 ? "+" : "") + localeNumber(summary.mtmTotal, { minimumFractionDigits: 1, maximumFractionDigits: 1 })],
+        ["Buy fills", summary.buyCount],
+        ["Sell fills", summary.sellCount],
+        ["Win rate", summary.winRate > 0 ? summary.winRate + "%" : "-"],
+        ["Notional", localeNumber(summary.tradeAmount, { minimumFractionDigits: 1, maximumFractionDigits: 1 })],
+        ["YTD MTM", (summary.mtmTotal > 0 ? "+" : "") + localeNumber(summary.mtmTotal, { minimumFractionDigits: 1, maximumFractionDigits: 1 })],
       ];
       const root = document.getElementById("stats");
       root.innerHTML = "";
@@ -4898,7 +4898,7 @@
       STATE.tradePlan = plan;
       STATE.setupTypes = setupTypes;
       const setup = document.getElementById("planSetupType");
-      setup.innerHTML = `<option value="">未填写</option>` + setupTypes.map(type => (
+      setup.innerHTML = `<option value="">Not provided</option>` + setupTypes.map(type => (
         `<option value="${escapeHtml(type)}">${escapeHtml(type)}</option>`
       )).join("");
       setup.value = plan.setupType || "";
@@ -4909,7 +4909,7 @@
       document.getElementById("planReduceCondition").value = plan.reduceCondition || "";
       document.getElementById("planStopCondition").value = plan.stopCondition || "";
       const status = document.getElementById("tradePlanStatus");
-      status.textContent = plan.updatedAt ? `已保存 ${plan.updatedAt.slice(0, 10)}` : "未保存计划";
+      status.textContent = plan.updatedAt ? `Saved ${plan.updatedAt.slice(0, 10)}` : "Unsaved plan";
     }
 
     function collectTradePlanForm() {
@@ -4931,7 +4931,7 @@
       const status = document.getElementById("tradePlanStatus");
       const prev = button.textContent;
       button.disabled = true;
-      button.textContent = "保存中";
+      button.textContent = "Saving";
       status.textContent = "";
       try {
         const res = await fetch(`/api/trade-plan?symbol=${encodeURIComponent(STATE.currentSymbol)}`, {
@@ -4940,7 +4940,7 @@
           body: JSON.stringify(collectTradePlanForm()),
         });
         const data = await res.json();
-        assertApiOk(res, data, "保存交易计划失败");
+        assertApiOk(res, data, "Failed to save trade plan");
         STATE.tradePlan = data.plan;
         if (STATE.replay) {
           STATE.replay.tradePlan = data.plan;
@@ -4948,7 +4948,7 @@
           STATE.replayCache[STATE.currentSymbol] = STATE.replay;
         }
         renderTradePlan({ tradePlan: data.plan, setupTypes: data.setupTypes || STATE.setupTypes });
-        status.textContent = "已保存";
+        status.textContent = "Saved";
       } catch (err) {
         status.textContent = err.message || String(err);
       } finally {
@@ -4961,7 +4961,7 @@
       const root = document.getElementById("recentlyTraded");
       root.innerHTML = "";
       if (!items.length) {
-        root.innerHTML = "<div class='title-muted'>暂无交易记录</div>";
+        root.innerHTML = "<div class='title-muted'>No trades</div>";
         return;
       }
       const maxAmount = Math.max(...items.map(i => Number(i.totalAmount || 0)), 1);
@@ -5039,13 +5039,13 @@
         const metricText = metricKind === "amount"
           ? fmtNum(item.amount)
           : metricKind === "count"
-            ? `${item.tradeCount} 笔`
+            ? `${item.tradeCount} fills`
             : formatSigned(item.mtmTotal);
         const metaText = metricKind === "amount"
-          ? `${item.tradeCount} 笔 / MTM ${formatSigned(item.mtmTotal)}`
+          ? `${item.tradeCount} fills / MTM ${formatSigned(item.mtmTotal)}`
           : metricKind === "count"
             ? `${fmtNum(item.amount)} / MTM ${formatSigned(item.mtmTotal)}`
-            : `${fmtNum(item.amount)} / ${item.tradeCount} 笔`;
+            : `${fmtNum(item.amount)} / ${item.tradeCount} fills`;
         const stateClass = metricKind === "mtm"
           ? (Number(item.mtmTotal) >= 0 ? "positive" : "negative")
           : "neutral";
@@ -5105,14 +5105,14 @@
       const reviewCount = (overview.recentlyTraded || []).length;
       const cards = [
         {
-          title: "待复盘股票",
-          metric: `${reviewCount} 个代码`,
-          note: `当前区间 ${overview.periodLabel || overview.period || STATE.selectedPeriod || "-"}`,
+          title: "Review queue",
+          metric: `${reviewCount} symbols`,
+          note: `Current period ${overview.periodLabel || overview.period || STATE.selectedPeriod || "-"}`,
         },
         {
-          title: "数据状态",
+          title: "Data status",
           metric: ibkr.reportEndDate || "-",
-          note: `IBKR刷新 ${ibkr.lastRefreshAt || "-"} / ${ibkr.tradeCount ?? "-"} 笔交易`,
+          note: `IBKR refresh ${ibkr.lastRefreshAt || "-"} / ${ibkr.tradeCount ?? "-"} trades`,
         },
       ];
       root.innerHTML = cards.map(card => `
@@ -5130,7 +5130,7 @@
       root.innerHTML = "";
       const items = (STATE.overview?.recentlyTraded || []).slice(0, 8);
       if (!items.length) {
-        root.innerHTML = "<div class='title-muted'>当前区间暂无最近交易。</div>";
+        root.innerHTML = "<div class='title-muted'>No recent trades in the current period.</div>";
         return;
       }
       const highFrequency = new Set((STATE.overview?.topByCount || []).slice(0, 6).map(item => item.symbol));
@@ -5138,13 +5138,13 @@
       const symbolStats = new Map((STATE.overview?.availableSymbols || []).map(item => [item.symbol, item]));
       items.forEach(item => {
         const stats = symbolStats.get(item.symbol) || {};
-        const tags = [`<span class="dashboard-tag recent">最近交易</span>`];
-        if (highFrequency.has(item.symbol)) tags.push(`<span class="dashboard-tag frequent">高频交易</span>`);
-        if (largeAmount.has(item.symbol)) tags.push(`<span class="dashboard-tag large">大额交易</span>`);
+        const tags = [`<span class="dashboard-tag recent">Recent trades</span>`];
+        if (highFrequency.has(item.symbol)) tags.push(`<span class="dashboard-tag frequent">High frequency</span>`);
+        if (largeAmount.has(item.symbol)) tags.push(`<span class="dashboard-tag large">Large notional</span>`);
         const node = homeListItem(
           item,
           fmtNum(item.totalAmount),
-          `最近交易日 ${item.lastTradeDate || "-"} / ${stats.tradeCount || 0} 笔 / ${fmtNum(stats.amount || item.totalAmount)}`
+          `Last trading day ${item.lastTradeDate || "-"} / ${stats.tradeCount || 0} fills / ${fmtNum(stats.amount || item.totalAmount)}`
         );
         const sub = node.querySelector(".dashboard-item-sub");
         if (sub) sub.insertAdjacentHTML("afterend", `<div class="dashboard-tags">${tags.join("")}</div>`);
@@ -5158,14 +5158,14 @@
       root.innerHTML = "";
       const list = (items || []).slice(0, 5);
       if (!list.length) {
-        root.innerHTML = "<div class='title-muted'>暂无数据。</div>";
+        root.innerHTML = "<div class='title-muted'>No data.</div>";
         return;
       }
       list.forEach(item => {
         root.appendChild(homeListItem(
           item,
           formatSigned(item.mtmTotal),
-          `${fmtNum(item.amount)} / ${item.tradeCount || 0} 笔`,
+          `${fmtNum(item.amount)} / ${item.tradeCount || 0} fills`,
           positive ? "positive" : "negative"
         ));
       });
@@ -5203,12 +5203,12 @@
       };
 
       const cards = [
-        { title: "股票敞口", metric: fmtNum(account.stockValue), note: `占比 ${fmtPct(risk.stockExposurePct)}` },
-        { title: "净值", metric: fmtNum(account.endingValue), note: `期初 ${fmtNum(account.startingValue)}` },
-        { title: "现金", metric: fmtNum(account.endingCash), note: `已结算 ${fmtNum(account.endingSettledCash)}` },
-        { title: "最大回撤", metric: risk.maxDrawdown != null ? fmtPct(risk.maxDrawdown) : "-", note: `当前回撤 ${risk.currentDrawdown != null ? fmtPct(risk.currentDrawdown) : "-"}` },
-        { title: "杠杆", metric: fmtPct(risk.leverage), note: `股票 / NAV` },
-        { title: "本期收益 / TWR", metric: fmtTwr(account.timeWeightedReturnPct), note: `变化 ${fmtNum((account.endingValue || 0) - (account.startingValue || 0))}` },
+        { title: "Stock exposure", metric: fmtNum(account.stockValue), note: `Exposure ${fmtPct(risk.stockExposurePct)}` },
+        { title: "Net asset value", metric: fmtNum(account.endingValue), note: `Starting value ${fmtNum(account.startingValue)}` },
+        { title: "Cash", metric: fmtNum(account.endingCash), note: `Settled cash ${fmtNum(account.endingSettledCash)}` },
+        { title: "Maximum drawdown", metric: risk.maxDrawdown != null ? fmtPct(risk.maxDrawdown) : "-", note: `Current drawdown ${risk.currentDrawdown != null ? fmtPct(risk.currentDrawdown) : "-"}` },
+        { title: "Leverage", metric: fmtPct(risk.leverage), note: `Stocks / NAV` },
+        { title: "Period return / TWR", metric: fmtTwr(account.timeWeightedReturnPct), note: `Change ${fmtNum((account.endingValue || 0) - (account.startingValue || 0))}` },
       ];
 
       root.innerHTML = cards.map(card => `
@@ -5238,7 +5238,7 @@
       });
       const visible = limit ? rows.slice(0, limit) : rows;
       if (!visible.length) {
-        return `<div class="title-muted">暂无 IBKR open positions</div>`;
+        return `<div class="title-muted">No IBKR open positions</div>`;
       }
       return visible.map(pos => {
         const symbol = String(pos.symbolLb || pos.symbol || "").toUpperCase();
@@ -5252,18 +5252,18 @@
           ? Math.abs(value) / Math.abs(nav)
           : null;
         const lentText = sharesLent
-          ? `<span class="ibkr-position-lent">借出 ${fmtNum(sharesLent)}</span>`
+          ? `<span class="ibkr-position-lent">Lent ${fmtNum(sharesLent)}</span>`
           : "";
         const exposureText = exposurePct != null
-          ? `<span>${value < 0 ? "空头敞口" : "NAV占比"} ${(exposurePct * 100).toFixed(2)}%</span>`
+          ? `<span>${value < 0 ? "Short exposure" : "NAV exposure"} ${(exposurePct * 100).toFixed(2)}%</span>`
           : "";
         return `
           <button class="dashboard-item ibkr-position-row ${active ? "active" : ""}" type="button" data-symbol="${escapeHtml(symbol)}">
             <div>
               <div class="dashboard-item-main">${escapeHtml(symbol || "-")}</div>
               <div class="ibkr-position-meta">
-                <span>数量 ${Number.isFinite(qty) ? fmtNum(qty) : "-"}</span>
-                <span>市值 ${Number.isFinite(value) ? fmtNum(value) : "-"}</span>
+                <span>Quantity ${Number.isFinite(qty) ? fmtNum(qty) : "-"}</span>
+                <span>Market value ${Number.isFinite(value) ? fmtNum(value) : "-"}</span>
                 ${exposureText}
                 ${lentText}
               </div>
@@ -5354,8 +5354,8 @@
       }, 0);
       const grossExposurePct = Number.isFinite(nav) && nav !== 0 ? grossExposure / Math.abs(nav) : null;
 
-      let reconStatus = "一致";
-      if (recon.status === "diff") reconStatus = `${recon.diffCount || 0} 条差异`;
+      let reconStatus = "Matched";
+      if (recon.status === "diff") reconStatus = `${recon.diffCount || 0} differences`;
       else if (recon.status !== "ok") reconStatus = "-";
 
       let symbolDetail = "";
@@ -5367,37 +5367,37 @@
           const unrealized = pos.unrealizedPl != null ? pos.unrealizedPl : pos.unrealizedPnl;
           symbolDetail = `
             <div style="margin-top:10px; padding-top:10px; border-top:1px solid var(--line);">
-              <div style="font-size:12px; color:var(--muted); margin-bottom:4px;">当前代码 ${escapeHtml(currentSymbol)}</div>
-              <div style="font-size:13px;">持仓 <b>${fmtNum(pos.quantity)}</b> / 市值 <b>${fmtNum(pos.value)}</b> / 未实现 <b>${formatSigned(unrealized)}</b></div>
+              <div style="font-size:12px; color:var(--muted); margin-bottom:4px;">Current symbol ${escapeHtml(currentSymbol)}</div>
+              <div style="font-size:13px;">Position <b>${fmtNum(pos.quantity)}</b> / Market value <b>${fmtNum(pos.value)}</b> / Unrealized <b>${formatSigned(unrealized)}</b></div>
             </div>
           `;
         } else {
           symbolDetail = `
             <div style="margin-top:10px; padding-top:10px; border-top:1px solid var(--line);">
-              <div style="font-size:12px; color:var(--muted);">当前无 IBKR 持仓</div>
+              <div style="font-size:12px; color:var(--muted);">No current IBKR position</div>
             </div>
           `;
         }
       }
 
       root.innerHTML = `
-        <div class="panel-title">账户敞口</div>
+        <div class="panel-title">Account exposure</div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; font-size:12px; margin-top:8px;">
-          <div>股票敞口: <b>${stockExposure}</b></div>
-          <div>占比: <b>${stockPct}</b></div>
-          <div>现金: <b>${cash}</b></div>
-          <div>已结算: <b>${settledCash}</b></div>
-          <div>杠杆: <b>${leverage}</b></div>
-          <div>对账: <b>${escapeHtml(reconStatus)}</b></div>
+          <div>Stock exposure: <b>${stockExposure}</b></div>
+          <div>Exposure: <b>${stockPct}</b></div>
+          <div>Cash: <b>${cash}</b></div>
+          <div>Settled: <b>${settledCash}</b></div>
+          <div>Leverage: <b>${leverage}</b></div>
+          <div>Reconciliation: <b>${escapeHtml(reconStatus)}</b></div>
         </div>
         ${symbolDetail}
         <div style="margin-top:10px; padding-top:10px; border-top:1px solid var(--line);">
-          <div class="panel-title" style="font-size:13px;">IBKR 当前持仓</div>
+          <div class="panel-title" style="font-size:13px;">Current IBKR positions</div>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px 8px; font-size:12px; margin-top:8px; color:var(--muted);">
             <div>NAV: <b style="color:var(--text);">${fmtNum(nav)}</b></div>
-            <div>持仓数: <b style="color:var(--text);">${ibkrPositions.length}</b></div>
-            <div>总敞口: <b style="color:var(--text);">${fmtNum(grossExposure)}</b></div>
-            <div>总敞口/NAV: <b style="color:var(--text);">${grossExposurePct != null ? fmtPct(grossExposurePct) : "-"}</b></div>
+            <div>Positions: <b style="color:var(--text);">${ibkrPositions.length}</b></div>
+            <div>Total exposure: <b style="color:var(--text);">${fmtNum(grossExposure)}</b></div>
+            <div>Exposure/NAV: <b style="color:var(--text);">${grossExposurePct != null ? fmtPct(grossExposurePct) : "-"}</b></div>
           </div>
           <div class="ibkr-position-list">${renderIbkrPositionRows(ibkrPositions, currentSymbol, 5, nav)}</div>
         </div>
@@ -5412,7 +5412,7 @@
       });
       const healthPromise = fetch("/api/health").then(async res => {
           const data = await res.json();
-          assertApiOk(res, data, "加载健康状态失败");
+          assertApiOk(res, data, "Failed to load health status");
           return data;
         }).catch(err => {
           void err;
@@ -5433,7 +5433,7 @@
       if (!root) return;
       root.innerHTML = "";
       if (!items.length) {
-        root.innerHTML = "<div class='title-muted'>当前报表里没有其他品种盈亏。</div>";
+        root.innerHTML = "<div class='title-muted'>The current statement contains no other instruments.</div>";
         return;
       }
       items.forEach(item => {
@@ -5446,7 +5446,7 @@
           </div>
           <div class="other-pnl-meta">
             <span>${item.assetCategory}</span>
-            <span>${item.symbol || "无代码"}</span>
+            <span>${item.symbol || "No symbol"}</span>
           </div>
         `;
         root.appendChild(div);
@@ -5457,14 +5457,14 @@
     function updateDocumentTitle(tab = STATE.currentTab) {
       const symbol = STATE.currentSymbol || document.getElementById("symbolButton")?.textContent || "";
       const titles = {
-        home: "首页仪表盘 - TradeCraft",
-        market: "市场 - TradeCraft",
-        replay: symbol ? `${symbol} 交易复盘 - TradeCraft` : "交易复盘 - TradeCraft",
-        data: "交易数据 - TradeCraft",
-        watchlist: "自选股 - TradeCraft",
-        audit: "交易测评 - TradeCraft",
-        performance: "业绩追踪 - TradeCraft",
-        settings: "设置 - TradeCraft",
+        home: "Dashboard - TradeCraft",
+        market: "Market - TradeCraft",
+        replay: symbol ? `${symbol} Trade Replay - TradeCraft` : "Trade Replay - TradeCraft",
+        data: "Trading Data - TradeCraft",
+        watchlist: "Watchlist - TradeCraft",
+        audit: "Trading Audit - TradeCraft",
+        performance: "Performance - TradeCraft",
+        settings: "Settings - TradeCraft",
       };
       document.title = titles[tab] || "TradeCraft";
     }
@@ -5702,7 +5702,7 @@
 
       const symbols = STATE.overview?.availableSymbols || [];
       if (symbols.length === 0) {
-        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted)">暂无数据</div>';
+        container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted)">No data</div>';
         return;
       }
 
@@ -5730,7 +5730,7 @@
         }));
 
       if (data.length === 0) {
-        const emptyText = mode === "pnl" ? "当前区间暂无盈亏数据" : "当前区间暂无交易金额数据";
+        const emptyText = mode === "pnl" ? "No P&L data for this period" : "No trading notional for this period";
         container.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted)">${emptyText}</div>`;
         return;
       }
@@ -5870,10 +5870,10 @@
 
     function showHeatmapTooltip(event, data, mode) {
       let html = `<div style="font-weight:700;margin-bottom:4px">${data.displayName}</div>`;
-      html += `<div>交易金额: ${fmtAmt(data.amount)}</div>`;
-      html += `<div>盈亏: <span style="color:${data.mtm >= 0 ? '#089981' : '#f23645'}">${fmtAmt(data.mtm)}</span></div>`;
-      html += `<div>交易笔数: ${data.tradeCount}</div>`;
-      html += `<div style="margin-top:4px;font-size:11px;color:var(--muted)">${mode === 'pnl' ? '面积 = 盈亏绝对值' : '面积 = 交易金额'}</div>`;
+      html += `<div>Notional: ${fmtAmt(data.amount)}</div>`;
+      html += `<div>P&L: <span style="color:${data.mtm >= 0 ? '#089981' : '#f23645'}">${fmtAmt(data.mtm)}</span></div>`;
+      html += `<div>Trades: ${data.tradeCount}</div>`;
+      html += `<div style="margin-top:4px;font-size:11px;color:var(--muted)">${mode === 'pnl' ? 'Area = absolute P&L' : 'Area = notional'}</div>`;
 
       const el = document.getElementById("treemapTooltip");
       el.innerHTML = html;
@@ -5936,7 +5936,7 @@
     function renderActivityEmpty(containerId, metaId) {
       const container = document.getElementById(containerId);
       if (!container) return;
-      container.innerHTML = '<div class="activity-chart-empty">当前区间暂无交易数据</div>';
+      container.innerHTML = '<div class="activity-chart-empty">No trading data in the current period</div>';
       const meta = document.getElementById(metaId);
       if (meta) meta.textContent = "";
     }
@@ -5947,7 +5947,7 @@
       let priceScaleWidth = 0;
       if (rows.length) {
         const [wFreq, wDens] = await Promise.all([
-          measurePriceScaleWidth(rows, "tradeCount", v => `${Math.round(Number(v || 0))} 笔`),
+          measurePriceScaleWidth(rows, "tradeCount", v => `${Math.round(Number(v || 0))} fills`),
           measurePriceScaleWidth(rows, "tradeAmount", fmtAbsAmt),
         ]);
         priceScaleWidth = Math.max(wFreq, wDens, 1);
@@ -5958,10 +5958,10 @@
         containerId: "tradeFrequencyChart",
         metaId: "tradeFrequencyMeta",
         field: "tradeCount",
-        title: "交易频率",
+        title: "Trading frequency",
         color: document.body.classList.contains("night") ? "#d0d0d0" : "#333333",
-        formatter: v => `${Math.round(Number(v || 0))} 笔`,
-        metaFormatter: rows => `合计 ${rows.reduce((sum, row) => sum + row.tradeCount, 0)} 笔`,
+        formatter: v => `${Math.round(Number(v || 0))} fills`,
+        metaFormatter: rows => `Total ${rows.reduce((sum, row) => sum + row.tradeCount, 0)} fills`,
         priceScaleWidth,
       });
       const densityResult = renderActivityChart({
@@ -5969,10 +5969,10 @@
         containerId: "tradeDensityChart",
         metaId: "tradeDensityMeta",
         field: "tradeAmount",
-        title: "交易密度",
+        title: "Trading density",
         color: document.body.classList.contains("night") ? "#f5c542" : "#f5c542",
         formatter: v => fmtAbsAmt(v),
-        metaFormatter: rows => `合计 ${fmtAbsAmt(rows.reduce((sum, row) => sum + row.tradeAmount, 0))}`,
+        metaFormatter: rows => `Total ${fmtAbsAmt(rows.reduce((sum, row) => sum + row.tradeAmount, 0))}`,
         priceScaleWidth,
       });
       if (!frequencyResult || !densityResult) return;
@@ -6123,8 +6123,8 @@
         }
         tooltip.innerHTML = `
           <div style="font-weight:700;margin-bottom:4px">${escapeHtml(row.time)}</div>
-          <div>成交笔数: ${row.tradeCount}</div>
-          <div>成交金额: ${fmtAbsAmt(row.tradeAmount)}</div>
+          <div>Executions: ${row.tradeCount}</div>
+          <div>Traded amount: ${fmtAbsAmt(row.tradeAmount)}</div>
         `;
         const rect = container.getBoundingClientRect();
         tooltip.style.display = "block";
@@ -6171,7 +6171,7 @@
             tooltip.style.display = "none";
             return;
           }
-          // 由于两图 price scale 宽度已强制一致，绘图区域宽度相同，直接用 source 的 x 坐标即可
+          // Both charts use the same forced price-scale width, so their plot widths match and the source x coordinate can be reused
           if (targetLine) {
             targetLine.style.left = Math.round(param.point.x) + "px";
             targetLine.style.display = "block";
@@ -6217,20 +6217,20 @@
 
     async function loadSettings() {
       const status = document.getElementById("settingsStatus");
-      if (status) status.textContent = "加载中...";
+      if (status) status.textContent = "Loading...";
       try {
         const res = await fetch("/api/settings");
         const data = await res.json();
-        assertApiOk(res, data, "加载设置失败");
+        assertApiOk(res, data, "Failed to load settings");
         const settings = data.settings || {};
         const localeSelect = document.getElementById("settingsLocale");
         if (localeSelect) {
-          localeSelect.value = settings.locale || "auto";
+          localeSelect.value = settings.locale || "en";
           await window.TradeCraftI18n?.setLocale(localeSelect.value, {persist: true});
         }
         const periodSelect = document.getElementById("settingsDefaultPeriod");
         const periods = data.availablePeriods || [];
-        periodSelect.innerHTML = `<option value="">跟随当前年份</option>` + periods.map(p => (
+        periodSelect.innerHTML = `<option value="">Use the current year</option>` + periods.map(p => (
           `<option value="${escapeHtml(p)}">${escapeHtml(p)}</option>`
         )).join("");
         periodSelect.value = settings.defaultPeriod || "";
@@ -6243,18 +6243,19 @@
         await loadWatchlistTriggers();
         if (status) status.textContent = "";
       } catch (err) {
-        if (status) status.textContent = "加载失败: " + (err.message || err);
+        if (status) status.textContent = "Load failed: " + (err.message || err);
       }
     }
 
     async function saveSettings() {
       const button = document.getElementById("settingsSave");
       const status = document.getElementById("settingsStatus");
+      const previousLocale = window.TradeCraftI18n?.locale || "en";
       button.disabled = true;
-      status.textContent = "保存中...";
+      status.textContent = "Saving...";
       try {
         const payload = {
-          locale: document.getElementById("settingsLocale")?.value || "auto",
+          locale: document.getElementById("settingsLocale")?.value || "en",
           defaultPeriod: document.getElementById("settingsDefaultPeriod").value,
           defaultSymbol: document.getElementById("settingsDefaultSymbol").value,
           yahooRefreshSeconds: document.getElementById("settingsRefreshSeconds").value,
@@ -6269,9 +6270,14 @@
           body: JSON.stringify(payload),
         });
         const data = await res.json();
-        assertApiOk(res, data, "保存设置失败");
-        await window.TradeCraftI18n?.setLocale(data.settings?.locale || payload.locale, {persist: true});
-        status.textContent = "已保存";
+        assertApiOk(res, data, "Failed to save settings");
+        const savedLocale = data.settings?.locale || payload.locale;
+        await window.TradeCraftI18n?.setLocale(savedLocale, {persist: true});
+        if (savedLocale !== previousLocale) {
+          window.location.reload();
+          return;
+        }
+        status.textContent = "Saved";
         STATE.replayCache = {};
         STATE.overview = await loadOverview();
         const defaultSymbol = data.settings?.defaultSymbol || payload.defaultSymbol;
@@ -6281,7 +6287,7 @@
           await loadSymbol(normalizedDefault, { activateReplay: false });
         }
       } catch (err) {
-        status.textContent = "保存失败: " + (err.message || err);
+        status.textContent = "Save failed: " + (err.message || err);
       } finally {
         button.disabled = false;
       }
@@ -6307,18 +6313,18 @@
       if (!body) return;
       const list = Array.isArray(rows) ? rows : [];
       if (!list.length) {
-        body.innerHTML = `<tr><td colspan="7" class="empty">暂无触发器，点击“新增”开始记录</td></tr>`;
+        body.innerHTML = `<tr><td colspan="7" class="empty">No triggers yet. Select Add to create one.</td></tr>`;
         return;
       }
       body.innerHTML = list.map(row => `
         <tr class="watchlist-trigger-row">
           <td>${watchlistTriggerCell(row.symbol, "symbol", "NVDA.US")}</td>
-          <td>${watchlistTriggerCell(row.watchPrice, "watchPrice", "关注价")}</td>
-          <td>${watchlistTriggerCell(row.breakoutPrice, "breakoutPrice", "突破价")}</td>
-          <td>${watchlistTriggerCell(row.pullbackZone, "pullbackZone", "回踩区")}</td>
+          <td>${watchlistTriggerCell(row.watchPrice, "watchPrice", "Watch price")}</td>
+          <td>${watchlistTriggerCell(row.breakoutPrice, "breakoutPrice", "Breakout price")}</td>
+          <td>${watchlistTriggerCell(row.pullbackZone, "pullbackZone", "Pullback zone")}</td>
           <td>${watchlistTriggerCell(row.earningsDate, "earningsDate", "YYYY-MM-DD")}</td>
-          <td>${watchlistTriggerCell(row.note, "note", "备注")}</td>
-          <td><button class="chip watchlist-trigger-remove" type="button">删除</button></td>
+          <td>${watchlistTriggerCell(row.note, "note", "Notes")}</td>
+          <td><button class="chip watchlist-trigger-remove" type="button">Delete</button></td>
         </tr>
       `).join("");
       body.querySelectorAll(".watchlist-trigger-remove").forEach(button => {
@@ -6344,12 +6350,12 @@
       try {
         const res = await fetch("/api/watchlist-triggers");
         const data = await res.json();
-        assertApiOk(res, data, "加载 Watchlist 触发器失败");
+        assertApiOk(res, data, "Failed to load watchlist triggers");
         renderWatchlistTriggers(data.triggers || []);
         if (status) status.textContent = "";
       } catch (err) {
         renderWatchlistTriggers([]);
-        if (status) status.textContent = "加载失败: " + (err.message || err);
+        if (status) status.textContent = "Load failed: " + (err.message || err);
       }
     }
 
@@ -6363,7 +6369,7 @@
       const button = document.getElementById("watchlistSaveTriggers");
       const status = document.getElementById("watchlistTriggerStatus");
       if (button) button.disabled = true;
-      if (status) status.textContent = "保存中...";
+      if (status) status.textContent = "Saving...";
       try {
         const res = await fetch("/api/watchlist-triggers", {
           method: "POST",
@@ -6371,11 +6377,11 @@
           body: JSON.stringify({ triggers: collectWatchlistTriggers() }),
         });
         const data = await res.json();
-        assertApiOk(res, data, "保存 Watchlist 触发器失败");
+        assertApiOk(res, data, "Failed to save watchlist triggers");
         renderWatchlistTriggers(data.triggers || []);
-        if (status) status.textContent = "已保存";
+        if (status) status.textContent = "Saved";
       } catch (err) {
-        if (status) status.textContent = "保存失败: " + (err.message || err);
+        if (status) status.textContent = "Save failed: " + (err.message || err);
       } finally {
         if (button) button.disabled = false;
       }
@@ -6395,7 +6401,7 @@
         },
       });
       const data = await res.json();
-      return assertApiOk(res, data, "Watchlist 请求失败");
+      return assertApiOk(res, data, "Watchlist request failed");
     }
 
     function watchlistGroupOptions(selectedId = "") {
@@ -6416,13 +6422,13 @@
 
     function watchlistColorLabel(color) {
       return {
-        none: "无",
-        red: "红",
-        green: "绿",
-        blue: "蓝",
-        yellow: "黄",
-        purple: "紫",
-        gray: "灰",
+        none: "None",
+        red: "Red",
+        green: "Green",
+        blue: "Blue",
+        yellow: "Yellow",
+        purple: "Purple",
+        gray: "Gray",
       }[color || "none"] || color;
     }
 
@@ -6523,22 +6529,22 @@
           ${changeHtml}
           <span class="watchlist-list-side">${side}</span>
           <span class="watchlist-row-actions">
-            <button class="watchlist-icon-btn" data-action="menu" type="button" title="更多操作">⋯</button>
-            <button class="watchlist-icon-btn" data-action="remove" type="button" title="移出自选">✕</button>
+            <button class="watchlist-icon-btn" data-action="menu" type="button" title="More actions">⋯</button>
+            <button class="watchlist-icon-btn" data-action="remove" type="button" title="Remove from watchlist">✕</button>
           </span>
         </div>`;
     }
 
     function watchlistGroupHeaderHtml(group, count, isCollapsed) {
       return `
-        <div class="watchlist-group-header ${isCollapsed ? "collapsed" : ""}" data-group-id="${group.id}" draggable="true" title="拖动调整分组顺序">
+        <div class="watchlist-group-header ${isCollapsed ? "collapsed" : ""}" data-group-id="${group.id}" draggable="true" title="Drag to reorder groups">
           <span class="caret">▸</span>
           <span class="group-name">${escapeHtml(group.name)}</span>
           <span class="group-count">${count}</span>
           <span class="watchlist-group-header-actions">
-            <button class="watchlist-icon-btn" data-action="group-add" type="button" title="添加代码到该分组">＋</button>
-            <button class="watchlist-icon-btn" data-action="group-rename" type="button" title="重命名分组">✎</button>
-            <button class="watchlist-icon-btn" data-action="group-delete" type="button" title="删除分组">🗑</button>
+            <button class="watchlist-icon-btn" data-action="group-add" type="button" title="Add symbols to this group">＋</button>
+            <button class="watchlist-icon-btn" data-action="group-rename" type="button" title="Rename group">✎</button>
+            <button class="watchlist-icon-btn" data-action="group-delete" type="button" title="Delete group">🗑</button>
           </span>
         </div>`;
     }
@@ -6573,7 +6579,7 @@
       });
       STATE.watchlist.visibleItems = visible;
       if (!chunks.length) {
-        body.innerHTML = `<div class="empty">暂无符合条件的自选股</div>`;
+        body.innerHTML = `<div class="empty">No matching Watchlist symbols</div>`;
         renderWatchlistQuickAddTarget();
         return;
       }
@@ -6736,7 +6742,7 @@
       groups.splice(toIndex, 0, moved);
       STATE.watchlist.groups = groups;
       renderWatchlistRows();
-      setWatchlistStatus("保存分组顺序...");
+      setWatchlistStatus("Saving group order...");
       let last = null;
       for (let i = 0; i < groups.length; i += 1) {
         last = await watchlistApi(`/api/watchlist/groups/${groups[i].id}`, {
@@ -6745,7 +6751,7 @@
         });
       }
       if (last) applyWatchlistPayload(last);
-      setWatchlistStatus("分组顺序已保存");
+      setWatchlistStatus("Group order saved");
     }
 
     function dropWatchlistDragToGroup(groupId) {
@@ -6773,16 +6779,16 @@
     }
 
     async function loadWatchlistView() {
-      setWatchlistStatus("加载中...");
+      setWatchlistStatus("Loading...");
       try {
         const data = await watchlistApi("/api/watchlist");
         applyWatchlistPayload(data);
         const current = STATE.watchlist.items.find(item => item.symbol === STATE.watchlist.selectedSymbol) || STATE.watchlist.items[0];
-        setWatchlistStatus(`${STATE.watchlist.items.length} 个标的`);
+        setWatchlistStatus(`${STATE.watchlist.items.length} symbols`);
         if (current) selectWatchlistItem(current);
         else renderWatchlistDetail(null);
       } catch (err) {
-        setWatchlistStatus("加载失败: " + (err.message || err));
+        setWatchlistStatus("Load failed: " + (err.message || err));
       }
     }
 
@@ -6793,8 +6799,8 @@
       const chartTitle = document.getElementById("watchlistChartSymbol");
       if (!title || !sub || !body) return;
       if (!data) {
-        title.textContent = "未选择";
-        sub.textContent = "选择一行查看详情";
+        title.textContent = "Nothing selected";
+        sub.textContent = "Select a row to view details";
         if (chartTitle) chartTitle.textContent = "-";
         body.innerHTML = "";
         return;
@@ -6810,14 +6816,14 @@
       }
       sub.textContent = item.name || `${item.groupName || "Unsorted"} / ${item.subgroupName || "Watch"}`;
       body.innerHTML = `
-        <div class="watchlist-kv"><label>最新价</label><div>${quote.latestClose ?? "-"} <span class="${watchlistSignedClass(quote.changePct)}">${formatPct(quote.changePct || 0)}</span></div></div>
-        <div class="watchlist-kv"><label>日期</label><div>${escapeHtml(quote.latestDate || "-")}</div></div>
-        <div class="watchlist-kv"><label>分组</label><div>${escapeHtml(item.groupName || "-")} / ${escapeHtml(item.subgroupName || "-")}</div></div>
-        <div class="watchlist-kv"><label>颜色</label><div>${watchlistColorLabel(item.color)}</div></div>
-        <div class="watchlist-kv"><label>持仓</label><div>${ibkr.hasPosition ? `${fmtNum(ibkr.positionSize)} 股，${formatSigned(ibkr.unrealizedPnl)}` : "无持仓"}</div></div>
-        <div class="watchlist-kv"><label>触发</label><div>${item.triggerPrice ?? "-"} / ${item.stopPrice ?? "-"} / ${item.targetPrice ?? "-"}</div></div>
-        <div class="watchlist-section-title" style="margin-top:12px;">备注</div>
-        <div class="watchlist-note-box">${escapeHtml(item.note || item.thesis || "暂无备注")}</div>
+        <div class="watchlist-kv"><label>Latest price</label><div>${quote.latestClose ?? "-"} <span class="${watchlistSignedClass(quote.changePct)}">${formatPct(quote.changePct || 0)}</span></div></div>
+        <div class="watchlist-kv"><label>Date</label><div>${escapeHtml(quote.latestDate || "-")}</div></div>
+        <div class="watchlist-kv"><label>Group</label><div>${escapeHtml(item.groupName || "-")} / ${escapeHtml(item.subgroupName || "-")}</div></div>
+        <div class="watchlist-kv"><label>Color</label><div>${watchlistColorLabel(item.color)}</div></div>
+        <div class="watchlist-kv"><label>Position</label><div>${ibkr.hasPosition ? `${fmtNum(ibkr.positionSize)} shares, ${formatSigned(ibkr.unrealizedPnl)}` : "No position"}</div></div>
+        <div class="watchlist-kv"><label>Trigger</label><div>${item.triggerPrice ?? "-"} / ${item.stopPrice ?? "-"} / ${item.targetPrice ?? "-"}</div></div>
+        <div class="watchlist-section-title" style="margin-top:12px;">Notes</div>
+        <div class="watchlist-note-box">${escapeHtml(item.note || item.thesis || "No notes")}</div>
       `;
       document.getElementById("watchlistEditName").value = item.name || "";
       document.getElementById("watchlistEditColor").value = item.color || "none";
@@ -6859,11 +6865,11 @@
       const changePct = prevClose ? ((close - prevClose) / prevClose) * 100 : 0;
       const tradeCount = (row.myTrades || []).length;
       infoBar.innerHTML = `
-        <div class="info-pill"><span>日期</span><b>${formatDayWithWeekday(row.time)}</b></div>
-        <div class="info-pill"><span>收盘</span><b>${fmtNum(row.close)}</b></div>
-        <div class="info-pill"><span>涨跌幅</span><b style="color:${changePct >= 0 ? '#089981' : '#f23645'}">${formatPct(changePct)}</b></div>
-        <div class="info-pill"><span>成交额</span><b>${formatTurnover(row.turnover)}</b></div>
-        <div class="info-pill"><span>个人成交</span><b>${tradeCount ? `${tradeCount} 笔` : "无"}</b></div>
+        <div class="info-pill"><span>Date</span><b>${formatDayWithWeekday(row.time)}</b></div>
+        <div class="info-pill"><span>Close</span><b>${fmtNum(row.close)}</b></div>
+        <div class="info-pill"><span>Change</span><b style="color:${changePct >= 0 ? '#089981' : '#f23645'}">${formatPct(changePct)}</b></div>
+        <div class="info-pill"><span>Notional</span><b>${formatTurnover(row.turnover)}</b></div>
+        <div class="info-pill"><span>Your fills</span><b>${tradeCount ? `${tradeCount} fills` : "None"}</b></div>
       `;
     }
 
@@ -7006,8 +7012,8 @@
       const button = document.getElementById("watchlistTradeMarkerToggle");
       if (button) {
         button.classList.toggle("active", active);
-        button.title = active ? "隐藏买卖打点" : "显示买卖打点";
-        button.setAttribute("aria-label", active ? "隐藏买卖打点" : "显示买卖打点");
+        button.title = active ? "Hide trade markers" : "Show trade markers";
+        button.setAttribute("aria-label", active ? "Hide trade markers" : "Show trade markers");
       }
       renderWatchlistTradeOverlay();
     }
@@ -7089,7 +7095,7 @@
       const bars = stats ? stats.count : 0;
       let labelHTML = `<span>${formatPct(pct)}</span>`;
       if (bars > 0) labelHTML += `<span style="opacity:0.82;font-size:11px;font-weight:500">${bars} bars</span>`;
-      labelHTML += `<button class="measure-clear" type="button" title="清除测量" aria-label="清除测量">×</button>`;
+      labelHTML += `<button class="measure-clear" type="button" title="Clear measurement" aria-label="Clear measurement">×</button>`;
       label.innerHTML = labelHTML;
       const labelX = Math.max(80, Math.min(width - 80, (start.x + end.x) / 2));
       const labelY = Math.max(22, Math.min(height - 22, (start.y + end.y) / 2 - 18));
@@ -7156,7 +7162,7 @@
       if (STATE.watchlist.chart || STATE.watchlist.volChart || STATE.watchlist.candle || STATE.watchlist.volumeSeries) {
         resetWatchlistChart();
       }
-      if (!window.LightweightCharts) throw new Error("图表库加载失败");
+      if (!window.LightweightCharts) throw new Error("Chart library failed to load");
       const chartEl = document.getElementById("watchlistChart");
       const volumeEl = document.getElementById("watchlistVolume");
       if (!chartEl || !volumeEl) return;
@@ -7297,7 +7303,7 @@
       const rows = initWatchlistChartRows(chartData.candles || []);
       if (!rows.length) {
         resetWatchlistChart();
-        chartEl.innerHTML = `<div class="activity-chart-empty">暂无K线数据</div>`;
+        chartEl.innerHTML = `<div class="activity-chart-empty">No candle data</div>`;
         volumeEl.innerHTML = "";
         return;
       }
@@ -7410,15 +7416,15 @@
       STATE.watchlist.selectedSymbol = item.symbol;
       STATE.watchlist.selectedItemId = item.id;
       renderWatchlistRows();
-      setWatchlistStatus(`加载 ${item.symbol}...`);
+      setWatchlistStatus(`Loading ${item.symbol}...`);
       try {
         const data = await watchlistApi(`/api/watchlist/symbol?symbol=${encodeURIComponent(item.symbol)}`);
         renderWatchlistDetail(data);
         renderWatchlistChart(data.chart || {});
-        setWatchlistStatus(`已选择 ${item.symbol}`);
+        setWatchlistStatus(`Selected ${item.symbol}`);
       } catch (err) {
         renderWatchlistDetail({ symbol: item.symbol, items: [item] });
-        setWatchlistStatus("图表加载失败: " + (err.message || err));
+        setWatchlistStatus("Chart load failed: " + (err.message || err));
       }
     }
 
@@ -7426,32 +7432,32 @@
       const input = document.getElementById("watchlistNewGroupName");
       const name = input.value.trim();
       if (!name) return;
-      setWatchlistStatus("新增分组...");
+      setWatchlistStatus("Adding group...");
       const data = await watchlistApi("/api/watchlist/groups", {
         method: "POST",
         body: JSON.stringify({ name }),
       });
       input.value = "";
       applyWatchlistPayload(data);
-      setWatchlistStatus("分组已新增");
+      setWatchlistStatus("Group added");
     }
 
     async function renameWatchlistGroup(groupId, currentName) {
-      const name = (window.prompt("分组名称", currentName) || "").trim();
+      const name = (window.prompt("Group name", currentName) || "").trim();
       if (!name || name === currentName) return;
       const data = await watchlistApi(`/api/watchlist/groups/${groupId}`, {
         method: "PATCH",
         body: JSON.stringify({ name }),
       });
       applyWatchlistPayload(data);
-      setWatchlistStatus("分组已重命名");
+      setWatchlistStatus("Group renamed");
     }
 
     async function deleteWatchlistGroup(groupId, name) {
-      if (!window.confirm(`删除分组「${name}」？组内标的将移入默认分组。`)) return;
+      if (!window.confirm(`Delete group “${name}”? Its symbols will move to the default group.`)) return;
       const data = await watchlistApi(`/api/watchlist/groups/${groupId}`, { method: "DELETE" });
       applyWatchlistPayload(data);
-      setWatchlistStatus("分组已删除");
+      setWatchlistStatus("Group deleted");
     }
 
     async function batchAddWatchlistItems() {
@@ -7459,14 +7465,14 @@
       const groupId = document.getElementById("watchlistBatchGroup").value;
       const color = STATE.watchlist.batchColor || "none";
       if (!text.trim()) return;
-      setWatchlistStatus("批量加入...");
+      setWatchlistStatus("Adding symbols...");
       const data = await watchlistApi("/api/watchlist/items/batch", {
         method: "POST",
         body: JSON.stringify({ action: "add", items: text, groupId, color }),
       });
       document.getElementById("watchlistBatchSymbols").value = "";
       applyWatchlistPayload(data);
-      setWatchlistStatus(`已加入 ${data.saved || 0} 个，错误 ${data.errors?.length || 0} 个`);
+      setWatchlistStatus(`Added ${data.saved || 0}; errors ${data.errors?.length || 0}`);
     }
 
     async function quickAddWatchlistSymbols() {
@@ -7474,7 +7480,7 @@
       const text = (input?.value || "").trim();
       if (!text) return;
       const group = watchlistQuickAddGroup();
-      setWatchlistStatus("加入自选...");
+      setWatchlistStatus("Adding to watchlist...");
       const data = await watchlistApi("/api/watchlist/items/batch", {
         method: "POST",
         body: JSON.stringify({ action: "add", items: text, groupId: group?.id }),
@@ -7482,14 +7488,14 @@
       input.value = "";
       applyWatchlistPayload(data);
       const failed = data.errors?.length || 0;
-      setWatchlistStatus(`已加入 ${data.saved || 0} 个${failed ? `，失败 ${failed} 个` : ""}`);
+      setWatchlistStatus(`Added ${data.saved || 0}${failed ? `; failed ${failed}` : ""}`);
     }
 
     async function deleteWatchlistItems(ids) {
       const targetIds = ids && ids.length ? ids : Array.from(STATE.watchlist.selectedIds);
       if (!targetIds.length) return;
-      if (targetIds.length > 1 && !window.confirm(`移除 ${targetIds.length} 个自选标的？`)) return;
-      setWatchlistStatus("删除中...");
+      if (targetIds.length > 1 && !window.confirm(`Remove ${targetIds.length} watchlist symbols?`)) return;
+      setWatchlistStatus("Deleting...");
       const data = await watchlistApi("/api/watchlist/items/batch", {
         method: "POST",
         body: JSON.stringify({ action: "delete", ids: targetIds }),
@@ -7503,7 +7509,7 @@
         renderWatchlistDetail(null);
         renderWatchlistRows();
       }
-      setWatchlistStatus(`已删除 ${data.deleted || targetIds.length} 个`);
+      setWatchlistStatus(`Deleted ${data.deleted || targetIds.length}`);
     }
 
     async function colorWatchlistItems(ids, color) {
@@ -7513,7 +7519,7 @@
         body: JSON.stringify({ action: "color", ids, color }),
       });
       applyWatchlistPayload(data);
-      setWatchlistStatus(`已标注 ${data.updated || 0} 个`);
+      setWatchlistStatus(`Updated ${data.updated || 0}`);
     }
 
     async function moveWatchlistItems(ids, groupId) {
@@ -7523,7 +7529,7 @@
         body: JSON.stringify({ action: "move", ids, groupId }),
       });
       applyWatchlistPayload(data);
-      setWatchlistStatus(`已移动 ${data.updated || 0} 个`);
+      setWatchlistStatus(`Moved ${data.updated || 0}`);
     }
 
     function renderWatchlistSelectionBar() {
@@ -7533,7 +7539,7 @@
       bar.classList.toggle("open", sel.size > 0);
       if (!sel.size) return;
       const count = document.getElementById("watchlistSelectionCount");
-      if (count) count.textContent = `已选 ${sel.size}`;
+      if (count) count.textContent = `Selected ${sel.size}`;
       const colors = document.getElementById("watchlistSelectionColors");
       if (colors && !colors.childElementCount) {
         colors.innerHTML = WATCHLIST_COLORS.map(color =>
@@ -7542,7 +7548,7 @@
       }
       const move = document.getElementById("watchlistSelectionMove");
       if (move) {
-        move.innerHTML = `<option value="">移动到...</option>${watchlistGroupOptions("")}`;
+        move.innerHTML = `<option value="">Move to...</option>${watchlistGroupOptions("")}`;
         move.value = "";
       }
     }
@@ -7565,7 +7571,7 @@
       if (!menu || !ids.length) return;
       STATE.watchlist.menuIds = ids;
       const single = ids.length === 1 ? watchlistItemById(ids[0]) : null;
-      const caption = single ? `${single.symbol}${single.name ? " · " + single.name : ""}` : `${ids.length} 个标的`;
+      const caption = single ? `${single.symbol}${single.name ? " · " + single.name : ""}` : `${ids.length} symbols`;
       const groups = STATE.watchlist.groups || [];
       menu.innerHTML = `
         <div class="watchlist-menu-caption">${escapeHtml(caption)}</div>
@@ -7573,12 +7579,12 @@
           ${WATCHLIST_COLORS.map(color => `<button class="watchlist-color-swatch ${color}" data-menu-color="${color}" type="button" title="${watchlistColorLabel(color)}"></button>`).join("")}
         </div>
         <div class="watchlist-menu-sep"></div>
-        <div class="watchlist-menu-caption" style="border:0; margin:0; padding-bottom:2px;">移动到分组</div>
+        <div class="watchlist-menu-caption" style="border:0; margin:0; padding-bottom:2px;">Move to group</div>
         <div class="watchlist-menu-groups">
           ${groups.map(group => `<button class="watchlist-menu-item" data-menu-move="${group.id}" type="button">${escapeHtml(group.name)}</button>`).join("")}
         </div>
         <div class="watchlist-menu-sep"></div>
-        <button class="watchlist-menu-item danger" data-menu-delete="1" type="button">移出自选${ids.length > 1 ? `（${ids.length}）` : ""}</button>
+        <button class="watchlist-menu-item danger" data-menu-delete="1" type="button">Remove from watchlist${ids.length > 1 ? ` (${ids.length})` : ""}</button>
       `;
       menu.classList.add("open");
       const rect = menu.getBoundingClientRect();
@@ -7615,7 +7621,7 @@
         targetPrice: document.getElementById("watchlistEditTarget").value,
         note: document.getElementById("watchlistEditNote").value,
       };
-      setWatchlistStatus("保存中...");
+      setWatchlistStatus("Saving...");
       const data = await watchlistApi(`/api/watchlist/items/${itemId}`, {
         method: "PATCH",
         body: JSON.stringify(payload),
@@ -7623,12 +7629,12 @@
       applyWatchlistPayload(data);
       const next = STATE.watchlist.items.find(item => item.id === itemId);
       if (next) selectWatchlistItem(next);
-      setWatchlistStatus("已保存");
+      setWatchlistStatus("Saved");
     }
 
     async function importTradingViewWatchlist(file) {
       if (!file) return;
-      setWatchlistStatus(`导入 ${file.name}...`);
+      setWatchlistStatus(`Imported ${file.name}...`);
       const text = await file.text();
       const data = await watchlistApi("/api/watchlist/import/tradingview", {
         method: "POST",
@@ -7639,12 +7645,12 @@
       if (current && !STATE.watchlist.selectedSymbol) selectWatchlistItem(current);
       const skipped = data.skipped?.length || 0;
       const failed = data.errors?.length || 0;
-      if (skipped) console.info("导入时跳过的不支持代码:", data.skipped);
-      setWatchlistStatus(`导入 ${data.imported || 0} 个${skipped ? `，跳过 ${skipped} 个不支持的代码（期货/指数/外汇等）` : ""}${failed ? `，失败 ${failed} 个` : ""}`);
+      if (skipped) console.info("Unsupported symbols skipped during import:", data.skipped);
+      setWatchlistStatus(`Imported ${data.imported || 0}${skipped ? `; skipped ${skipped} unsupported symbols (futures/indexes/FX)` : ""}${failed ? `; failed ${failed}` : ""}`);
     }
 
     async function refreshWatchlistQuotes() {
-      setWatchlistStatus("刷新行情...");
+      setWatchlistStatus("Refreshing market data...");
       try {
         const data = await watchlistApi("/api/watchlist/refresh", {
           method: "POST",
@@ -7654,9 +7660,9 @@
         const current = STATE.watchlist.items.find(item => item.symbol === STATE.watchlist.selectedSymbol);
         if (current) selectWatchlistItem(current);
         const failed = (data.results || []).filter(item => !item.ok).length;
-        setWatchlistStatus(`刷新完成，失败 ${failed} 个`);
+        setWatchlistStatus(`Refresh complete; failures: ${failed}`);
       } catch (err) {
-        setWatchlistStatus("刷新失败: " + (err.message || err));
+        setWatchlistStatus("Refresh failed: " + (err.message || err));
       }
     }
 
@@ -7683,7 +7689,7 @@
       try {
         const res = await fetch("/api/performance");
         if (!res.ok) {
-          document.getElementById("perfChartWrap").innerHTML = "<div style='padding:20px;color:var(--muted)'>加载业绩数据失败</div>";
+          document.getElementById("perfChartWrap").innerHTML = "<div style='padding:20px;color:var(--muted)'>Failed to load performance data</div>";
           return;
         }
         const data = await res.json();
@@ -7694,7 +7700,7 @@
         renderPerformanceChart(data);
         renderPerformanceTable(data);
       } catch (err) {
-        document.getElementById("perfChartWrap").innerHTML = "<div style='padding:20px;color:var(--muted)'>加载业绩数据失败</div>";
+        document.getElementById("perfChartWrap").innerHTML = "<div style='padding:20px;color:var(--muted)'>Failed to load performance data</div>";
       }
     }
 
@@ -7761,7 +7767,7 @@
       // Cumulative return area series (left axis)
       const returnSeries = chart.addAreaSeries({
         priceScaleId: "left",
-        title: "累计收益率 %",
+        title: "Cumulative return %",
         lineColor: "#089981",
         topColor: "rgba(8, 153, 129, 0.3)",
         bottomColor: "rgba(8, 153, 129, 0.05)",
@@ -7772,13 +7778,13 @@
 
       returnSeries.setData(performanceReturnDataForRange(perfDisplayedSeries, 0));
 
-      // Asset value line series (right axis, 万)
+      // Asset value line series (right axis, 10k)
       const valueSeries = chart.addLineSeries({
         priceScaleId: "right",
-        title: "资产金额（万）",
+        title: "Portfolio value (10k)",
         color: "#333333",
         lineWidth: 1.5,
-        priceFormat: { type: "custom", minMove: 0.01, formatter: v => v.toFixed(1) + "万" },
+        priceFormat: { type: "custom", minMove: 0.01, formatter: v => v.toFixed(1) + "10k" },
       });
       perfValueSeries = valueSeries;
 
@@ -7811,13 +7817,13 @@
         const rangeReturn = performanceRangeReturnForPoint(point);
         const rrSign = rangeReturn > 0 ? "+" : "";
         tooltipEl.innerHTML = `
-          <div style="font-weight:700;margin-bottom:4px">${point.year}年${point.month}</div>
-          <div>资产: ${point.valueWan.toFixed(1)}万</div>
-          <div>月收益: <span style="color:${point.monthlyReturn >= 0 ? '#089981' : '#f23645'}">${mrSign}${point.monthlyReturn.toFixed(1)}%</span></div>
-          <div>区间累计: <span style="color:${rangeReturn >= 0 ? '#089981' : '#f23645'}">${rrSign}${rangeReturn.toFixed(1)}%</span></div>
-          <div>累计收益: ${crSign}${point.cumulativeReturn.toFixed(1)}%</div>
+          <div style="font-weight:700;margin-bottom:4px">${point.year}-${point.month}</div>
+          <div>Account value: ${point.valueWan.toFixed(1)}10k</div>
+          <div>Monthly return: <span style="color:${point.monthlyReturn >= 0 ? '#089981' : '#f23645'}">${mrSign}${point.monthlyReturn.toFixed(1)}%</span></div>
+          <div>Period cumulative return: <span style="color:${rangeReturn >= 0 ? '#089981' : '#f23645'}">${rrSign}${rangeReturn.toFixed(1)}%</span></div>
+          <div>Cumulative return: ${crSign}${point.cumulativeReturn.toFixed(1)}%</div>
           <div>YTD: ${ytdSign}${point.ytdReturn.toFixed(1)}%</div>
-          ${point.ytdBaseYear ? `<div style="color:var(--muted);font-size:11px">YTD基准: ${point.ytdBaseYear}年${point.ytdBaseMonth} / ${point.ytdBaseValueWan.toFixed(1)}万</div>` : ""}
+          ${point.ytdBaseYear ? `<div style="color:var(--muted);font-size:11px">YTD baseline: ${point.ytdBaseYear}-${point.ytdBaseMonth} / ${point.ytdBaseValueWan.toFixed(1)}10k</div>` : ""}
         `;
         const rect = container.getBoundingClientRect();
         const x = param.point.x + rect.left + 12;
@@ -7945,19 +7951,19 @@
 
     function auditFindingStatus(status) {
       return {
-        confirmed: "已确认",
-        suspected: "疑似",
-        needs_data: "数据不足",
-      }[status] || status || "待判断";
+        confirmed: "Confirmed",
+        suspected: "Suspected",
+        needs_data: "Insufficient data",
+      }[status] || status || "Pending";
     }
 
     function auditRuleStatus(status) {
       return {
-        active: "跟踪中",
-        met: "已达标",
-        missed: "未达标",
-        insufficient_data: "样本不足",
-        stopped: "已停止",
+        active: "Tracking",
+        met: "Met",
+        missed: "Not met",
+        insufficient_data: "Insufficient sample",
+        stopped: "Stopped",
       }[status] || status || "";
     }
 
@@ -8004,15 +8010,15 @@
             <span class="audit-badge ${escapeHtml(finding.severity || "")}">${escapeHtml(auditFindingStatus(finding.status))}</span>
           </div>
           <div class="audit-finding-meta">
-            <span class="audit-badge">置信度 ${auditFmt(Number(finding.confidence || 0) * 100, 0)}%</span>
-            <span class="audit-badge">证据 ${Number(finding.evidenceCount || finding.sampleSize || 0)}</span>
-            ${decision !== "undecided" ? `<span class="audit-badge good">你已${decision === "confirmed" ? "确认" : "驳回"}</span>` : ""}
+            <span class="audit-badge">Confidence ${auditFmt(Number(finding.confidence || 0) * 100, 0)}%</span>
+            <span class="audit-badge">Evidence ${Number(finding.evidenceCount || finding.sampleSize || 0)}</span>
+            ${decision !== "undecided" ? `<span class="audit-badge good">${decision === "confirmed" ? "Confirmed" : "Dismissed"}</span>` : ""}
           </div>
           <div class="audit-finding-actions">
-            <button class="audit-small-btn" type="button" data-audit-evidence="${escapeHtml(finding.findingId)}">查看交易证据</button>
-            <button class="audit-small-btn" type="button" data-audit-feedback="${escapeHtml(finding.findingId)}" data-decision="confirmed">确认</button>
-            <button class="audit-small-btn" type="button" data-audit-feedback="${escapeHtml(finding.findingId)}" data-decision="dismissed">驳回</button>
-            <button class="audit-small-btn" type="button" data-audit-rule="${escapeHtml(finding.findingId)}">设为铁律</button>
+            <button class="audit-small-btn" type="button" data-audit-evidence="${escapeHtml(finding.findingId)}">View trade evidence</button>
+            <button class="audit-small-btn" type="button" data-audit-feedback="${escapeHtml(finding.findingId)}" data-decision="confirmed">Confirm</button>
+            <button class="audit-small-btn" type="button" data-audit-feedback="${escapeHtml(finding.findingId)}" data-decision="dismissed">Dismiss</button>
+            <button class="audit-small-btn" type="button" data-audit-rule="${escapeHtml(finding.findingId)}">Track as a rule</button>
           </div>
         </article>`;
     }
@@ -8040,30 +8046,30 @@
         </div>
         <div class="audit-grid-2">
           <section class="audit-section">
-            <h3>现在最该处理的问题</h3>
+            <h3>Highest-priority issues</h3>
             <div class="audit-priority-list">
-              ${findings.length ? findings.map((item, index) => auditFindingHtml(item, index)).join("") : '<div class="audit-empty">暂无可评估问题</div>'}
+              ${findings.length ? findings.map((item, index) => auditFindingHtml(item, index)).join("") : '<div class="audit-empty">No evaluable findings</div>'}
             </div>
           </section>
           <div>
             <section class="audit-section">
-              <h3>数据可信度</h3>
-              ${auditProgressHtml("初始风险", quality.initialRiskCoveragePct, `${quality.riskKnownCount || 0}/${quality.closedTradeCount || 0}`)}
-              ${auditProgressHtml("交易计划", quality.tradePlanCoveragePct, `${quality.plannedSymbolCount || 0}/${quality.trackedSymbolCount || 0}`)}
-              ${auditProgressHtml("Setup 标签", quality.setupCoveragePct)}
-              <div class="panel-sub" style="margin-top:10px;">期初仓位缺口 ${quality.openingCoverageMissingCount || 0} 项 · 主基准行情${quality.benchmarkFresh ? "完整" : "不完整"}</div>
+              <h3>Data confidence</h3>
+              ${auditProgressHtml("Initial risk", quality.initialRiskCoveragePct, `${quality.riskKnownCount || 0}/${quality.closedTradeCount || 0}`)}
+              ${auditProgressHtml("Trade plan", quality.tradePlanCoveragePct, `${quality.plannedSymbolCount || 0}/${quality.trackedSymbolCount || 0}`)}
+              ${auditProgressHtml("Setup tags", quality.setupCoveragePct)}
+              <div class="panel-sub" style="margin-top:10px;">Opening-position coverage gaps ${quality.openingCoverageMissingCount || 0} · Primary benchmark data ${quality.benchmarkFresh ? "Complete" : "Incomplete"}</div>
             </section>
             <section class="audit-section">
-              <h3>可复制优势候选</h3>
+              <h3>Candidate repeatable advantages</h3>
               ${advantages.length ? advantages.map(item => `
                 <div style="padding:9px 0;border-bottom:1px solid var(--line);">
                   <div style="font-weight:750;">${escapeHtml(item.name)} · ${auditMoney(item.realizedPnl)}</div>
-                  <div class="panel-sub" style="margin-top:4px;">${item.closedTradeCount} 回合 · 胜率 ${auditFmt(item.winRate)}% · ${escapeHtml(item.reason || "")}</div>
-                </div>`).join("") : '<div class="audit-empty">当前没有达到最低样本要求的候选优势</div>'}
+                  <div class="panel-sub" style="margin-top:4px;">${item.closedTradeCount} round trips · Win rate ${auditFmt(item.winRate)}% · ${escapeHtml(item.reason || "")}</div>
+                </div>`).join("") : '<div class="audit-empty">No candidate advantage meets the minimum sample requirement</div>'}
             </section>
             <section class="audit-section">
-              <h3>当前铁律</h3>
-              ${rules.length ? rules.map(auditRuleHtml).join("") : '<div class="audit-empty">尚未选择本周期铁律</div>'}
+              <h3>Active rules</h3>
+              ${rules.length ? rules.map(auditRuleHtml).join("") : '<div class="audit-empty">No rule is active for this cycle</div>'}
             </section>
           </div>
         </div>`;
@@ -8078,17 +8084,17 @@
       const rankings = [...(mtm.winners || []), ...(mtm.losers || [])];
       document.getElementById("auditPaneOutcome").innerHTML = `
         <div class="audit-scorecards">
-          ${auditScorecardHtml({title:"账户 TWR",value:outcome.timeWeightedReturnPct,unit:"%",verdict:`截止 ${outcome.reportEndDate || "—"}`})}
-          ${auditScorecardHtml({title:`主基准 ${primary.symbol || "QQQ.US"}`,value:primary.returnPct,unit:"%",verdict:primary.fresh ? `${primary.startDate} → ${primary.endDate}` : primary.reason})}
-          ${auditScorecardHtml({title:"相对主基准",value:outcome.alphaVsPrimaryPct,unit:"pct",verdict:outcome.verdict})}
-          ${auditScorecardHtml({title:`参考 ${secondary.symbol || "SPY.US"}`,value:secondary.returnPct,unit:"%",verdict:secondary.fresh ? `${secondary.startDate} → ${secondary.endDate}` : secondary.reason})}
+          ${auditScorecardHtml({title:"Account TWR",value:outcome.timeWeightedReturnPct,unit:"%",verdict:`As of ${outcome.reportEndDate || "—"}`})}
+          ${auditScorecardHtml({title:`Primary benchmark ${primary.symbol || "QQQ.US"}`,value:primary.returnPct,unit:"%",verdict:primary.fresh ? `${primary.startDate} → ${primary.endDate}` : primary.reason})}
+          ${auditScorecardHtml({title:"Relative to primary benchmark",value:outcome.alphaVsPrimaryPct,unit:"pct",verdict:outcome.verdict})}
+          ${auditScorecardHtml({title:`Reference ${secondary.symbol || "SPY.US"}`,value:secondary.returnPct,unit:"%",verdict:secondary.fresh ? `${secondary.startDate} → ${secondary.endDate}` : secondary.reason})}
         </div>
         <div class="audit-grid-2">
           <section class="audit-section">
-            <h3>Setup 表现</h3>
+            <h3>Setup performance</h3>
             <div style="overflow-x:auto;">
               <table class="audit-table">
-                <thead><tr><th>Setup</th><th>样本</th><th>盈亏</th><th>胜率</th><th>Profit Factor</th><th>风险覆盖</th></tr></thead>
+                <thead><tr><th>Setup</th><th>Sample</th><th>P&L</th><th>win rate</th><th>Profit Factor</th><th>Risk coverage</th></tr></thead>
                 <tbody>${setups.map(row => `<tr>
                   <td>${escapeHtml(row.name)}</td><td>${row.closedTradeCount}</td>
                   <td class="${Number(row.realizedPnl) >= 0 ? "positive" : "negative"}">${auditMoney(row.realizedPnl)}</td>
@@ -8099,13 +8105,13 @@
             </div>
           </section>
           <section class="audit-section">
-            <h3>主要盈亏来源</h3>
+            <h3>Primary P&L sources</h3>
             ${rankings.length ? rankings.slice(0, 10).map(row => `
               <div style="display:grid;grid-template-columns:90px 1fr auto;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px;">
                 <b>${escapeHtml(row.symbol || "")}</b>
-                <span class="panel-sub">${escapeHtml(row.theme || "未分类")}</span>
+                <span class="panel-sub">${escapeHtml(row.theme || "Unclassified")}</span>
                 <span class="${Number(row.mtmTotal || 0) >= 0 ? "positive" : "negative"}">${auditMoney(row.mtmTotal)}</span>
-              </div>`).join("") : '<div class="audit-empty">暂无 MTM 排名</div>'}
+              </div>`).join("") : '<div class="audit-empty">No MTM ranking</div>'}
           </section>
         </div>`;
     }
@@ -8115,7 +8121,7 @@
       const exit = data.exitQuality || {};
       document.getElementById("auditPaneProcess").innerHTML = `
         <section class="audit-section">
-          <h3>过程风险（0 低风险，100 高风险）</h3>
+          <h3>Process risk (0 lower risk, 100 higher risk)</h3>
           <div class="audit-risk-grid">
             ${risks.map(row => `<div class="audit-risk-card">
               <div class="panel-sub">${escapeHtml(row.label)}</div>
@@ -8125,16 +8131,16 @@
         </section>
         <div class="audit-grid-2">
           <section class="audit-section">
-            <h3>退出质量</h3>
+            <h3>Exit quality</h3>
             <div class="audit-scorecards" style="grid-template-columns:repeat(2,minmax(0,1fr));">
-              ${auditScorecardHtml({title:"可评估退出",value:exit.evaluatedCount,unit:"回合",verdict:"有完整后续行情"})}
-              ${auditScorecardHtml({title:"20日后继续涨 >10%",value:exit.sellTooEarlyRatePct,unit:"%",verdict:`${exit.sellTooEarlyCount20d || 0} 回合`})}
-              ${auditScorecardHtml({title:"卖出后20日平均",value:exit.avgPostExit20dPct,unit:"%",verdict:"反事实观察，不是真实损失"})}
-              ${auditScorecardHtml({title:"趋势未破退出",value:exit.trendUnbrokenExitCount,unit:"回合",verdict:"需要复核退出触发条件"})}
+              ${auditScorecardHtml({title:"Evaluable exits",value:exit.evaluatedCount,unit:"round trips",verdict:"Complete subsequent market data"})}
+              ${auditScorecardHtml({title:"Continued >10% higher after 20 days",value:exit.sellTooEarlyRatePct,unit:"%",verdict:`${exit.sellTooEarlyCount20d || 0} round trips`})}
+              ${auditScorecardHtml({title:"Average 20-day post-exit move",value:exit.avgPostExit20dPct,unit:"%",verdict:"Counterfactual observation, not an actual loss"})}
+              ${auditScorecardHtml({title:"Exit before trend failure",value:exit.trendUnbrokenExitCount,unit:"round trips",verdict:"Review the exit trigger"})}
             </div>
           </section>
           <section class="audit-section">
-            <h3>全部发现</h3>
+            <h3>All findings</h3>
             <div class="audit-priority-list">${(data.findings || []).map((item, index) => auditFindingHtml(item, index)).join("")}</div>
           </section>
         </div>`;
@@ -8146,15 +8152,15 @@
       const previous = behavior.previous || {};
       document.getElementById("auditPaneBehavior").innerHTML = `
         <section class="audit-section">
-          <h3>近20个交易日 vs 前20个交易日</h3>
+          <h3>Recent 20 trading days vs prior 20 trading days</h3>
           <div class="panel-sub" style="margin-bottom:12px;">
-            当前 ${behavior.currentStart || "—"} → ${behavior.currentEnd || "—"} ·
-            对比 ${behavior.previousStart || "—"} → ${behavior.previousEnd || "—"}
-            ${behavior.sampleSufficient ? "" : " · 样本不足，趋势判断需谨慎"}
+            Current ${behavior.currentStart || "—"} → ${behavior.currentEnd || "—"} ·
+            Compared with ${behavior.previousStart || "—"} → ${behavior.previousEnd || "—"}
+            ${behavior.sampleSufficient ? "" : " · Small sample; interpret the trend cautiously"}
           </div>
           <div style="overflow-x:auto;">
             <table class="audit-table">
-              <thead><tr><th>指标</th><th>近20日</th><th>前20日</th><th>变化</th></tr></thead>
+              <thead><tr><th>Metric</th><th>Recent 20 days</th><th>Prior 20 days</th><th>Change</th></tr></thead>
               <tbody>${(behavior.comparison || []).map(row => `<tr>
                 <td>${escapeHtml(row.label)}</td>
                 <td>${auditFmt(row.current, row.key === "averagePositionSize" ? 0 : 1)}</td>
@@ -8166,21 +8172,21 @@
         </section>
         <div class="audit-grid-2">
           <section class="audit-section">
-            <h3>当前窗口</h3>
+            <h3>Current window</h3>
             <div class="overview-list">
-              <div>日均成交 <b>${auditFmt(current.dailyAverage)}</b></div>
-              <div>已平仓回合 <b>${current.closedTradeCount || 0}</b></div>
-              <div>胜率 <b>${auditFmt(current.winRate)}%</b></div>
-              <div>实现盈亏 <b class="${Number(current.realizedPnl || 0) >= 0 ? "positive" : "negative"}">${auditMoney(current.realizedPnl)}</b></div>
+              <div>Average daily executions <b>${auditFmt(current.dailyAverage)}</b></div>
+              <div>Closed round trips <b>${current.closedTradeCount || 0}</b></div>
+              <div>win rate <b>${auditFmt(current.winRate)}%</b></div>
+              <div>realized P&L <b class="${Number(current.realizedPnl || 0) >= 0 ? "positive" : "negative"}">${auditMoney(current.realizedPnl)}</b></div>
             </div>
           </section>
           <section class="audit-section">
-            <h3>前一窗口</h3>
+            <h3>Prior window</h3>
             <div class="overview-list">
-              <div>日均成交 <b>${auditFmt(previous.dailyAverage)}</b></div>
-              <div>已平仓回合 <b>${previous.closedTradeCount || 0}</b></div>
-              <div>胜率 <b>${auditFmt(previous.winRate)}%</b></div>
-              <div>实现盈亏 <b class="${Number(previous.realizedPnl || 0) >= 0 ? "positive" : "negative"}">${auditMoney(previous.realizedPnl)}</b></div>
+              <div>Average daily executions <b>${auditFmt(previous.dailyAverage)}</b></div>
+              <div>Closed round trips <b>${previous.closedTradeCount || 0}</b></div>
+              <div>win rate <b>${auditFmt(previous.winRate)}%</b></div>
+              <div>realized P&L <b class="${Number(previous.realizedPnl || 0) >= 0 ? "positive" : "negative"}">${auditMoney(previous.realizedPnl)}</b></div>
             </div>
           </section>
         </div>`;
@@ -8190,10 +8196,10 @@
       const progress = Math.min(100, Number(rule.observedTradingDays || 0) / Number(rule.durationTradingDays || 20) * 100);
       return `<div class="audit-rule-card">
         <div style="font-weight:750;">${escapeHtml(rule.ruleText || rule.findingTitle || "")}</div>
-        <div class="panel-sub" style="margin-top:5px;">${escapeHtml(rule.metricKey || "")}: 基线 ${auditFmt(rule.baselineValue)} → 目标 ${escapeHtml(rule.operator || "")} ${auditFmt(rule.targetValue)}</div>
+        <div class="panel-sub" style="margin-top:5px;">${escapeHtml(rule.metricKey || "")}: baseline ${auditFmt(rule.baselineValue)} → target ${escapeHtml(rule.operator || "")} ${auditFmt(rule.targetValue)}</div>
         <div class="audit-progress-track" style="margin-top:9px;"><span class="audit-progress-fill high" style="display:block;width:${progress}%"></span></div>
-        <div class="audit-rule-status"><span>${auditRuleStatus(rule.status)}</span><span>${rule.observedTradingDays || 0}/${rule.durationTradingDays || 20} 个交易日</span></div>
-        ${rule.status === "active" ? `<button class="audit-small-btn" type="button" data-stop-audit-rule="${escapeHtml(rule.cycleId || "")}" style="margin-top:8px;">停止跟踪</button>` : ""}
+        <div class="audit-rule-status"><span>${auditRuleStatus(rule.status)}</span><span>${rule.observedTradingDays || 0}/${rule.durationTradingDays || 20} trading days</span></div>
+        ${rule.status === "active" ? `<button class="audit-small-btn" type="button" data-stop-audit-rule="${escapeHtml(rule.cycleId || "")}" style="margin-top:8px;">Stop tracking</button>` : ""}
       </div>`;
     }
 
@@ -8203,15 +8209,15 @@
       document.getElementById("auditPaneImprovement").innerHTML = `
         <div class="audit-grid-2">
           <section class="audit-section">
-            <h3>铁律周期</h3>
-            ${rules.length ? rules.map(auditRuleHtml).join("") : '<div class="audit-empty">从一个高优先级发现中选择“设为铁律”，系统将跟踪未来20个交易日。</div>'}
+            <h3>Rule cycles</h3>
+            ${rules.length ? rules.map(auditRuleHtml).join("") : '<div class="audit-empty">Select Track as a rule on a high-priority finding to monitor the next 20 trading days.</div>'}
           </section>
           <section class="audit-section">
-            <h3>你的判断记录</h3>
+            <h3>Your decisions</h3>
             ${feedback.length ? feedback.map(item => `<div style="padding:9px 0;border-bottom:1px solid var(--line);">
-              <b>${item.decision === "confirmed" ? "确认" : item.decision === "dismissed" ? "驳回" : "待判断"}</b>
+              <b>${item.decision === "confirmed" ? "Confirm" : item.decision === "dismissed" ? "Dismiss" : "Pending"}</b>
               <div class="panel-sub">${escapeHtml(item.note || item.findingId || "")}</div>
-            </div>`).join("") : '<div class="audit-empty">尚未确认或驳回任何系统发现</div>'}
+            </div>`).join("") : '<div class="audit-empty">No findings have been confirmed or dismissed yet.</div>'}
           </section>
         </div>`;
     }
@@ -8235,7 +8241,7 @@
       STATE.auditWorkbench = data;
       document.getElementById("auditWorkbenchLoading").style.display = "none";
       document.getElementById("auditFreshness").textContent =
-        `数据截止 ${data.dataCutoff || "—"} · 快照 ${String(data.snapshotId || "").slice(-8)} · ${data.meta?.executionCount || 0} 笔成交 / ${data.meta?.roundTripCount || 0} 个交易回合`;
+        `Data through ${data.dataCutoff || "—"} · Snapshot ${String(data.snapshotId || "").slice(-8)} · ${data.meta?.executionCount || 0} executions / ${data.meta?.roundTripCount || 0} round trips`;
       renderAuditOverview(data);
       renderAuditOutcome(data);
       renderAuditProcess(data);
@@ -8243,7 +8249,7 @@
       renderAuditImprovement(data);
       const ai = data.aiReport || {};
       document.getElementById("auditAiStatus").textContent = ai.message || "";
-      document.getElementById("auditGenerate").textContent = ai.exists && !ai.stale ? "重新生成 AI 总结" : "生成 AI 总结";
+      document.getElementById("auditGenerate").textContent = ai.exists && !ai.stale ? "Regenerate AI summary" : "Generate AI summary";
       bindAuditWorkbenchActions();
       setAuditPane(STATE.auditActivePane || "overview");
     }
@@ -8258,14 +8264,14 @@
         }
         const reportRes = await fetch(`/api/audit/report?${periodQuery()}`);
         if (!reportRes.ok) {
-          reportEl.textContent = "尚未生成 AI 总结。确定性测评数据不受影响。";
+          reportEl.textContent = "No AI summary has been generated. Deterministic audit data is unaffected.";
           return;
         }
         const reportHtml = markdownToHtml(await reportRes.text());
         reportEl.innerHTML = reportHtml;
         if (period) STATE.auditByPeriod[period] = {...(STATE.auditByPeriod[period] || {}), reportHtml};
       } catch (err) {
-        reportEl.textContent = "加载 AI 总结失败: " + (err.message || err);
+        reportEl.textContent = "Failed to load AI summary: " + (err.message || err);
       }
     }
 
@@ -8273,7 +8279,7 @@
       const period = STATE.selectedPeriod || "";
       const loading = document.getElementById("auditWorkbenchLoading");
       loading.style.display = "block";
-      loading.textContent = "加载测评工作台...";
+      loading.textContent = "Loading audit workbench...";
       try {
         if (!force && period && STATE.auditWorkbenchByPeriod[period]) {
           renderAuditWorkbench(STATE.auditWorkbenchByPeriod[period]);
@@ -8281,12 +8287,12 @@
         }
         const res = await fetch(`/api/audit/workbench?${periodQuery()}&_=${Date.now()}`);
         const data = await res.json();
-        assertApiOk(res, data, "加载测评工作台失败");
+        assertApiOk(res, data, "Failed to load audit workbench");
         STATE.auditWorkbenchByPeriod[period] = data;
         renderAuditWorkbench(data);
       } catch (err) {
         loading.style.display = "block";
-        loading.textContent = "加载测评工作台失败: " + (err.message || err);
+        loading.textContent = "Failed to load audit workbench: " + (err.message || err);
       }
     }
 
@@ -8295,7 +8301,7 @@
       setAuditPane("evidence");
       const pane = document.getElementById("auditPaneEvidence");
       const finding = (STATE.auditWorkbench?.findings || []).find(item => item.findingId === findingId);
-      pane.innerHTML = `<section class="audit-section"><h3>${escapeHtml(finding?.title || "交易证据")}</h3><div class="audit-empty">加载交易回合...</div></section>`;
+      pane.innerHTML = `<section class="audit-section"><h3>${escapeHtml(finding?.title || "Evidence")}</h3><div class="audit-empty">Loading trade round trips...</div></section>`;
       await loadAuditEvidencePage(findingId, 1);
     }
 
@@ -8306,10 +8312,10 @@
         const params = new URLSearchParams({ period: STATE.selectedPeriod || "", findingId, page: String(page), pageSize: "50" });
         const res = await fetch(`/api/audit/evidence?${params.toString()}`);
         const data = await res.json();
-        assertApiOk(res, data, "加载交易证据失败");
+        assertApiOk(res, data, "Failed to load evidence");
         renderAuditEvidence(data, finding);
       } catch (err) {
-        pane.innerHTML = `<section class="audit-section"><div class="audit-empty">加载失败: ${escapeHtml(err.message || String(err))}</div></section>`;
+        pane.innerHTML = `<section class="audit-section"><div class="audit-empty">Load failed: ${escapeHtml(err.message || String(err))}</div></section>`;
       }
     }
 
@@ -8321,20 +8327,20 @@
       const totalPages = Math.max(1, Math.ceil(Number(data.total || 0) / pageSize));
       pane.innerHTML = `
         <section class="audit-section">
-          <h3>${escapeHtml(finding?.title || "全部交易证据")}</h3>
-          <div class="panel-sub" style="margin-bottom:12px;">共 ${data.total || 0} 个完整交易回合；点击展开成交关联与近期补录。</div>
+          <h3>${escapeHtml(finding?.title || "All trade evidence")}</h3>
+          <div class="panel-sub" style="margin-bottom:12px;">Total ${data.total || 0} complete round trips; select a row to inspect linked fills and recent notes.</div>
           ${items.length ? items.map(row => `
             <article class="audit-evidence-row" data-roundtrip-row="${escapeHtml(row.roundTripId)}">
               <div class="audit-evidence-head">
                 <span class="audit-evidence-symbol">${escapeHtml(row.symbol || "")}</span>
-                <span>${escapeHtml(row.openDate || "")} → ${escapeHtml(row.closeDate || "")} · ${escapeHtml(row.setupType || "未分类")}</span>
-                <span>${row.holdingDays || 0} 天</span>
+                <span>${escapeHtml(row.openDate || "")} → ${escapeHtml(row.closeDate || "")} · ${escapeHtml(row.setupType || "Unclassified")}</span>
+                <span>${row.holdingDays || 0} days</span>
                 <span class="audit-evidence-pnl ${Number(row.realizedPnl || 0) >= 0 ? "positive" : "negative"}">${auditMoney(row.realizedPnl)}</span>
               </div>
               <div class="audit-evidence-detail">
-                <div>数量 ${auditFmt(row.quantity, 0)} · 入场 ${auditFmt(row.avg_entry, 2)} · 出场 ${auditFmt(row.avg_exit, 2)} · 关联成交 ${row.executionIds?.length || 0} 笔</div>
+                <div>Quantity ${auditFmt(row.quantity, 0)} · Entry ${auditFmt(row.avg_entry, 2)} · Exit ${auditFmt(row.avg_exit, 2)} · Linked executions ${row.executionIds?.length || 0} fills</div>
                 ${row.executions?.length ? `<div style="overflow-x:auto;margin-top:9px;"><table class="audit-table">
-                  <thead><tr><th>日期</th><th>时间</th><th>方向</th><th>数量</th><th>价格</th><th>佣金</th></tr></thead>
+                  <thead><tr><th>Date</th><th>Time</th><th>Side</th><th>Quantity</th><th>Price</th><th>Commission</th></tr></thead>
                   <tbody>${row.executions.map(execution => `<tr>
                     <td>${escapeHtml(formatDate(execution.trade_date || ""))}</td>
                     <td>${escapeHtml((execution.trade_time || "").slice(0, 8))}</td>
@@ -8345,22 +8351,22 @@
                   </tr>`).join("")}</tbody>
                 </table></div>` : ""}
                 <div style="margin-top:8px;display:flex;gap:7px;flex-wrap:wrap;">
-                  <button class="audit-small-btn" type="button" data-audit-replay="${escapeHtml(row.symbol || "")}" data-audit-day="${escapeHtml(row.closeDate || "")}">在复盘中查看</button>
+                  <button class="audit-small-btn" type="button" data-audit-replay="${escapeHtml(row.symbol || "")}" data-audit-day="${escapeHtml(row.closeDate || "")}">View in Replay</button>
                 </div>
                 <div class="audit-backfill-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px;">
                   <input data-note-field="setupType" placeholder="Setup" value="${escapeHtml(row.userNote?.setupType || row.setupType || "")}" />
-                  <input data-note-field="invalidationPrice" type="number" min="0" step="0.01" placeholder="无效价" value="${row.userNote?.invalidationPrice ?? ""}" />
-                  <input data-note-field="targetHoldingDays" type="number" min="1" max="3650" placeholder="目标持有天数" value="${row.userNote?.targetHoldingDays ?? ""}" />
-                  <input data-note-field="exitReason" placeholder="退出原因" value="${escapeHtml(row.userNote?.exitReason || "")}" />
-                  <textarea data-note-field="note" placeholder="补充说明" style="grid-column:1/-1;min-height:64px;">${escapeHtml(row.userNote?.note || "")}</textarea>
-                  <button class="audit-small-btn" type="button" data-save-roundtrip="${escapeHtml(row.roundTripId)}">保存近期补录</button>
+                  <input data-note-field="invalidationPrice" type="number" min="0" step="0.01" placeholder="Invalidation price" value="${row.userNote?.invalidationPrice ?? ""}" />
+                  <input data-note-field="targetHoldingDays" type="number" min="1" max="3650" placeholder="Target holding days" value="${row.userNote?.targetHoldingDays ?? ""}" />
+                  <input data-note-field="exitReason" placeholder="Exit reason" value="${escapeHtml(row.userNote?.exitReason || "")}" />
+                  <textarea data-note-field="note" placeholder="Additional notes" style="grid-column:1/-1;min-height:64px;">${escapeHtml(row.userNote?.note || "")}</textarea>
+                  <button class="audit-small-btn" type="button" data-save-roundtrip="${escapeHtml(row.roundTripId)}">Save recent note</button>
                 </div>
               </div>
-            </article>`).join("") : '<div class="audit-empty">该发现没有可定位的交易回合；可能属于账户级或数据覆盖问题。</div>'}
+            </article>`).join("") : '<div class="audit-empty">This finding has no locatable round trips and may concern account-level or data-coverage evidence.</div>'}
           ${totalPages > 1 ? `<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;">
-            <button class="audit-small-btn" type="button" data-audit-evidence-page="${page - 1}" ${page <= 1 ? "disabled" : ""}>上一页</button>
-            <span class="panel-sub">第 ${page} / ${totalPages} 页</span>
-            <button class="audit-small-btn" type="button" data-audit-evidence-page="${page + 1}" ${page >= totalPages ? "disabled" : ""}>下一页</button>
+            <button class="audit-small-btn" type="button" data-audit-evidence-page="${page - 1}" ${page <= 1 ? "disabled" : ""}>Previous</button>
+            <span class="panel-sub">Page ${page} of ${totalPages}</span>
+            <button class="audit-small-btn" type="button" data-audit-evidence-page="${page + 1}" ${page >= totalPages ? "disabled" : ""}>Next</button>
           </div>` : ""}
         </section>`;
       pane.querySelectorAll("[data-roundtrip-row]").forEach(row => {
@@ -8388,7 +8394,7 @@
     }
 
     async function saveAuditFindingFeedback(findingId, decision) {
-      const note = decision === "dismissed" ? (window.prompt("简要说明为什么驳回（可留空）", "") || "") : "";
+      const note = decision === "dismissed" ? (window.prompt("Brief reason for dismissal (optional)", "") || "") : "";
       try {
         const res = await fetch("/api/audit/finding-feedback", {
           method: "POST",
@@ -8396,19 +8402,19 @@
           body: JSON.stringify({ period: STATE.selectedPeriod, findingId, decision, note }),
         });
         const data = await res.json();
-        assertApiOk(res, data, "保存判断失败");
+        assertApiOk(res, data, "Failed to save decision");
         delete STATE.auditWorkbenchByPeriod[STATE.selectedPeriod || ""];
         await loadAuditData(true);
-        showToast("判断已保存", "success", 1800);
+        showToast("Decision saved", "success", 1800);
       } catch (err) {
-        showToast("保存失败: " + (err.message || err), "error", 3500);
+        showToast("Save failed: " + (err.message || err), "error", 3500);
       }
     }
 
     async function createAuditRule(findingId) {
       const finding = (STATE.auditWorkbench?.findings || []).find(item => item.findingId === findingId);
       if (!finding) return;
-      const ruleText = window.prompt("确认未来20个交易日要跟踪的铁律", finding.suggestedRule || "");
+      const ruleText = window.prompt("Confirm the rule to track for the next 20 trading days", finding.suggestedRule || "");
       if (ruleText === null) return;
       try {
         const res = await fetch("/api/audit/rule-cycle", {
@@ -8417,13 +8423,13 @@
           body: JSON.stringify({ period: STATE.selectedPeriod, findingId, ruleText }),
         });
         const data = await res.json();
-        assertApiOk(res, data, "创建铁律失败");
+        assertApiOk(res, data, "Failed to create rule");
         delete STATE.auditWorkbenchByPeriod[STATE.selectedPeriod || ""];
         await loadAuditData(true);
         setAuditPane("improvement");
-        showToast("铁律已开始跟踪", "success", 2200);
+        showToast("Rule tracking started", "success", 2200);
       } catch (err) {
-        showToast("创建失败: " + (err.message || err), "error", 3500);
+        showToast("Create failed: " + (err.message || err), "error", 3500);
       }
     }
 
@@ -8435,12 +8441,12 @@
           body: JSON.stringify({ action: "stop", cycleId }),
         });
         const data = await res.json();
-        assertApiOk(res, data, "停止铁律失败");
+        assertApiOk(res, data, "Failed to stop rule");
         delete STATE.auditWorkbenchByPeriod[STATE.selectedPeriod || ""];
         await loadAuditData(true);
         setAuditPane("improvement");
       } catch (err) {
-        showToast("停止失败: " + (err.message || err), "error", 3500);
+        showToast("Stop failed: " + (err.message || err), "error", 3500);
       }
     }
 
@@ -8462,10 +8468,10 @@
           }),
         });
         const data = await res.json();
-        assertApiOk(res, data, "保存补录失败");
-        showToast("交易回合补录已保存", "success", 2000);
+        assertApiOk(res, data, "Failed to save note");
+        showToast("Round-trip note saved", "success", 2000);
       } catch (err) {
-        showToast("保存失败: " + (err.message || err), "error", 3500);
+        showToast("Save failed: " + (err.message || err), "error", 3500);
       }
     }
 
@@ -8474,20 +8480,20 @@
       const container = document.getElementById("tradesGroups");
       const countEl = document.getElementById("tradesCount");
       if (!container) return;
-      container.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:20px 0;">加载中...</div>`;
+      container.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:20px 0;">Loading...</div>`;
       if (countEl) countEl.textContent = "";
       try {
         const res = await fetch(`/api/trades?${periodQuery()}`);
         const data = await res.json();
         if (!data.ok) {
-          container.innerHTML = `<div style="color:var(--red);font-size:13px;padding:20px 0;">加载失败: ${escapeHtml(data.error || "")}</div>`;
+          container.innerHTML = `<div style="color:var(--red);font-size:13px;padding:20px 0;">Load failed: ${escapeHtml(data.error || "")}</div>`;
           return;
         }
         const groups = data.groups || [];
         const total = data.total || 0;
-        if (countEl) countEl.textContent = `共 ${total} 笔`;
+        if (countEl) countEl.textContent = `Total ${total} fills`;
         if (!groups.length) {
-          container.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:20px 0;">暂无交易记录</div>`;
+          container.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:20px 0;">No trades</div>`;
           return;
         }
         container.innerHTML = "";
@@ -8504,18 +8510,18 @@
           table.innerHTML = `
             <thead>
               <tr>
-                <th>日期</th>
-                <th>时间</th>
-                <th>方向</th>
-                <th>数量</th>
-                <th>价格</th>
-                <th>买卖逻辑</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Side</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Setup</th>
               </tr>
             </thead>
             <tbody>
               ${g.trades.map(t => {
                 const sideClass = t.side === "BUY" ? "side-buy" : "side-sell";
-                const currentSetup = t.setup_type || "未分类";
+                const currentSetup = t.setup_type || "Unclassified";
                 const dateDisp = formatDate(t.trade_date);
                 const timeDisp = (t.trade_time || "").slice(0, 5);
                 const setupTypes = t.side === "BUY" ? BUY_SETUP_TYPES : SELL_SETUP_TYPES;
@@ -8565,21 +8571,21 @@
                 const result = await res.json();
                 if (result.ok) {
                   target.style.borderColor = "var(--green)";
-                  showToast("标签已保存", "success", 1500);
+                  showToast("Tag saved", "success", 1500);
                 } else {
                   target.style.borderColor = "var(--red)";
-                  showToast("保存失败: " + (result.error || ""), "error", 3000);
+                  showToast("Save failed: " + (result.error || ""), "error", 3000);
                 }
               } catch (err) {
                 target.style.borderColor = "var(--red)";
-                showToast("保存失败: " + (err.message || err), "error", 3000);
+                showToast("Save failed: " + (err.message || err), "error", 3000);
               }
             }, 200);
           });
         });
       } catch (err) {
         console.error("loadTradesView failed", err);
-        container.innerHTML = `<div style="color:var(--red);font-size:13px;padding:20px 0;">加载失败</div>`;
+        container.innerHTML = `<div style="color:var(--red);font-size:13px;padding:20px 0;">Load failed</div>`;
       }
     }
 
@@ -8638,25 +8644,25 @@
     async function generateAudit() {
       const btn = document.getElementById("auditGenerate");
       const prev = btn.textContent;
-      btn.textContent = "AI 生成中...";
+      btn.textContent = "Generating AI summary...";
       btn.classList.add("btn-spin");
       btn.disabled = true;
-      showToast("正在基于当前快照生成 AI 总结...", "info", 0);
+      showToast("Generating an AI summary from the current snapshot...", "info", 0);
       try {
         const res = await fetch(`/api/audit/report/generate?${periodQuery()}`, { method: "POST" });
         const data = await res.json();
-        assertApiOk(res, data, "AI 总结生成失败");
+        assertApiOk(res, data, "AI summary generation failed");
         delete STATE.auditByPeriod[STATE.selectedPeriod || ""];
         delete STATE.auditWorkbenchByPeriod[STATE.selectedPeriod || ""];
         await loadAuditData(true);
         await loadAuditReport(true);
         setAuditPane("ai");
-        showToast("AI 总结已生成", "success", 3000);
+        showToast("AI summary generated", "success", 3000);
       } catch (err) {
-        showToast("AI 总结生成失败: " + (err.message || err), "error", 5000);
+        showToast("AI summary generation failed: " + (err.message || err), "error", 5000);
       } finally {
         const ai = STATE.auditWorkbench?.aiReport || {};
-        btn.textContent = ai.exists && !ai.stale ? "重新生成 AI 总结" : prev;
+        btn.textContent = ai.exists && !ai.stale ? "Regenerate AI summary" : prev;
         btn.classList.remove("btn-spin");
         btn.disabled = false;
       }
@@ -8665,19 +8671,19 @@
     async function refreshAuditData() {
       const btn = document.getElementById("auditRefreshData");
       const prev = btn.textContent;
-      btn.textContent = "刷新中...";
+      btn.textContent = "Refreshing...";
       btn.disabled = true;
-      showToast("正在匹配交易、计算归因和更新测评快照...", "info", 0);
+      showToast("Matching trades, calculating attribution, and updating the audit snapshot...", "info", 0);
       try {
         const query = `${periodQuery()}&force=1&generate_ai=0`;
         const res = await fetch(`/api/audit/generate?${query}`, { method: "POST" });
         const data = await res.json();
-        assertApiOk(res, data, "刷新测评数据失败");
+        assertApiOk(res, data, "Failed to refresh audit data");
         delete STATE.auditWorkbenchByPeriod[STATE.selectedPeriod || ""];
         await loadAuditData(true);
-        showToast("测评数据已刷新，AI 总结未自动调用", "success", 3000);
+        showToast("Audit data refreshed; AI summary was not called", "success", 3000);
       } catch (err) {
-        showToast("刷新失败: " + (err.message || err), "error", 5000);
+        showToast("Refresh failed: " + (err.message || err), "error", 5000);
       } finally {
         btn.textContent = prev;
         btn.disabled = false;
@@ -9057,7 +9063,7 @@
       syncSymbolControls(data.symbol, data.hasTrades);
       updateDocumentTitle();
       document.getElementById("insufficient").textContent = Array.isArray(data.insufficientMa) && data.insufficientMa.length
-        ? `数据不足，未绘制: ${data.insufficientMa.join(", ")}`
+        ? `Insufficient data; not plotted: ${data.insufficientMa.join(", ")}`
         : "";
       showMessage(data.message || "");
       renderTradePlan(data);
@@ -9165,7 +9171,7 @@
       if (!files || files.length === 0) return;
       const button = document.getElementById("dataUpload");
       const previousText = button.textContent;
-      button.textContent = "上传中";
+      button.textContent = "Uploading";
       button.disabled = true;
       showError("");
       const formData = new FormData();
@@ -9179,9 +9185,9 @@
         const success = data.results?.filter(r => r.ok) || [];
         const failed = data.results?.filter(r => !r.ok) || [];
         const msg = [];
-        if (success.length) msg.push(`${success.length} 个文件上传成功`);
-        if (failed.length) msg.push(`${failed.length} 个文件失败: ${failed.map(f => f.name).join(", ")}`);
-        showMessage(msg.join("；") || "上传完成");
+        if (success.length) msg.push(`${success.length} files uploaded`);
+        if (failed.length) msg.push(`${failed.length} files failed: ${failed.map(f => f.name).join(", ")}`);
+        showMessage(msg.join("; ") || "Upload complete");
       } catch (err) {
         showError(err && err.message ? err.message : String(err));
       } finally {
@@ -9216,7 +9222,7 @@
     async function exitDemoWorkspace() {
       const confirmed = window.confirm(
         window.TradeCraftI18n?.locale === "zh-CN"
-          ? "退出演示模式并清空所有合成数据？"
+          ? "Exit demo mode and remove all synthetic data?"
           : "Exit demo mode and remove all synthetic data?"
       );
       if (!confirmed) return;
@@ -9238,12 +9244,12 @@
       const progressWrap = document.getElementById("refreshProgressWrap");
       const progressBar = document.getElementById("refreshProgressBar");
       const progressText = document.getElementById("refreshProgressText");
-      button.textContent = "刷新中";
+      button.textContent = "Refreshing";
       button.disabled = true;
       showError("");
       progressWrap.style.display = "block";
       progressBar.style.width = "0%";
-      progressText.textContent = "启动刷新...";
+      progressText.textContent = "Starting refresh...";
 
       let pollInterval = null;
       const pollProgress = async () => {
@@ -9282,7 +9288,7 @@
           throw new Error(final.error);
         }
         progressBar.style.width = "100%";
-        progressText.textContent = "数据刷新完成";
+        progressText.textContent = "Data refresh complete";
         STATE.replayCache = {};
         STATE.overviewByPeriod = {};
         STATE.auditByPeriod = {};
@@ -9292,8 +9298,8 @@
         const refreshedOverview = await loadOverview(true);
         await loadSymbol(STATE.currentSymbol || refreshedOverview?.defaultSymbol || "INTC.US");
         const failed = (final.result?.prefetch || []).filter(item => !item.ok).length;
-        const suffix = failed ? `，${failed} 个行情补齐失败，已保留本地缓存` : "";
-        showMessage(`数据刷新完成${suffix}`);
+        const suffix = failed ? `; ${failed} market-data refreshes failed; local cache retained` : "";
+        showMessage(`Data refresh complete${suffix}`);
 
         // Trigger audit generation in background
         generateAuditAfterRefresh();
@@ -9317,7 +9323,7 @@
         showAuditGenerating();
         const res = await fetch(`/api/audit/generate?${periodQuery()}&generate_ai=0`, { method: "POST" });
         const data = await res.json();
-        assertApiOk(res, data, "测评生成失败");
+        assertApiOk(res, data, "Audit generation failed");
         // Fetch the latest summary to render mini card
         const summaryRes = await fetch(`/api/audit?${periodQuery()}`);
         if (summaryRes.ok) {
@@ -9336,7 +9342,7 @@
       panel.innerHTML = `
         <div class="audit-mini-generating">
           <div class="spinner"></div>
-          <span>正在生成交易质量测评...</span>
+          <span>Generating trading-quality audit...</span>
         </div>
       `;
     }
@@ -9358,19 +9364,19 @@
       const styleDrift = summary.style_drift || {};
 
       const scoreNames = {
-        theme_judgment: "主线选择",
-        churn_friction: "风格偏移",
-        stock_selection: "选股水平",
-        narrative_hype: "叙事上头",
-        entry_quality: "入场质量",
-        asymmetric_exit: "出场质量",
-        tail_risk: "仓位控制",
+        theme_judgment: "Theme selection",
+        churn_friction: "Style drift",
+        stock_selection: "Stock selection",
+        narrative_hype: "Narrative risk",
+        entry_quality: "Entry quality",
+        asymmetric_exit: "Exit quality",
+        tail_risk: "Position sizing",
       };
 
       // Build score pills (only high/medium scores)
       const scorePills = [];
       const sdLevel = styleDrift.level || "low";
-      scorePills.push(`<span class="audit-mini-score ${sdLevel}">风格偏移 ${styleDrift.score || 0}</span>`);
+      scorePills.push(`<span class="audit-mini-score ${sdLevel}">Style drift ${styleDrift.score || 0}</span>`);
       for (const [key, name] of Object.entries(scoreNames)) {
         const s = scores[key];
         if (s && s.level !== "low") {
@@ -9387,12 +9393,12 @@
       panel.style.display = "block";
       panel.innerHTML = `
         <div class="audit-mini-header">
-          <span class="audit-mini-title">交易质量测评</span>
+          <span class="audit-mini-title">Trading Quality Audit</span>
           <span class="audit-mini-status">${summary.generated_at ? summary.generated_at.slice(0, 10) : ""}</span>
         </div>
         <div class="audit-mini-scores">${scorePills.join("")}</div>
         ${alertItems ? `<div class="audit-mini-alerts">${alertItems}</div>` : ""}
-        <div class="audit-mini-footer">查看完整批判报告 →</div>
+        <div class="audit-mini-footer">View full critical report →</div>
       `;
       panel.onclick = () => setTab("audit");
     }
@@ -9534,10 +9540,10 @@
             if (result.ok) {
               await loadPerformanceData();
             } else {
-              alert("刷新失败: " + (result.error || "未知错误"));
+              alert("Refresh failed: " + (result.error || "Unknown error"));
             }
           } catch (err) {
-            alert("刷新失败: " + (err.message || err));
+            alert("Refresh failed: " + (err.message || err));
           }
         });
         document.querySelectorAll('.data-sub-tabs .chip').forEach(el => {
@@ -9577,7 +9583,7 @@
         document.getElementById("watchlistImportFile").addEventListener("change", event => {
           const file = event.target.files?.[0];
           event.target.value = "";
-          importTradingViewWatchlist(file).catch(err => setWatchlistStatus("导入失败: " + (err.message || err)));
+          importTradingViewWatchlist(file).catch(err => setWatchlistStatus("Import failed: " + (err.message || err)));
         });
         document.getElementById("watchlistNewGroupName").addEventListener("keydown", event => {
           if (event.key !== "Enter") return;

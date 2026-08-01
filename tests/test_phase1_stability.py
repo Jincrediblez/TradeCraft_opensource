@@ -7,6 +7,7 @@ import re
 import shutil
 import subprocess
 import sys
+import pytest
 from datetime import date, datetime
 from html.parser import HTMLParser
 from pathlib import Path
@@ -474,7 +475,7 @@ def test_trade_plan_storage_normalizes_payload():
             plan = trade_plans.save_trade_plan(
                 "nvda",
                 {
-                    "setupType": "突破",
+                    "setupType": "Planned breakout",
                     "thesis": "earnings breakout",
                     "invalidationPrice": "115.5",
                     "targetHoldingDays": "20",
@@ -487,7 +488,28 @@ def test_trade_plan_storage_normalizes_payload():
             assert plan["invalidationPrice"] == 115.5
             assert plan["targetHoldingDays"] == 20
             loaded = trade_plans.get_trade_plan("NVDA.US")
-            assert loaded["setupType"] == "突破"
+            assert loaded["setupType"] == "Planned breakout"
+        finally:
+            trade_plans.TRADE_PLANS_FILE = original_file
+
+
+def test_legacy_trade_plan_is_rejected_without_modifying_source():
+    with TemporaryDirectory() as tmp:
+        state_file = Path(tmp) / "trade_plans.json"
+        state_file.write_text(
+            json.dumps(
+                {"NVDA.US": {"setupType": "\u8ba1\u5212\u5185\u7a81\u7834", "thesis": "\u539f\u6587\u4fdd\u7559"}},
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+        before = state_file.read_bytes()
+        original_file = trade_plans.TRADE_PLANS_FILE
+        try:
+            trade_plans.TRADE_PLANS_FILE = state_file
+            with pytest.raises(ValueError, match="Rebuild this workspace"):
+                trade_plans.load_trade_plans()
+            assert state_file.read_bytes() == before
         finally:
             trade_plans.TRADE_PLANS_FILE = original_file
 
@@ -513,15 +535,15 @@ def test_watchlist_triggers_storage_normalizes_and_dedupes():
 
 def test_setup_performance_summary():
     rows = compute_setup_performance([
-        {"setup_type": "突破", "realized_pnl": 100, "r_multiple": 1.0, "risk_status": "planned"},
-        {"setup_type": "突破", "realized_pnl": -50, "r_multiple": -0.5, "risk_status": "planned"},
+        {"setup_type": "Planned breakout", "realized_pnl": 100, "r_multiple": 1.0, "risk_status": "planned"},
+        {"setup_type": "Planned breakout", "realized_pnl": -50, "r_multiple": -0.5, "risk_status": "planned"},
         {"setup_type": "", "realized_pnl": 20, "r_multiple": None, "risk_status": "risk_missing"},
     ])
     by_setup = {row["setupType"]: row for row in rows}
-    assert by_setup["突破"]["closedTradeCount"] == 2
-    assert by_setup["突破"]["winRate"] == 50.0
-    assert by_setup["突破"]["avgR"] == 0.25
-    assert by_setup["未计划"]["riskMissingCount"] == 1
+    assert by_setup["Planned breakout"]["closedTradeCount"] == 2
+    assert by_setup["Planned breakout"]["winRate"] == 50.0
+    assert by_setup["Planned breakout"]["avgR"] == 0.25
+    assert by_setup["Unplanned"]["riskMissingCount"] == 1
 
 
 def test_exit_quality_empty_shape():
@@ -538,7 +560,7 @@ def test_discipline_summary_flags_missing_risk():
         {"sellTooEarlyCount20d": 0, "trendUnbrokenExitCount": 0},
     )
     titles = [i["title"] for i in payload["topIssues"]]
-    assert "初始风险缺失" in titles
+    assert "Missing initial risk" in titles
     assert payload["hardRules"]
 
 
@@ -713,10 +735,10 @@ const replay = roots.replayExposureContent.innerHTML;
 for (const symbol of ["AMD.US", "GOOG.US", "SMH.US"]) {
   if (!replay.includes(symbol)) throw new Error(`replay missing ${symbol}`);
 }
-if (!replay.includes("借出 -289")) {
+if (!replay.includes("Lent -289")) {
   throw new Error("SMH sharesLent was not rendered");
 }
-if (!replay.includes("总敞口/NAV")) {
+if (!replay.includes("Exposure/NAV")) {
   throw new Error("NAV exposure metrics were not rendered");
 }
 const rowsHtml = renderIbkrPositionRows(global.STATE.overview.ibkrOpenPositions, "GOOG.US", 5, global.STATE.overview.accountSnapshot.endingValue);

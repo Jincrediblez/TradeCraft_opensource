@@ -177,7 +177,7 @@ def build_style_drift() -> dict:
     def _setup_stats(trade_list):
         stats = defaultdict(lambda: {"count": 0, "pnl": 0.0, "win_count": 0})
         for t in trade_list:
-            setup = t.get("setup_type", "").strip() or "未分类"
+            setup = t.get("setup_type", "").strip() or "Unclassified"
             s = stats[setup]
             s["count"] += 1
             pnl = t.get("realized_pnl", 0)
@@ -297,13 +297,13 @@ def build_style_drift() -> dict:
             alerts.append({
                 "severity": "medium",
                 "dimension": "theme",
-                "text": f"{td['theme']} 集中度从 {td['historicalWeightPct']:.0f}% 升至 {td['recentWeightPct']:.0f}%（+{td['weightChangePct']:.0f}pp）",
+                "text": f"{td['theme']} concentration increased from {td['historicalWeightPct']:.0f}% to {td['recentWeightPct']:.0f}% (+{td['weightChangePct']:.0f}pp)",
             })
         elif td["drift"] == "quality_down":
             alerts.append({
                 "severity": "high",
                 "dimension": "theme",
-                "text": f"{td['theme']} 胜率从 {td['historicalWinRate']:.0f}% 降至 {td['recentWinRate']:.0f}%",
+                "text": f"{td['theme']} win rate fell from {td['historicalWinRate']:.0f}% to {td['recentWinRate']:.0f}%",
             })
 
     for sd in setup_drift:
@@ -311,33 +311,33 @@ def build_style_drift() -> dict:
             alerts.append({
                 "severity": "high",
                 "dimension": "setup",
-                "text": f"{sd['setup']} 使用频率上升 {sd['freqChangePct']:+.0f}pp，但胜率从 {sd['historicalWinRate']:.0f}% 降至 {sd['recentWinRate']:.0f}%",
+                "text": f"{sd['setup']} usage increased {sd['freqChangePct']:+.0f}pp, but win rate fell from {sd['historicalWinRate']:.0f}% to {sd['recentWinRate']:.0f}%",
             })
         elif sd["drift"] == "frequency_up" and abs(sd["freqChangePct"]) >= 15:
             alerts.append({
                 "severity": "medium",
                 "dimension": "setup",
-                "text": f"{sd['setup']} 使用频率从 {sd['historicalFreqPct']:.0f}% 升至 {sd['recentFreqPct']:.0f}%",
+                "text": f"{sd['setup']} usage increased from {sd['historicalFreqPct']:.0f}% to {sd['recentFreqPct']:.0f}%",
             })
 
     if pos_drift["drift"] == "size_up":
         alerts.append({
             "severity": "medium",
             "dimension": "position_size",
-            "text": f"平均仓位从 ${pos_drift['historicalAvgSize']:,.0f} 增至 ${pos_drift['recentAvgSize']:,.0f}（+{pos_drift['changePct']:.0f}%）",
+            "text": f"Average position size increased from ${pos_drift['historicalAvgSize']:,.0f} to ${pos_drift['recentAvgSize']:,.0f} (+{pos_drift['changePct']:.0f}%)",
         })
 
     if hold_drift["drift"] == "compression":
         alerts.append({
             "severity": "medium",
             "dimension": "holding_period",
-            "text": f"持仓周期中位数从 {hold_drift['historicalMedianDays']:.0f} 天压缩至 {hold_drift['recentMedianDays']:.0f} 天",
+            "text": f"Median holding period compressed from {hold_drift['historicalMedianDays']:.0f} to {hold_drift['recentMedianDays']:.0f} days",
         })
     elif hold_drift["winnerLoserRatio"] > 1.5:
         alerts.append({
             "severity": "medium",
             "dimension": "holding_period",
-            "text": f"亏损单平均持有 {hold_drift['loserAvgDays']:.0f} 天，盈利单仅 {hold_drift['winnerAvgDays']:.0f} 天",
+            "text": f"Average losing-trade holding period {hold_drift['loserAvgDays']:.0f} days, while winning trades averaged only {hold_drift['winnerAvgDays']:.0f} days",
         })
 
     alerts.sort(key=lambda a: {"high": 0, "medium": 1, "low": 2}.get(a["severity"], 3))

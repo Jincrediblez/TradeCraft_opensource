@@ -45,9 +45,9 @@ def load_themes_config() -> dict:
         with open(THEMES_CONFIG_PATH, encoding="utf-8") as f:
             return yaml.safe_load(f) or {}
     except FileNotFoundError as exc:
-        raise RuntimeError(f"缺少配置文件 {THEMES_CONFIG_PATH.name}，请确认 config/ 目录完整。") from exc
+        raise RuntimeError(f"Missing configuration file {THEMES_CONFIG_PATH.name}; verify that config/ is complete.") from exc
     except yaml.YAMLError as exc:
-        raise RuntimeError(f"配置文件 {THEMES_CONFIG_PATH.name} 解析失败：{exc}") from exc
+        raise RuntimeError(f"Configuration file {THEMES_CONFIG_PATH.name} could not be parsed: {exc}") from exc
 
 
 def symbol_code(symbol_lb: str) -> str:
@@ -247,21 +247,21 @@ def aggregate_theme_attribution(closed_trades: List[dict], config: dict) -> List
         verdict_parts = []
         if th is not None:
             if th > 0.05:
-                verdict_parts.append("主题判断正确")
+                verdict_parts.append("Theme thesis was correct")
             elif th < -0.05:
-                verdict_parts.append("主题判断错误")
+                verdict_parts.append("Theme thesis was incorrect")
             else:
-                verdict_parts.append("主题方向中性")
+                verdict_parts.append("Theme direction was neutral")
         if sel is not None:
             if sel > 0.03:
-                verdict_parts.append("选股优秀")
+                verdict_parts.append("Strong stock selection")
             elif sel < -0.03:
-                verdict_parts.append("选股差于ETF")
+                verdict_parts.append("Stock selection lagged ETF")
         if tim is not None:
             if tim > 0.02:
-                verdict_parts.append("择时正贡献")
+                verdict_parts.append("Positive timing contribution")
             elif tim < -0.02:
-                verdict_parts.append("择时负贡献")
+                verdict_parts.append("Negative timing contribution")
 
         _, tier, _ = classify_symbol(list(stats["symbols"])[0] if stats["symbols"] else "", config)
 
@@ -279,7 +279,7 @@ def aggregate_theme_attribution(closed_trades: List[dict], config: dict) -> List
             "avg_theme_return_pct": round(th * 100, 2) if th is not None else None,
             "avg_selection_alpha_pct": round(sel * 100, 2) if sel is not None else None,
             "avg_timing_alpha_pct": round(tim * 100, 2) if tim is not None else None,
-            "verdict": "，".join(verdict_parts) if verdict_parts else "数据不足",
+            "verdict": ", ".join(verdict_parts) if verdict_parts else "Insufficient data",
         })
 
     return results

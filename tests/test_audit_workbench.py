@@ -11,6 +11,7 @@ from app.audit_workbench import (
     enrich_round_trips,
     evaluate_rule_cycles,
     evidence_page,
+    load_round_trip_notes,
     load_review_state,
     save_finding_feedback,
     save_round_trip_note,
@@ -51,8 +52,8 @@ def closed(symbol="AMD.US", open_date="20260102", close_date="20260105", pnl=100
         "initial_risk": None,
         "r_multiple": None,
         "risk_status": "risk_missing",
-        "setup_type": "主题轮动",
-        "exit_setup_type": "止盈",
+        "setup_type": "Theme rotation",
+        "exit_setup_type": "Take profit",
     }
 
 
@@ -70,7 +71,7 @@ def base_summary():
                 "type": "narrative_hype",
                 "severity": "high",
                 "score": 75,
-                "detail": "AMD.US 非主线交易过多",
+                "detail": "AMD.US has too many non-core trades",
                 "all_evidence": ["AMD.US evidence"],
             }
         ],
@@ -143,7 +144,7 @@ def test_workbench_separates_result_process_behavior_and_confidence(tmp_path, mo
         ]
 
     report = tmp_path / "audit_report.md"
-    report.write_text("旧报告，累计交易 X 次", encoding="utf-8")
+    report.write_text("Old report with X cumulative trades", encoding="utf-8")
     snapshot, round_trips, executions = build_workbench(
         period="2026YTD",
         summary=base_summary(),
@@ -180,17 +181,17 @@ def test_review_feedback_rule_cycle_and_round_trip_note_are_persisted(tmp_path):
     }
     finding = {
         "findingId": "finding_test",
-        "title": "反复交易",
+        "title": "Repeated trading",
         "metricKey": "behavior.roundTrips3d",
         "direction": "lower",
-        "suggestedRule": "三日内不重复进入",
+        "suggestedRule": "Do not re-enter within three days",
     }
     feedback = save_finding_feedback(
         tmp_path,
         period="2026YTD",
         finding_id="finding_test",
         decision="confirmed",
-        note="属实",
+        note="Confirmed by review",
     )
     assert feedback["decision"] == "confirmed"
 
@@ -213,10 +214,16 @@ def test_review_feedback_rule_cycle_and_round_trip_note_are_persisted(tmp_path):
         tmp_path,
         period="2026YTD",
         round_trip_id="rt_test",
-        payload={"setupType": "主题轮动", "invalidationPrice": 90, "targetHoldingDays": 20},
+        payload={
+            "setupType": "Theme rotation",
+            "invalidationPrice": 90,
+            "targetHoldingDays": 20,
+            "note": "\u4fdd\u7559\u7528\u6237\u539f\u6587",
+        },
     )
     assert note["invalidationPrice"] == 90
-    assert load_review_state(tmp_path)["feedback"]["2026YTD:finding_test"]["note"] == "属实"
+    assert load_round_trip_notes(tmp_path)["rt_test"]["note"] == "\u4fdd\u7559\u7528\u6237\u539f\u6587"
+    assert load_review_state(tmp_path)["feedback"]["2026YTD:finding_test"]["note"] == "Confirmed by review"
 
     stopped = create_rule_cycle(
         tmp_path,
@@ -227,9 +234,20 @@ def test_review_feedback_rule_cycle_and_round_trip_note_are_persisted(tmp_path):
     assert stop_rule_cycle(tmp_path, stopped["cycleId"])["status"] == "stopped"
 
 
+def test_round_trip_note_rejects_noncanonical_setup(tmp_path):
+    with pytest.raises(ValueError, match="canonical English"):
+        save_round_trip_note(
+            tmp_path,
+            period="2026YTD",
+            round_trip_id="rt_legacy",
+            payload={"setupType": "\u8ba1\u5212\u5185\u7a81\u7834", "note": "unchanged"},
+        )
+    assert not (tmp_path / "audit_roundtrip_notes.json").exists()
+
+
 def test_snapshot_aliases_changed_round_trip_ids_and_evidence_is_paginated(tmp_path):
     old_payload = {
-        "schemaVersion": 2,
+        "schemaVersion": 3,
         "items": [{**closed(), "roundTripId": "rt_old"}],
     }
     (tmp_path / "audit_round_trips.json").write_text(json.dumps(old_payload), encoding="utf-8")
@@ -299,7 +317,7 @@ def test_trade_plan_history_is_versioned_and_not_applied_retroactively(tmp_path,
     saved = trade_plans.save_trade_plan(
         "AMD.US",
         {
-            "setupType": "主题轮动",
+            "setupType": "Theme rotation",
             "thesis": "test",
             "invalidationPrice": 90,
             "targetHoldingDays": 20,
@@ -317,8 +335,20 @@ def test_unknown_future_review_schema_is_read_only_protected(tmp_path):
         json.dumps({"schemaVersion": 99, "feedback": {}}),
         encoding="utf-8",
     )
-    with pytest.raises(ValueError, match="高于当前支持版本"):
+    with pytest.raises(ValueError, match="incompatible with English-first"):
         load_review_state(tmp_path)
+
+
+def test_legacy_review_schema_is_rejected_without_modification(tmp_path):
+    path = tmp_path / "audit_review_state.json"
+    path.write_text(
+        json.dumps({"schemaVersion": 2, "feedback": {"finding": {"note": "legacy note"}}}),
+        encoding="utf-8",
+    )
+    before = path.read_bytes()
+    with pytest.raises(ValueError, match="Rebuild this workspace"):
+        load_review_state(tmp_path)
+    assert path.read_bytes() == before
 
 
 def test_twenty_thousand_execution_capacity_keeps_ids_unique_and_pages_bounded():
